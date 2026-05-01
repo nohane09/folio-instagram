@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>LinkedIn Branding | Nohane Trouvé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { "primary": "#e619dd" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F7F2; overflow-x: hidden; }
+        
+        .reveal { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .reveal-slide-left { opacity: 0; transform: translateX(100px); animation: fadeInLeft 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+
+        #lightbox {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 2000; cursor: zoom-out; align-items: center; justify-content: center;
+        }
+
+        .polaroid-rotate { transform: rotate(3deg); transition: transform 0.5s ease; }
+        .polaroid-rotate:hover { transform: rotate(0deg) scale(1.02); }
+        
+        .glass-nav {
+            background: rgba(248, 247, 242, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .before-after-label {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+
+        /* Animation de la citation lente */
+        .word { opacity: 0; display: inline-block; transform: translateY(15px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .word.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <div id="lightbox" onclick="this.style.display='none'; document.body.style.overflow='auto'">
+        <img id="lightbox-img" src="" class="max-w-[95%] max-h-[90vh] rounded-2xl" alt="Zoom">
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
+            <a href="index.html?tab=posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary">
+                <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">west</span> 
+                Retour au feed
+            </a>
+            <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase">branding-linkedin-seatrackbox</p>
+        </div>
+    </nav>
+
+    <main class="max-w-[1600px] mx-auto px-6 md:px-16 pb-24 pt-40">
+        
+        <section class="mb-24">
+            <div class="reveal">
+                <h1 class="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none">
+                    LinkedIn <span class="text-primary italic inline-block transform -rotate-1">Optimization.</span>
+                </h1>
+                <div class="flex flex-wrap gap-3 mt-8">
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Stratégie Digitale</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">SEO Profile</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Branding</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            <div class="lg:col-span-5 space-y-20">
+                
+                <div class="reveal" style="animation-delay: 0.2s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">target</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">L'Objectif</h2>
+                    </div>
+                    <p class="text-base md:text-lg font-medium text-slate-600 leading-relaxed">
+                        Optimiser le profil LinkedIn de Thibaut Morin, directeur commercial chez <span class="text-primary font-bold">SeaTrackbox</span>, pour le rendre plus engageant, cohérent avec l’identité de l’entreprise et reflétant l’esprit start-up.
+                    </p>
+                </div>
+
+                <div class="reveal" id="results-card" style="animation-delay: 0.3s">
+                    <div class="flex items-center gap-4 mb-6">
+                        <span class="material-symbols-outlined text-primary text-2xl">trending_up</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">Performance</h2>
+                    </div>
+                    <div class="flex flex-wrap items-start gap-10">
+                        <div class="relative">
+                            <div class="bg-primary text-white p-6 rounded-3xl shadow-xl rotate-3">
+                                <p class="text-[9px] font-black uppercase tracking-widest opacity-80 mb-2">Relations</p>
+                                <p class="text-3xl font-black">1300 → <span class="counter" data-target="5890">0</span></p>
+                            </div>
+                            <div class="absolute -bottom-4 -right-2 bg-black text-white px-4 py-1.5 rounded-full font-black text-[11px] shadow-lg rotate-12 border-2 border-white uppercase tracking-tighter">
+                                x4.5
+                            </div>
+                        </div>
+                        
+                        <div class="relative">
+                            <div class="bg-white border-2 border-black p-6 rounded-3xl shadow-lg -rotate-3 text-center">
+                                <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Abonnés</p>
+                                <p class="text-3xl font-black">1000 → <span class="counter" data-target="2500">0</span></p>
+                            </div>
+                            <div class="absolute -bottom-4 -left-2 bg-primary text-white px-4 py-1.5 rounded-full font-black text-[11px] shadow-lg -rotate-12 border-2 border-white uppercase tracking-tighter">
+                                x2.5
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal pt-10 space-y-12" style="animation-delay: 0.4s">
+                    <div class="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+                        <span class="material-symbols-outlined text-primary text-3xl font-bold">query_stats</span>
+                        <h2 class="text-3xl font-black uppercase tracking-tighter">Analyse</h2>
+                    </div>
+
+                    <div class="space-y-10">
+                        <div class="group">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">art_track</span>
+                                <h4 class="font-black text-xl tracking-tight uppercase">Harmonie Visuelle</h4>
+                            </div>
+                            <p class="text-slate-600 text-base leading-relaxed font-medium">
+                                J’ai intégré les éléments de la charte graphique dans la bannière afin de renforcer la <span class="text-primary font-bold">cohérence visuelle</span>. Le profil n'est plus un simple CV, mais une extension directe de la marque SeaTrackbox.
+                            </p>
+                        </div>
+
+                        <div class="group">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">chat_bubble</span>
+                                <h4 class="font-black text-xl tracking-tight uppercase">Ton & Positionnement</h4>
+                            </div>
+                            <p class="text-slate-600 text-base leading-relaxed font-medium">
+                                Adoption d’un ton plus dynamique et accessible dans la description afin de refléter l’esprit start-up. L'usage d'un <span class="text-primary font-bold">hashtag de marque</span> renforce la visibilité et l'appartenance.
+                            </p>
+                        </div>
+
+                        <div class="group">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">ads_click</span>
+                                <h4 class="font-black text-xl tracking-tight uppercase">Levier de Conversion</h4>
+                            </div>
+                            <p class="text-slate-600 text-base leading-relaxed font-medium">
+                                Chaque section a été SEO-optimisée pour que Thibaut Morin remonte sur les requêtes stratégiques du secteur maritime, transformant son profil en un véritable <span class="text-primary font-bold">aimant à leads</span>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-12 lg:sticky lg:top-40">
+                <div class="reveal relative flex items-center justify-start group">
+                    <div class="absolute -left-10 z-10 before-after-label font-black text-[10px] uppercase tracking-widest text-red-500 opacity-50">Before</div>
+                    <div class="w-2/3 bg-white p-2 rounded-lg shadow-lg grayscale hover:grayscale-0 transition-all cursor-zoom-in" onclick="showImg('Profilavant.png')">
+                        <img src="Profilavant.png" class="w-full rounded border border-slate-100">
+                    </div>
+                </div>
+
+                <div class="reveal-slide-left relative flex items-center justify-end">
+                    <div class="absolute -right-10 z-10 before-after-label font-black text-[10px] uppercase tracking-widest text-green-500">After</div>
+                    <div class="w-[85%] bg-white p-4 pb-4 rounded-sm shadow-2xl border border-slate-100 cursor-zoom-in polaroid-rotate group" onclick="showImg('Profilapres.png')">
+                        <div class="overflow-hidden border border-slate-200">
+                            <img src="Profilapres.png" class="w-full h-auto block">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-40 text-center reveal">
+            <div class="mb-16 min-h-[120px] flex items-center justify-center">
+                <p id="animated-quote" class="text-2xl md:text-3xl font-serif italic text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                    Une présence LinkedIn optimisée est le premier point de contact pour transformer un prospect en partenaire de confiance.
+                </p>
+            </div>
+            <a href="index.html?tab=posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl">
+                <span class="material-symbols-outlined">grid_view</span> Revenir au Feed
+            </a>
+        </footer>
+    </main>
+
+    <script>
+        function showImg(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        const quoteEl = document.getElementById('animated-quote');
+        const text = quoteEl.innerText;
+        quoteEl.innerHTML = text.split(' ').map(word => `<span class="word">${word}</span>`).join(' ');
+
+        const quoteObserver = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                const words = quoteEl.querySelectorAll('.word');
+                words.forEach((word, i) => {
+                    setTimeout(() => word.classList.add('visible'), i * 250); 
+                });
+            }
+        }, { threshold: 0.3 });
+        quoteObserver.observe(quoteEl);
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        if (counter.dataset.done) return;
+                        counter.dataset.done = "true";
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const update = () => {
+                            count += target / 60;
+                            if(count < target) {
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(update, 20);
+                            } else { counter.innerText = target; }
+                        };
+                        update();
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const rc = document.getElementById('results-card');
+        if(rc) observer.observe(rc);
+    </script>
+</body>
+</html>

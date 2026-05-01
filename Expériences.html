@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Nohane Trouvé | Story Expériences</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        body { font-family: 'Manrope', sans-serif; margin: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #ffffff; }
+        
+        .insta-bg-wrapper {
+            position: fixed; inset: 0; z-index: 1;
+            display: flex; justify-content: center;
+            padding-top: 80px; pointer-events: none;
+            filter: blur(12px) brightness(0.95);
+        }
+        .profile-container { width: 100%; max-width: 935px; padding: 0 20px; color: #262626; }
+        .mock-avatar { width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #bc1888); padding: 3px; }
+        .mock-avatar-inner { width: 100%; height: 100%; background: #efefef; border-radius: 50%; border: 4px solid white; }
+        .mock-btn-blue { height: 32px; background: #0095f6; color: white; border-radius: 8px; width: 100px; }
+        .mock-btn-gray { height: 32px; background: #efefef; border-radius: 8px; width: 100px; }
+        .mock-grid-item { aspect-ratio: 1/1; background: #fafafa; border: 1px solid #efefef; }
+
+        .story-viewport { 
+            width: 100%; max-width: 410px; height: 92vh; 
+            background: #0f1120;
+            position: relative; z-index: 10;
+            border-radius: 44px; overflow: hidden; 
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5); 
+            border: 12px solid #181a2e;
+        }
+
+        /* 🔵 Story 2 — Cyan → Violet */
+        .story-bg-gradient {
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at top right, #22d3ee 0%, transparent 55%),
+                        radial-gradient(circle at bottom left, #7c3aed 0%, transparent 55%);
+            opacity: 0.6;
+        }
+
+        .scroll-area { height: 100%; overflow-y: scroll; scrollbar-width: none; padding-bottom: 120px; scroll-behavior: smooth; position: relative; z-index: 2; }
+        .scroll-area::-webkit-scrollbar { display: none; }
+
+        .progress-segment { height: 2px; width: 0%; background-color: white; border-radius: 2px; }
+        .progress-bg { height: 2px; flex: 1; background-color: rgba(255,255,255,0.3); border-radius: 2px; }
+
+        .close-btn { color: white; z-index: 100; transition: color 0.3s; text-decoration: none; }
+        .close-btn.on-light { color: #7c3aed; }
+
+        .timeline-line { position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.1); }
+        .timeline-progress { position: absolute; left: 24px; top: 0; width: 2px; background: #7c3aed; height: 0; box-shadow: 0 0 15px #7c3aed; }
+
+        .story-card { 
+            background: white; border-radius: 24px;
+            opacity: 0; transform: translateX(30px); 
+            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .story-card.visible { opacity: 1; transform: translateX(0); }
+
+        .btn-cta {
+            background: linear-gradient(45deg, #22d3ee, #7c3aed); color: white; padding: 12px 20px;
+            border-radius: 14px; font-weight: 800; font-size: 10px;
+            text-transform: uppercase; align-self: flex-start; border: none; cursor: pointer;
+        }
+
+        .stat-container { display: flex; align-items: baseline; justify-content: center; gap: 1px; color: #7c3aed; }
+        .stat-value { font-weight: 800; font-size: 18px; line-height: 1; }
+        .stat-symbol { font-weight: 800; font-size: 12px; }
+        .stat-label { color: #94a3b8; font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 2px; }
+
+        .tag {
+            background: rgba(124,58,237,0.1); color: #7c3aed; border: 1px solid rgba(124,58,237,0.25);
+            border-radius: 99px; padding: 4px 12px; font-size: 9px; font-weight: 700; text-transform: uppercase;
+        }
+
+        .like-btn.active span { font-variation-settings: 'FILL' 1; color: #ff3040; animation: heartBeat 0.4s ease-out; }
+        @keyframes heartBeat { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+
+        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .animate-modalIn { animation: modalIn 0.3s ease-out; }
+    </style>
+</head>
+<body>
+
+    <div class="insta-bg-wrapper">
+        <div class="profile-container">
+            <header class="flex items-center gap-20 mb-12 px-10">
+                <div class="mock-avatar"><div class="mock-avatar-inner"></div></div>
+                <div class="flex-1 space-y-4">
+                    <div class="flex items-center gap-4">
+                        <span class="text-xl font-medium">nohane_trouve</span>
+                        <div class="mock-btn-blue flex items-center justify-center text-[12px] font-bold">Suivre</div>
+                        <div class="mock-btn-gray flex items-center justify-center text-[12px] font-bold">Message</div>
+                    </div>
+                    <div class="flex gap-8 text-[16px]">
+                        <span><strong>12</strong> publications</span>
+                        <span><strong>458</strong> followers</span>
+                        <span><strong>390</strong> suivi(e)s</span>
+                    </div>
+                    <div class="text-[14px]">
+                        <p class="font-bold">Nohane Trouvé</p>
+                        <p class="text-gray-500">Digital Creator</p>
+                        <p>🎓 Étudiant en BUT MMI - Lannion</p>
+                        <p>✨ Créativité & Stratégie Digitale</p>
+                    </div>
+                </div>
+            </header>
+            <div class="grid grid-cols-3 gap-1 border-t border-gray-200 pt-1">
+                <div class="mock-grid-item"></div><div class="mock-grid-item"></div><div class="mock-grid-item"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="story-viewport">
+        <div class="story-bg-gradient"></div>
+        
+        <div class="absolute top-4 left-0 right-0 z-50 px-4 flex gap-1.5">
+            <div class="progress-bg"><div id="bar1" class="progress-segment"></div></div>
+            <div class="progress-bg"><div id="bar2" class="progress-segment"></div></div>
+        </div>
+
+        <header class="absolute top-8 left-0 right-0 flex items-center justify-between px-4 z-40">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full p-[2px] bg-gradient-to-tr from-[#22d3ee] to-[#7c3aed]">
+                    <div class="w-full h-full rounded-full bg-slate-800 border-2 border-[#181a2e] overflow-hidden">
+                        <img class="w-full h-full object-cover" src="pp.webp" alt="Avatar"/>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-[11px]">nohane_trouve</span>
+                    <span id="story-time" class="text-white/50 text-[10px]">Expériences • 2ans</span>
+                </div>
+            </div>
+            <a id="closeBtn" href="index.html" class="close-btn">
+                <span class="material-symbols-outlined text-[26px]">close</span>
+            </a>
+        </header>
+
+        <main id="scrollTarget" class="scroll-area">
+
+            <div class="h-[100%] flex flex-col justify-end p-8 pb-32">
+                <h1 id="hero-title" class="text-white text-5xl font-extrabold tracking-tighter leading-[0.9] mb-4">
+                    STORY #02:<br><span class="text-[#22d3ee] italic">EXPÉRIENCES</span>
+                </h1>
+                <p id="hero-desc" class="text-white/80 text-sm font-medium mb-10 max-w-[280px]">
+                    Deux missions, une vision : créer du lien entre les marques et leurs audiences.
+                </p>
+                <div class="flex flex-col items-center self-center text-white/30 animate-bounce">
+                    <span id="scroll-text" class="text-[9px] font-bold uppercase tracking-widest mb-1">Scroll</span>
+                    <span class="material-symbols-outlined">expand_more</span>
+                </div>
+            </div>
+
+            <div class="px-5 py-24 relative bg-white/[0.02]">
+                <div class="timeline-line"></div>
+                <div id="vFill" class="timeline-progress"></div>
+
+                <div class="space-y-12 relative z-10">
+
+                    <div class="story-card p-6 ml-10 reveal-card">
+                        <h3 class="text-[#7c3aed] font-extrabold text-[10px] uppercase tracking-widest mb-1">2024–2026 • Startup</h3>
+                        <p class="text-slate-900 font-bold text-lg leading-tight">Community Manager</p>
+                        <p class="text-slate-500 text-xs mb-3">Seatrackbox</p>
+
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="tag" data-fr="Réseaux sociaux" data-en="Social Media">Réseaux sociaux</span>
+                            <span class="tag">Newsletter</span>
+                            <span class="tag" data-fr="Stratégie digitale" data-en="Digital Strategy">Stratégie digitale</span>
+                        </div>
+
+                        <p id="desc-seatrack" class="text-slate-600 text-[11px] leading-relaxed mb-4">
+                            Animation des réseaux, création de contenus visuels et rédactionnels, interviews partenaires et newsletters pour booster la visibilité de la startup.
+                        </p>
+
+                        <div class="grid grid-cols-3 gap-2 text-center border-y border-slate-50 py-4 mb-4">
+                            <div>
+                                <div class="stat-container">
+                                    <span class="stat-value" data-target="2000">0</span>
+                                </div>
+                                <p class="stat-label">Abonnés</p>
+                            </div>
+                            <div>
+                                <div class="stat-container">
+                                    <span class="stat-value" data-target="80">0</span>
+                                    <span class="stat-symbol">%</span>
+                                </div>
+                                <p class="stat-label">Posts</p>
+                            </div>
+                            <div>
+                                <div class="stat-container">
+                                    <span class="stat-value" data-target="60">0</span>
+                                    <span class="stat-symbol">%</span>
+                                </div>
+                                <p class="stat-label">Engag.</p>
+                            </div>
+                        </div>
+
+                        <button id="btn-details-1" onclick="openModal('seatrackbox')" class="btn-cta">Détails</button>
+                    </div>
+
+                    <div class="story-card p-6 ml-10 reveal-card">
+                        <h3 class="text-[#7c3aed] font-extrabold text-[10px] uppercase tracking-widest mb-1">2024–2025 • Commerce</h3>
+                        <p class="text-slate-900 font-bold text-lg leading-tight">Sales Manager</p>
+                        <p class="text-slate-500 text-xs mb-3">Nudura</p>
+
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="tag" data-fr="Contenu de marque" data-en="Branding">Contenu de marque</span>
+                            <span class="tag" data-fr="Prospection" data-en="Prospecting">Prospection</span>
+                            <span class="tag">Communication</span>
+                        </div>
+
+                        <p id="desc-nudura" class="text-slate-600 text-[11px] leading-relaxed mb-4">
+                            Développement de la visibilité via la création de contenus valorisant produits et image de marque, en lien direct avec les objectifs de vente.
+                        </p>
+
+                        <button id="btn-details-2" onclick="openModal('nudura')" class="btn-cta">Détails</button>
+                    </div>
+                </div>
+
+                <div class="mt-20 pt-10 flex flex-col items-center gap-6 pb-20">
+                    <p id="next-story-hint" class="text-white text-[10px] font-bold uppercase tracking-widest text-center px-6">
+                        Découvre mes compétences dans la prochaine story 😎
+                    </p>
+                    <a id="next-story-btn" href="Compétences.html" class="bg-white text-black px-10 py-4 rounded-full font-black text-[11px] uppercase tracking-widest shadow-xl">
+                        Prochaine story
+                    </a>
+                    <a id="quit-btn-text" href="index.html" class="flex items-center gap-2 text-white/50 text-[10px] font-bold uppercase tracking-widest">
+                        <span class="material-symbols-outlined !text-[14px]">arrow_back</span> Quitter
+                    </a>
+                </div>
+            </div>
+        </main>
+
+        <footer class="absolute bottom-0 left-0 right-0 p-6 z-50 bg-gradient-to-t from-black/60 to-transparent">
+            <div class="flex items-center gap-4">
+                <div id="input-placeholder" class="flex-1 border border-white/20 bg-white/10 backdrop-blur-lg rounded-full px-5 py-3 text-white/40 text-[11px]">
+                    Envoyer un message...
+                </div>
+                <button id="likeBtn" onclick="toggleLike()" class="like-btn text-white/80"><span class="material-symbols-outlined text-[28px]">favorite</span></button>
+            </div>
+        </footer>
+
+        <div id="modalOverlay" class="hidden absolute inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-8">
+            <div class="bg-white w-full rounded-[32px] p-8 shadow-2xl animate-modalIn">
+                <h3 id="modalTitle" class="text-[#7c3aed] font-black text-2xl mb-4 italic uppercase">Titre</h3>
+                <p id="modalText" class="text-slate-600 text-sm leading-relaxed mb-8">Texte...</p>
+                <button id="modalCloseBtn" onclick="closeModal()" class="w-full btn-cta py-4 rounded-2xl">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            fr: {
+                time: "Expériences • 2ans",
+                heroT: "STORY #02:<br><span class='text-[#22d3ee] italic'>EXPÉRIENCES</span>",
+                heroD: "Deux missions, une vision : créer du lien entre les marques et leurs audiences.",
+                scroll: "Scroll",
+                seatD: "Animation des réseaux, création de contenus visuels et rédactionnels, interviews partenaires et newsletters pour booster la visibilité de la startup.",
+                nudD: "Développement de la visibilité via la création de contenus valorisant produits et image de marque, en lien direct avec les objectifs de vente.",
+                details: "Détails",
+                nextHint: "Découvre mes compétences dans la prochaine story 😎",
+                nextBtn: "Prochaine story",
+                quit: "Quitter",
+                msg: "Envoyer un message...",
+                close: "Fermer",
+                seatFull: "Pendant deux ans, j'ai piloté la stratégie digitale complète de Seatrackbox : animation des réseaux sociaux, contenus visuels et rédactionnels réguliers, newsletters et interviews partenaires.",
+                nudFull: "En tant que Sales Manager, j'ai participé au développement de la visibilité de Nudura via la création de contenus pour les réseaux sociaux."
+            },
+            en: {
+                time: "Experiences • 2yrs",
+                heroT: "STORY #02:<br><span class='text-[#22d3ee] italic'>EXPERIENCES</span>",
+                heroD: "Two missions, one vision: building a bridge between brands and their audiences.",
+                scroll: "Scroll",
+                seatD: "Social media management, visual and copy content creation, partner interviews and newsletters to boost startup visibility.",
+                nudD: "Developing visibility through content creation, highlighting products and brand image in line with sales objectives.",
+                details: "Details",
+                nextHint: "Discover my skills in the next story 😎",
+                nextBtn: "Next story",
+                quit: "Quit",
+                msg: "Send a message...",
+                close: "Close",
+                seatFull: "For two years, I led Seatrackbox's complete digital strategy: social media animation, regular visual/editorial content, newsletters, and partner interviews.",
+                nudFull: "As a Sales Manager, I contributed to Nudura's visibility development by creating social media content."
+            }
+        };
+
+        const currentLang = localStorage.getItem('selectedLang') || 'fr';
+
+        function applyLang(lang) {
+            const t = translations[lang];
+            document.getElementById('story-time').innerText = t.time;
+            document.getElementById('hero-title').innerHTML = t.heroT;
+            document.getElementById('hero-desc').innerText = t.heroD;
+            document.getElementById('scroll-text').innerText = t.scroll;
+            document.getElementById('desc-seatrack').innerText = t.seatD;
+            document.getElementById('desc-nudura').innerText = t.nudD;
+            document.getElementById('btn-details-1').innerText = t.details;
+            document.getElementById('btn-details-2').innerText = t.details;
+            document.getElementById('next-story-hint').innerText = t.nextHint;
+            document.getElementById('next-story-btn').innerText = t.nextBtn;
+            document.getElementById('quit-btn-text').innerHTML = `<span class="material-symbols-outlined !text-[14px]">arrow_back</span> ${t.quit}`;
+            document.getElementById('input-placeholder').innerText = t.msg;
+            document.getElementById('modalCloseBtn').innerText = t.close;
+            document.querySelectorAll('.tag').forEach(tag => { if(tag.dataset[lang]) tag.innerText = tag.dataset[lang]; });
+        }
+
+        applyLang(currentLang);
+
+        function animateStats(card) {
+            if (card.dataset.animated) return;
+            card.dataset.animated = "true";
+            const stats = card.querySelectorAll('.stat-value[data-target]');
+            stats.forEach(stat => {
+                const target = +stat.getAttribute('data-target');
+                const duration = 5000; 
+                const startTime = performance.now();
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                    stat.innerText = Math.floor(easeProgress * target).toLocaleString();
+                    if (progress < 1) requestAnimationFrame(update);
+                    else stat.innerText = target.toLocaleString();
+                }
+                requestAnimationFrame(update);
+            });
+        }
+
+        function openModal(key) {
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = key === 'seatrackbox' ? "Seatrackbox" : "Nudura";
+            document.getElementById('modalText').innerText = key === 'seatrackbox' ? t.seatFull : t.nudFull;
+            document.getElementById('modalOverlay').classList.remove('hidden');
+        }
+        function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
+        function toggleLike() { document.getElementById('likeBtn').classList.toggle('active'); }
+
+        const scrollArea = document.getElementById('scrollTarget');
+        const hBars = [document.getElementById('bar1'), document.getElementById('bar2')];
+        const vFill = document.getElementById('vFill');
+        const closeBtn = document.getElementById('closeBtn');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); animateStats(entry.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-card').forEach(card => observer.observe(card));
+
+        scrollArea.addEventListener('scroll', () => {
+            const scrollTop = scrollArea.scrollTop;
+            const scrollPercent = scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+            vFill.style.height = (scrollPercent * 100) + '%';
+            hBars.forEach((bar, index) => {
+                const start = index * 0.5, end = (index + 1) * 0.5;
+                if (scrollPercent <= start) bar.style.width = '0%';
+                else if (scrollPercent >= end) bar.style.width = '100%';
+                else bar.style.width = ((scrollPercent - start) / 0.5) * 100 + '%';
+            });
+            if (scrollTop >= scrollArea.clientHeight * 0.8) closeBtn.classList.add('on-light');
+            else closeBtn.classList.remove('on-light');
+        });
+    </script>
+</body>
+</html>

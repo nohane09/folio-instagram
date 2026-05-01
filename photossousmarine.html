@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nohane.underwater | Photos sous-marines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #060d1a;
+            --card: #0d1929;
+            --card2: #111e30;
+            --border: rgba(255,255,255,0.07);
+            --accent: #22d3ee;
+            --accent2: #0891b2;
+            --pink: #e619dd;
+            --text: #f0f4f8;
+            --muted: #64748b;
+            --muted2: #94a3b8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient background bubbles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(8,145,178,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(230,25,221,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===== HEADER / PROFILE ===== */
+        .page-wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 935px;
+            margin: 0 auto;
+            padding: 0 16px 80px;
+        }
+
+        /* Back link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted2);
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 16px 0 8px;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--accent); }
+        .back-arrow { font-size: 18px; }
+
+        /* Top bar (like IG story header) */
+        .story-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 0 24px;
+        }
+        .story-avatar-wrap {
+            position: relative;
+            padding: 2.5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #06b6d4, #0891b2, #22d3ee, #67e8f9);
+            flex-shrink: 0;
+        }
+        .story-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+            object-fit: cover;
+            display: block;
+        }
+        .story-avatar-fallback {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 16px;
+            color: white;
+        }
+        .story-info { flex: 1; }
+        .story-username {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .story-username span { color: var(--accent); font-weight: 700; }
+        .story-subline {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+        .story-badge {
+            background: rgba(34,211,238,0.12);
+            border: 1px solid rgba(34,211,238,0.25);
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        /* ===== PROFILE SECTION ===== */
+        .profile-section {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 28px;
+            margin-bottom: 32px;
+        }
+        .profile-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 32px;
+            margin-bottom: 20px;
+        }
+        .profile-avatar-lg-wrap {
+            padding: 3px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #e619dd, #7c3aed, #22d3ee);
+            background-size: 300%;
+            animation: gradientShift 4s ease infinite;
+            flex-shrink: 0;
+        }
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .profile-avatar-lg {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+            object-fit: cover;
+            display: block;
+        }
+        .profile-avatar-lg-fallback {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            color: white;
+        }
+        .profile-meta { flex: 1; }
+        .profile-username-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .profile-username {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+        }
+        .profile-btn {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--border);
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            padding: 6px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .profile-btn:hover { background: rgba(255,255,255,0.12); }
+        .profile-stats {
+            display: flex;
+            gap: 28px;
+            margin-bottom: 14px;
+        }
+        .profile-stat { text-align: left; }
+        .profile-stat-num {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+        }
+        .profile-stat-label {
+            font-size: 13px;
+            color: var(--muted2);
+        }
+        .profile-bio {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--muted2);
+        }
+        .profile-bio strong { color: var(--text); font-weight: 600; }
+        .profile-bio .accent { color: var(--accent); font-weight: 600; }
+
+        /* ===== STORIES ROW ===== */
+        .stories-row {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+            margin-bottom: 32px;
+        }
+        .stories-row::-webkit-scrollbar { display: none; }
+        .story-thumb {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            min-width: 72px;
+            cursor: pointer;
+        }
+        .story-thumb-ring {
+            padding: 2px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #22d3ee, #0891b2, #06b6d4);
+            transition: transform 0.2s;
+        }
+        .story-thumb:hover .story-thumb-ring { transform: scale(1.06); }
+        .story-thumb-inner {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 3px solid var(--bg);
+            background: var(--card);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+        .story-thumb-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--muted2);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* ===== TAB BAR ===== */
+        .tab-bar {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+        .tab-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            cursor: pointer;
+            border-top: 2px solid transparent;
+            transition: all 0.2s;
+            background: none;
+            border-bottom: none;
+            border-left: none;
+            border-right: none;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .tab-item.active {
+            color: var(--text);
+            border-top-color: var(--text);
+            margin-top: -1px;
+        }
+        .tab-icon { font-size: 16px; }
+
+        /* ===== INSTRUCTION HINT ===== */
+        .slider-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 0 20px;
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        .hint-line { height: 1px; width: 40px; background: rgba(34,211,238,0.3); }
+        .hint-icon { font-size: 16px; animation: swipeHint 2s ease-in-out infinite; }
+        @keyframes swipeHint {
+            0%, 100% { transform: translateX(0); }
+            30% { transform: translateX(-5px); }
+            60% { transform: translateX(5px); }
+        }
+
+        /* ===== PHOTO GRID ===== */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+        }
+        @media (min-width: 640px) { .photo-grid { gap: 4px; } }
+        @media (min-width: 768px) { .photo-grid { gap: 6px; } }
+
+        /* ===== COMPARISON CARD ===== */
+        .comparison-card {
+            position: relative;
+            aspect-ratio: 1;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--card);
+        }
+        .comparison-card:hover .card-overlay { opacity: 1; }
+
+        .beer-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            user-select: none;
+        }
+        .beer-slider img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+        .beer-reveal {
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            width: 50%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .beer-reveal::after {
+            content: '';
+            position: absolute;
+            top: 0; right: -1.5px; bottom: 0;
+            width: 3px;
+            background: rgba(255,255,255,0.9);
+            z-index: 2;
+        }
+        /* Drag handle */
+        .drag-handle {
+            position: absolute;
+            top: 50%;
+            right: -14px;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            font-size: 12px;
+            color: #0891b2;
+            font-weight: 900;
+        }
+        .beer-range {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0;
+            cursor: ew-resize;
+            z-index: 4;
+        }
+
+        /* Before/After labels */
+        .label-before, .label-after {
+            position: absolute;
+            bottom: 8px;
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 4px;
+            pointer-events: none;
+            z-index: 5;
+            backdrop-filter: blur(4px);
+        }
+        .label-before {
+            left: 8px;
+            background: rgba(0,0,0,0.55);
+            color: rgba(255,255,255,0.7);
+        }
+        .label-after {
+            right: 8px;
+            background: rgba(8,145,178,0.7);
+            color: white;
+        }
+
+        /* Card overlay on hover (desktop grid) */
+        .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .overlay-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: white;
+            text-align: center;
+            padding: 0 12px;
+        }
+        .overlay-tag {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        .overlay-likes {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 13px;
+            color: white;
+            font-weight: 700;
+        }
+        .heart-icon { font-size: 16px; }
+
+        /* ===== EXPANDED VIEW ===== */
+        #expanded-view {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        #expanded-view.open { display: flex; }
+        .expanded-card {
+            background: var(--card);
+            border-radius: 18px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 420px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.8);
+        }
+        .expanded-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .expanded-av {
+            width: 34px; height: 34px; border-radius: 50%;
+            background: linear-gradient(135deg, #22d3ee, #0891b2);
+            padding: 2px;
+        }
+        .expanded-av img { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--card); object-fit: cover; }
+        .expanded-username { font-size: 13px; font-weight: 700; flex: 1; }
+        .expanded-close {
+            background: none; border: none; color: var(--muted2);
+            font-size: 22px; cursor: pointer; line-height: 1;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+        .expanded-close:hover { color: white; }
+        .expanded-slider-wrap {
+            position: relative;
+            aspect-ratio: 1;
+            background: #000;
+            flex-shrink: 0;
+        }
+        .expanded-footer {
+            padding: 14px 16px;
+        }
+        .expanded-actions {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 10px;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+            transition: transform 0.2s, color 0.2s;
+            padding: 0;
+        }
+        .action-btn:hover { transform: scale(1.15); }
+        .action-btn.liked { color: #ef4444; }
+        .action-save { margin-left: auto; }
+        .expanded-likes {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .expanded-caption {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--muted2);
+        }
+        .expanded-caption strong { color: var(--text); font-weight: 700; }
+        .expanded-tags { color: #60a5fa; }
+
+        /* ===== FLOATING BUBBLES ===== */
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(34,211,238,0.15) 0%, transparent 70%);
+            pointer-events: none;
+            animation: floatBubble linear infinite;
+            z-index: 0;
+        }
+        @keyframes floatBubble {
+            0% { transform: translateY(110vh) scale(0); opacity: 0; }
+            10% { opacity: 1; transform: translateY(90vh) scale(1); }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .profile-row { gap: 20px; }
+            .profile-stats { gap: 20px; }
+            .photo-grid { grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        }
+
+        /* ===== LOADER FALLBACK ===== */
+        .img-placeholder {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #0c1f36, #0d2b44);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(34,211,238,0.3);
+            font-size: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating bubbles -->
+    <div class="bubble" style="width:120px;height:120px;left:8%;animation-duration:18s;animation-delay:0s"></div>
+    <div class="bubble" style="width:60px;height:60px;left:22%;animation-duration:13s;animation-delay:3s"></div>
+    <div class="bubble" style="width:80px;height:80px;left:55%;animation-duration:20s;animation-delay:1s"></div>
+    <div class="bubble" style="width:40px;height:40px;left:75%;animation-duration:15s;animation-delay:5s"></div>
+    <div class="bubble" style="width:100px;height:100px;left:88%;animation-duration:17s;animation-delay:8s"></div>
+    <div class="bubble" style="width:120px;height:120px;left:8%;animation-duration:18s;animation-delay:0s"></div>
+    <div class="bubble" style="width:60px;height:60px;left:22%;animation-duration:13s;animation-delay:3s"></div>
+    <div class="bubble" style="width:80px;height:80px;left:55%;animation-duration:20s;animation-delay:1s"></div>
+    <div class="bubble" style="width:40px;height:40px;left:75%;animation-duration:15s;animation-delay:5s"></div>
+    <div class="bubble" style="width:100px;height:100px;left:88%;animation-duration:17s;animation-delay:8s"></div>
+
+    <!-- Expanded view modal -->
+    <div id="expanded-view" onclick="closeExpanded()">
+        <div class="expanded-card" onclick="event.stopPropagation()">
+            <div class="expanded-header">
+                <div class="expanded-av">
+                    <img src="pp.jpg" alt="nohane" onerror="this.style.display='none'">
+                </div>
+                <span class="expanded-username">nohane_trouve</span>
+                <button class="expanded-close" onclick="closeExpanded()">×</button>
+            </div>
+            <div class="expanded-slider-wrap" id="expanded-slider-wrap"></div>
+            <div class="expanded-footer">
+                <div class="expanded-actions">
+                    <button class="action-btn" onclick="toggleLike(this)">🤍</button>
+                    <button class="action-btn">💬</button>
+                    <button class="action-btn">✈️</button>
+                    <button class="action-btn action-save">🔖</button>
+                </div>
+                <div class="expanded-likes" id="expanded-likes">143 J'aime</div>
+                <div class="expanded-caption" id="expanded-caption"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-wrapper">
+
+        <!-- Back link -->
+        <a href="index.html" class="back-link">
+            <span class="back-arrow">←</span> Retour au portfolio
+        </a>
+
+        <!-- Profile section -->
+        <div class="profile-section">
+            <div class="profile-row">
+                <div class="profile-avatar-lg-wrap">
+                    <img src="photomer2.webp" alt="Nohane" class="profile-avatar-lg"
+                         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                    <div class="profile-avatar-lg-fallback" style="display:none">NT</div>
+                </div>
+                <div class="profile-meta">
+                    <div class="profile-username-row">
+                        <span class="profile-username">nohane.underwater</span>
+                        <a href="mailto:nohane.t22@gmail.com" class="profile-btn">Message</a>
+                        <a href="index.html" class="profile-btn">Portfolio</a>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <div class="profile-stat-num">9</div>
+                            <div class="profile-stat-label">publications</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-num">🤿</div>
+                            <div class="profile-stat-label">plongées</div>
+                        </div>
+                        <div class="profile-stat">
+                            <div class="profile-stat-num">∞</div>
+                            <div class="profile-stat-label">photos ratées</div>
+                        </div>
+                    </div>
+                    <div class="profile-bio">
+                        <strong>Nohane Trouvé</strong> 🐠<br>
+                        Photographe sous-marine <span class="accent">amatrice</span> , éditrice passionnée<br>
+                        Avant / Après : étalonnage sous-marin 🎨<br>
+                        🌊 Glissez les photos pour comparer
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab bar -->
+        <div class="tab-bar">
+            <button class="tab-item active">
+                <span class="tab-icon">⊞</span> PUBLICATIONS
+            </button>
+        </div>
+
+        <!-- Hint -->
+        <div class="slider-hint">
+            <div class="hint-line"></div>
+            <span class="hint-icon">↔</span>
+            <span>Glissez pour comparer Avant / Après</span>
+            <div class="hint-line"></div>
+        </div>
+
+        <!-- Photo grid -->
+        <div class="photo-grid" id="gallery"></div>
+
+    </div>
+
+    <script>
+        const photos = [
+            { id: "tortue",  name: "La Tortue",         ext: "jpg", emoji: "🐢", likes: 312, tags: "#tortue #underwater #oceanlife #freedive" },
+            { id: "bulle",   name: "Plongeur #1",       ext: "png", emoji: "🫧", likes: 198, tags: "#bulles #plongée #apnée #blue" },
+            { id: "gpraie",  name: "Raie #5",           ext: "png", emoji: "🦈", likes: 445, tags: "#raie #ocean #wildlife" },
+            { id: "p1",      name: "Plongeur #2",       ext: "png", emoji: "🐟", likes: 167, tags: "#plongeur #diver #apnée #blue" },
+            { id: "p2",      name: "Plongeur #3",       ext: "png", emoji: "🐠", likes: 221, tags: "#plongeur #diver #plongée #apnée #blue" },
+            { id: "raie1",   name: "Raie #1",           ext: "png", emoji: "🦅", likes: 534, tags: "#raie #plongée #wild #océan" },
+            { id: "raie2",   name: "Raie #2",           ext: "png", emoji: "🌊", likes: 478, tags: "#raie #underwater #nature" },
+            { id: "raie3",   name: "Raie #3",           ext: "png", emoji: "🔵", likes: 389, tags: "#raie #bleu #océan" },
+            { id: "raie4",   name: "Raie #4",           ext: "png", emoji: "💙", likes: 302, tags: "#raie #wildlife #plongée #deep" },
+        ];
+
+        const folder = "photos-sous-marines/";
+        const gallery = document.getElementById('gallery');
+
+        photos.forEach((p, index) => {
+            const card = document.createElement('div');
+            card.className = 'comparison-card';
+            card.dataset.index = index;
+            card.innerHTML = `
+                <div class="beer-slider" id="slider-${p.id}">
+                    <div class="img-placeholder">${p.emoji}</div>
+                    <img src="${folder}${p.id}ap.${p.ext}" alt="${p.name} après"
+                         onload="this.previousElementSibling.style.display='none'"
+                         onerror="this.style.display='none'">
+                    <div class="beer-reveal" id="reveal-${p.id}">
+                        <img src="${folder}${p.id}av.${p.ext}" alt="${p.name} avant"
+                             onerror="this.style.display='none'">
+                        <div class="drag-handle">⇔</div>
+                    </div>
+                    <span class="label-before">AVANT</span>
+                    <span class="label-after">APRÈS</span>
+                    <input type="range" class="beer-range" min="0" max="100" value="50"
+                           data-id="${p.id}"
+                           oninput="updateSlider('${p.id}', this.value)"
+                           onclick="event.stopPropagation()">
+                </div>
+                <div class="card-overlay">
+                    <span class="overlay-title">${p.name}</span>
+                    <span class="overlay-tag">Avant / Après</span>
+                    <div class="overlay-likes"><span class="heart-icon">❤️</span> ${p.likes.toLocaleString()}</div>
+                </div>
+            `;
+            card.addEventListener('click', (e) => {
+                if (e.target.classList.contains('beer-range')) return;
+                openExpanded(index);
+            });
+            gallery.appendChild(card);
+        });
+
+        function updateSlider(id, value) {
+            const reveal = document.getElementById('reveal-' + id);
+            if (reveal) reveal.style.width = value + '%';
+        }
+
+        // ===== EXPANDED VIEW =====
+        let expandedLiked = false;
+
+        function openExpanded(index) {
+            const p = photos[index];
+            const modal = document.getElementById('expanded-view');
+            const wrap = document.getElementById('expanded-slider-wrap');
+            const likesEl = document.getElementById('expanded-likes');
+            const captionEl = document.getElementById('expanded-caption');
+
+            wrap.innerHTML = `
+                <div class="beer-slider" style="position:relative;width:100%;height:100%">
+                    <div class="img-placeholder">${p.emoji}</div>
+                    <img src="${folder}${p.id}ap.${p.ext}" alt="après"
+                         onload="this.previousElementSibling.style.display='none'"
+                         style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover"
+                         onerror="this.style.display='none'">
+                    <div id="exp-reveal" style="position:absolute;top:0;left:0;bottom:0;width:50%;overflow:hidden;z-index:1;border-right:3px solid rgba(255,255,255,0.9)">
+                        <img src="${folder}${p.id}av.${p.ext}" alt="avant"
+                             style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover"
+                             onerror="this.style.display='none'">
+                    </div>
+                    <span style="position:absolute;bottom:10px;left:10px;font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(0,0,0,0.55);color:rgba(255,255,255,0.7);z-index:5;pointer-events:none">AVANT</span>
+                    <span style="position:absolute;bottom:10px;right:10px;font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(8,145,178,0.7);color:white;z-index:5;pointer-events:none">APRÈS</span>
+                    <input type="range" min="0" max="100" value="50"
+                           style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;cursor:ew-resize;z-index:4"
+                           oninput="document.getElementById('exp-reveal').style.width=this.value+'%'">
+                </div>
+            `;
+
+            likesEl.textContent = p.likes.toLocaleString("fr-FR") + " J'aime";
+            captionEl.innerHTML = `<strong>nohane_trouve</strong> ${p.name} ${p.emoji}<br>
+                <span class="expanded-tags">${p.tags}</span>`;
+            expandedLiked = false;
+            document.querySelector('.action-btn').textContent = '🤍';
+
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeExpanded() {
+            document.getElementById('expanded-view').classList.remove('open');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleLike(btn) {
+            expandedLiked = !expandedLiked;
+            btn.textContent = expandedLiked ? '❤️' : '🤍';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeExpanded();
+        });
+    </script>
+</body>
+</html>

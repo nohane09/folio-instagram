@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>SeaTrackBox | Nohane Trouvé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { "primary": "#e619dd" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F7F2; overflow-x: hidden; }
+        
+        .reveal { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        .reveal-slide-left { opacity: 0; transform: translateX(100px); animation: fadeInLeft 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+
+        #lightbox {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 2000; cursor: zoom-out; align-items: center; justify-content: center;
+        }
+
+        .polaroid-rotate { transform: rotate(3deg); transition: transform 0.5s ease; }
+        .polaroid-rotate:hover { transform: rotate(0deg) scale(1.02); }
+        
+        .glass-nav {
+            background: rgba(248, 247, 242, 0.8);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <div id="lightbox" onclick="this.style.display='none'; document.body.style.overflow='auto'">
+        <img id="lightbox-img" src="" class="max-w-[95%] max-h-[90vh] rounded-2xl" alt="Zoom">
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
+            <a href="index.html" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary">
+                <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">west</span> 
+                Retour au feed
+            </a>
+            <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase">webdesigne-seatrackbox</p>
+        </div>
+    </nav>
+
+    <main class="max-w-[1600px] mx-auto px-6 md:px-16 pb-24 pt-40">
+        
+        <section class="mb-24">
+            <div class="reveal">
+                <h1 class="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none whitespace-nowrap">
+                    Landing Page <span class="text-primary italic inline-block transform -rotate-1">SeaTrackBox.</span>
+                </h1>
+            </div>
+
+            <div class="flex flex-wrap gap-3 mt-8">
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">UI/UX DESIGN</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">COPYWRITING</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">GÉNÉRATION DE LEADS</span>
+                </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            <div class="lg:col-span-5 space-y-16">
+                
+                <div class="reveal" style="animation-delay: 0.2s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">target</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">L'Objectif</h2>
+                    </div>
+                    <p class="text-base md:text-lg font-medium text-slate-600 leading-relaxed">
+                        Concevoir une landing page dédiée à la balise <span class="text-primary font-bold">SeaTrackBox</span> afin de générer des leads qualifiés dans le secteur maritime.
+                    </p>
+                </div>
+
+                <div class="reveal" style="animation-delay: 0.3s">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">history_edu</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">Contexte et Enjeu</h2>
+                    </div>
+                    <p class="text-base md:text-lg font-medium text-slate-600 leading-relaxed">
+                        La nouvelle réglementation de l'International Maritime Organization renforce les exigences de traçabilité et de sécurité des conteneurs en mer. Cette évolution crée une <span class="underline decoration-primary decoration-2 underline-offset-4">urgence opérationnelle</span> face aux risques de perte de conteneurs.
+                    </p>
+                </div>
+
+                <div class="reveal space-y-10" style="animation-delay: 0.4s">
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="material-symbols-outlined text-primary text-2xl">trending_up</span>
+                            <h2 class="text-xl font-black uppercase tracking-widest">Performance</h2>
+                        </div>
+                        <div id="results-card" class="flex items-center gap-8">
+                            <div class="bg-primary text-white h-24 w-24 rounded-full flex items-center justify-center shadow-lg rotate-12 flex-shrink-0">
+                                <p class="text-3xl font-black tracking-tighter leading-none">+<span class="counter" data-target="35">0</span>%</p>
+                            </div>
+                            <p class="text-lg font-bold italic text-slate-800 leading-tight">Objectif de conversion <br>sur les RDV qualifiés.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <span class="material-symbols-outlined text-primary text-2xl">groups</span>
+                            <h2 class="text-xl font-black uppercase tracking-widest">Cibles Stratégiques</h2>
+                        </div>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-6 py-2 rounded-full bg-white border-2 border-black font-black text-[9px] uppercase tracking-widest hover:bg-black hover:text-white transition-all transform rotate-2">Armateurs</span>
+                            <span class="px-6 py-2 rounded-full bg-white border-2 border-black font-black text-[9px] uppercase tracking-widest hover:bg-black hover:text-white transition-all transform -rotate-2">Logistique</span>
+                            <span class="px-6 py-2 rounded-full bg-white border-2 border-black font-black text-[9px] uppercase tracking-widest hover:bg-black hover:text-white transition-all transform rotate-3">Capitaines</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal pt-10 space-y-12" style="animation-delay: 0.5s">
+                    <div class="flex items-center gap-4 border-b-2 border-slate-100 pb-4">
+                        <span class="material-symbols-outlined text-primary text-3xl font-bold">query_stats</span>
+                        <h2 class="text-3xl font-black uppercase tracking-tighter">Analyse</h2>
+                    </div>
+
+                    <div class="space-y-10">
+                        <div class="group">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">warning</span>
+                                <h4 class="font-black text-xl tracking-tight uppercase">Hiérarchie des Risques</h4>
+                            </div>
+                            <p class="text-slate-600 text-base leading-relaxed font-medium">
+                                J’ai mis en avant les principaux risques liés à la perte de conteneurs en mer à travers une <span class="text-primary font-bold">grille visuelle claire</span>. Cette organisation rend immédiatement visibles les impacts majeurs (financiers, environnementaux et logistiques).
+                            </p>
+                        </div>
+
+                        <div class="group">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">gavel</span>
+                                <h4 class="font-black text-xl tracking-tight uppercase">Levier SOLAS / OMI</h4>
+                            </div>
+                            <p class="text-slate-600 text-base leading-relaxed font-medium">
+                                J’ai intégré l’échéance du <span class="text-primary font-bold">1er janvier 2026</span> comme élément central du récit. Ce point réglementaire crée un sentiment d’urgence, tout en montrant que la solution répond aux nouvelles obligations.
+                            </p>
+                        </div>
+
+                        <div class="group">
+                            <div class="flex items-center gap-4 mb-4">
+                                <span class="material-symbols-outlined text-primary text-2xl">smart_display</span>
+                                <h4 class="font-black text-xl tracking-tight uppercase">Lead Magnet & CTA</h4>
+                            </div>
+                            <p class="text-slate-600 text-base leading-relaxed font-medium">
+                                J’ai conçu un formulaire accompagné d’une offre à <span class="text-primary font-bold">forte valeur perçue</span> : une démonstration gratuite et un accès à un reportage TF1 pour rassurer via une preuve médiatique.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 flex justify-center lg:justify-end lg:sticky lg:top-40">
+                <div class="reveal-slide-left relative z-20 w-full max-w-[550px]" style="animation-delay: 0.3s">
+                    <div class="bg-white p-5 pb-20 rounded-sm shadow-xl border border-slate-100 cursor-zoom-in polaroid-rotate group">
+                        <div class="overflow-hidden bg-slate-100 border border-slate-200">
+                            <img src="pageweb.pdf" onclick="showImg(this.src)" class="w-full h-auto block" alt="SeaTrackBox Full View">
+                        </div>
+                        <div class="mt-10">
+                            <p class="text-2xl font-medium text-slate-400 italic font-serif opacity-80">Landing Page Design v1.0</p>
+                        </div>
+                    </div>
+                    <div class="absolute -bottom-4 -left-8 bg-white p-4 rounded-2xl shadow-lg border border-slate-50 flex items-center gap-3 transform -rotate-6">
+                        <img src="LogoCanva.webp" class="h-6 grayscale">
+                        <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Canva Pro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-40 text-center reveal" style="animation-delay: 0.8s">
+            <a href="index.html" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl">
+                <span class="material-symbols-outlined">grid_view</span> Retour au feed
+            </a>
+        </footer>
+    </main>
+
+    <script>
+        function showImg(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        if (counter.dataset.done) return;
+                        counter.dataset.done = "true";
+                        const target = +counter.getAttribute('data-target');
+                        let count = 0;
+                        const update = () => {
+                            count += target / 60;
+                            if(count < target) {
+                                counter.innerText = Math.ceil(count);
+                                setTimeout(update, 20);
+                            } else { counter.innerText = target; }
+                        };
+                        update();
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const rc = document.getElementById('results-card');
+        if(rc) observer.observe(rc);
+    </script>
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Nohane Trouvé | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e619dd",
+                        "background-light": "#ffffff",
+                        "background-dark": "#000000",
+                    },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] }
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .tab-btn.active { border-top: 1px solid #000; color: #000; font-weight: 800; margin-top: -1px; }
+        .dark .tab-btn.active { border-top-color: #fff; color: #fff; }
+        .feed-section { display: none; }
+        .feed-section.active { display: block; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+        /* ===== REEL CONTAINER — YouTube Shorts iframe ===== */
+        .reel-container {
+            position: relative;
+            aspect-ratio: 9/16;
+            background: #000;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .reel-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .reel-overlay {
+            position: absolute; bottom: 15px; right: 10px;
+            display: flex; flex-direction: column; gap: 15px;
+            color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+        .reel-icon { cursor: pointer; display: flex; flex-direction: column; align-items: center; position: relative; }
+        .reel-icon span { font-size: 28px; }
+
+        .notif-badge {
+            position: absolute; top: -2px; right: -2px;
+            background: #ff3b30; color: white;
+            font-size: 10px; font-weight: bold;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid black;
+        }
+
+        #comment-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: white; width: 100%; max-width: 450px; border-radius: 15px; overflow: hidden; }
+        .dark .modal-content { background: #262626; color: white; }
+        #comment-text { white-space: pre-line; }
+
+        @media (min-width: 1264px) {
+            .sidebar { width: 245px; }
+            .main-content { margin-left: 245px; }
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+        .vlog-pulse { animation: pulse-soft 2s ease-in-out infinite; }
+
+        .pp-link { cursor: pointer; display: block; transition: transform 0.2s; }
+        .pp-link:hover { transform: scale(1.05); }
+
+        @keyframes float-up {
+            0% { transform: translateY(8px) rotate(-2deg) scale(1); }
+            50% { transform: translateY(-4px) rotate(1deg) scale(1.03); }
+            100% { transform: translateY(8px) rotate(-2deg) scale(1); }
+        }
+        @keyframes float-up2 {
+            0% { transform: translateY(-6px) rotate(2deg) scale(1); }
+            50% { transform: translateY(5px) rotate(-1deg) scale(1.02); }
+            100% { transform: translateY(-6px) rotate(2deg) scale(1); }
+        }
+        @keyframes float-up3 {
+            0% { transform: translateY(3px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-7px) rotate(2deg) scale(1.04); }
+            100% { transform: translateY(3px) rotate(0deg) scale(1); }
+        }
+        .sea-photo-1 { animation: float-up 5s ease-in-out infinite; }
+        .sea-photo-2 { animation: float-up2 6s ease-in-out infinite 0.8s; }
+        .sea-photo-3 { animation: float-up3 4.5s ease-in-out infinite 1.5s; }
+
+        .banner-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 0 0 20px 20px;
+        }
+        @media (min-width: 768px) { .banner-img { height: 200px; } }
+
+        .memo-card-1-front { background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-color: #f9a8d4; }
+        .memo-card-1-back { background: linear-gradient(135deg, #be185d 0%, #9d174d 100%); }
+        .memo-card-2-front { background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%); border-color: #7dd3fc; }
+        .memo-card-2-back { background: linear-gradient(135deg, #0369a1 0%, #075985 100%); }
+
+        .post-tooltip {
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.75);
+            opacity: 0;
+            transition: opacity 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px;
+            text-align: center;
+        }
+        .group:hover .post-tooltip { opacity: 1; }
+
+        @keyframes cta-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(230,25,221,0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(230,25,221,0); }
+        }
+        .cta-btn { animation: cta-pulse 2.5s ease-in-out infinite; }
+
+        /* Lang switcher */
+        .lang-btn { transition: all 0.2s; }
+        .lang-btn.active { background: #e619dd; color: white; }
+        .lang-btn:not(.active) { background: transparent; color: #888; }
+
+        .banner-wrapper {
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
+            width: 100vw;
+        }
+        @media (min-width: 1264px) {
+            .banner-wrapper {
+                margin-left: 0;
+                margin-right: 0;
+                width: 100%;
+            }
+        }
+
+        /* Comment button overlay on reels — always visible */
+        .reel-comment-btn {
+            position: absolute;
+            bottom: 15px;
+            right: 10px;
+            z-index: 20;
+            background: #e619dd;
+            color: white;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+        }
+        .reel-comment-btn:hover { transform: scale(1.1); }
+
+        /* Like count overlay */
+        .reel-likes {
+            position: absolute;
+            bottom: 65px;
+            right: 10px;
+            z-index: 20;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+    
+    <div id="comment-modal" onclick="closeComments()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="border-b dark:border-slate-700 p-4 text-center font-bold text-sm text-slate-400" data-fr="Détails du projet" data-en="Project details">Détails du projet</div>
+            <div id="comment-text" class="p-8 text-sm leading-relaxed text-slate-800 dark:text-slate-200"></div>
+            <button onclick="closeComments()" class="w-full p-4 border-t dark:border-slate-700 text-primary font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" data-fr="Fermer" data-en="Close">Fermer</button>
+        </div>
+    </div>
+
+    <aside class="sidebar fixed bottom-0 left-0 z-50 flex w-full border-t border-slate-200 bg-white px-2 py-3 dark:border-zinc-800 dark:bg-black lg:top-0 lg:h-full lg:w-[72px] lg:flex-col lg:border-r lg:border-t-0 xl:w-[245px] xl:px-4">
+        <div class="hidden py-10 xl:block px-3 mb-4">
+            <h1 class="text-xl font-bold italic tracking-tighter">Instagram</h1>
+        </div>
+        <nav class="flex w-full justify-around lg:flex-col lg:gap-4 xl:w-full">
+            <a href="#" class="flex items-center gap-4 rounded-lg p-3 hover:bg-slate-100 dark:hover:bg-zinc-900 transition">
+                <span class="material-symbols-outlined text-2xl">home</span>
+                <span class="hidden xl:block font-medium" data-fr="Accueil" data-en="Home">Accueil</span>
+            </a>
+            <button onclick="switchTab('private')" class="flex items-center gap-4 rounded-lg p-3 hover:bg-slate-100 dark:hover:bg-zinc-900 transition w-full text-left">
+                <span class="material-symbols-outlined text-2xl">account_circle</span>
+                <span class="hidden xl:block font-medium" data-fr="Profil" data-en="Profile">Profil</span>
+            </button>
+            <button onclick="switchTab('posts')" class="flex items-center gap-4 rounded-lg p-3 hover:bg-slate-100 dark:hover:bg-zinc-900 transition w-full text-left">
+                <span class="material-symbols-outlined text-2xl">grid_view</span>
+                <span class="hidden xl:block font-medium" data-fr="Publications" data-en="Posts">Publications</span>
+            </button>
+            <button onclick="switchTab('reels')" class="flex items-center gap-4 rounded-lg p-3 hover:bg-slate-100 dark:hover:bg-zinc-900 transition w-full text-left">
+                <span class="material-symbols-outlined text-2xl">movie</span>
+                <span class="hidden xl:block font-medium">Reels</span>
+            </button>
+            <a href="mailto:nohane.t22@gmail.com" class="flex items-center gap-4 rounded-lg p-3 hover:bg-slate-100 dark:hover:bg-zinc-900 transition">
+                <span class="material-symbols-outlined text-2xl">mail</span>
+                <span class="hidden xl:block font-medium" data-fr="Messages" data-en="Messages">Messages</span>
+            </a>
+            <button onclick="switchTab('locked')" class="flex items-center gap-4 rounded-lg p-3 hover:bg-slate-100 dark:hover:bg-zinc-900 transition w-full text-left">
+                <span class="material-symbols-outlined text-2xl">lock</span>
+                <span class="hidden xl:block font-medium" data-fr="Privé" data-en="Private">Privé</span>
+            </button>
+
+            <!-- Language switcher -->
+            <div class="hidden xl:flex items-center gap-1 mt-auto mb-4 px-3 pt-6">
+                <button onclick="setLang('fr')" id="lang-fr" class="lang-btn active text-xs font-black px-3 py-1.5 rounded-l-full border border-slate-200 dark:border-zinc-700">FR</button>
+                <button onclick="setLang('en')" id="lang-en" class="lang-btn text-xs font-black px-3 py-1.5 rounded-r-full border border-l-0 border-slate-200 dark:border-zinc-700">EN</button>
+            </div>
+        </nav>
+
+        <!-- Mobile lang switcher -->
+        <div class="flex xl:hidden items-center gap-1 ml-auto">
+            <button onclick="setLang('fr')" id="lang-fr-m" class="lang-btn active text-[10px] font-black px-2 py-1 rounded-l-full border border-slate-200 dark:border-zinc-700">FR</button>
+            <button onclick="setLang('en')" id="lang-en-m" class="lang-btn text-[10px] font-black px-2 py-1 rounded-r-full border border-l-0 border-slate-200 dark:border-zinc-700">EN</button>
+        </div>
+    </aside>
+
+    <main class="main-content mx-auto max-w-[935px] pb-24 lg:pb-12 px-4 md:px-10">
+
+        <!-- HEADER PROFIL -->
+        <section class="mb-12 flex flex-col items-center gap-8 md:flex-row md:items-start md:gap-20 pt-8">
+            <a href="cv.pdf" target="_blank" class="pp-link relative p-1 rounded-full bg-gradient-to-tr from-yellow-400 via-primary to-purple-600 flex-shrink-0" title="Voir mon CV">
+                <img src="pp.webp" alt="Nohane Trouvé" class="h-20 w-20 rounded-full border-2 border-white dark:border-black object-cover md:h-36 md:w-36" onerror="this.onerror=null;this.style.display='none';this.parentElement.querySelector('.pp-fallback').style.display='flex'">
+                <div class="pp-fallback h-20 w-20 rounded-full border-2 border-white dark:border-black bg-slate-300 md:h-36 md:w-36 items-center justify-center text-slate-500 font-black text-2xl" style="display:none">NT</div>
+            </a>
+            
+            <div class="flex flex-col gap-5 text-center md:text-left flex-1">
+                <div class="flex flex-col gap-4 md:flex-row md:items-center">
+                    <h2 class="text-xl font-normal md:text-2xl">nohane_trouve</h2>
+                    <div class="flex gap-2 justify-center">
+                        <a href="cv.pdf" target="_blank" class="rounded-lg bg-slate-100 px-4 py-1.5 text-sm font-bold dark:bg-zinc-800" data-fr="Voir CV" data-en="View CV">Voir CV</a>
+                        <a href="mailto:nohane.t22@gmail.com" class="rounded-lg bg-slate-100 px-4 py-1.5 text-sm font-bold dark:bg-zinc-800" data-fr="Message" data-en="Message">Message</a>
+                    </div>
+                    <span class="material-symbols-outlined text-primary text-sm hidden md:block">verified</span>
+                </div>
+                
+                <div class="hidden md:flex gap-10 font-normal">
+                    <span><strong>3</strong> <span data-fr="ans de projets" data-en="years of projects">ans de projets</span></span>
+                    <span><strong>2</strong> <span data-fr="ans d'exp." data-en="years exp.">ans d'exp.</span></span>
+                    <span><strong>1</strong> <span data-fr="atout pour votre équipe" data-en="asset for your team">atout pour votre équipe</span></span>
+                </div>
+
+                <div class="text-sm leading-relaxed">
+                    <p class="font-bold">Nohane Trouvé</p>
+                    <p class="text-slate-500 dark:text-slate-400" data-fr="Community manager · Créatrice de contenu · Voyageuse" data-en="Community manager · Content creator · Traveler">Community manager · Créatrice de contenu · Voyageuse</p>
+                    <p data-fr="🎓 BUT MMI | Métiers du multimédia et de l'Internet" data-en="🎓 BUT MMI | Multimedia & Internet Professions">🎓 BUT MMI | Métiers du multimédia et de l'Internet</p>
+                    <p data-fr="💼 2 ans d'expérience Seatrackbox & Nudura" data-en="💼 2 years experience Seatrackbox & Nudura">💼 2 ans d'expérience Seatrackbox & Nudura</p>
+                    <p class="font-semibold text-primary" data-fr="📩 Ne ratez pas le profil qu'il vous faut !" data-en="📩 Don't miss the profile you need!">📩 Ne ratez pas le profil qu'il vous faut !</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- HIGHLIGHTS -->
+        <section class="mb-12 flex gap-6 overflow-x-auto pb-4 scrollbar-hide">
+            <a href="formation.html" class="flex flex-col items-center gap-2 min-w-[85px]">
+                <div class="h-16 w-16 rounded-full border border-slate-200 dark:border-zinc-800 p-1"><div class="size-full rounded-full bg-slate-50 dark:bg-zinc-900 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">school</span></div></div>
+                <span class="text-[11px] font-semibold" data-fr="Formation" data-en="Education">Formation</span>
+            </a>
+            <a href="Expériences.html" class="flex flex-col items-center gap-2 min-w-[85px]">
+                <div class="h-16 w-16 rounded-full border border-slate-200 dark:border-zinc-800 p-1"><div class="size-full rounded-full bg-slate-50 dark:bg-zinc-900 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">work</span></div></div>
+                <span class="text-[11px] font-semibold" data-fr="Expériences" data-en="Experience">Expériences</span>
+            </a>
+            <a href="compétences.html" class="flex flex-col items-center gap-2 min-w-[85px]">
+                <div class="h-16 w-16 rounded-full border border-slate-200 dark:border-zinc-800 p-1"><div class="size-full rounded-full bg-slate-50 dark:bg-zinc-900 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">star</span></div></div>
+                <span class="text-[11px] font-semibold" data-fr="Compétences" data-en="Skills">Compétences</span>
+            </a>
+            <a href="mailto:nohane.t22@gmail.com" class="flex flex-col items-center gap-2 min-w-[85px]">
+                <div class="h-16 w-16 rounded-full border border-slate-200 dark:border-zinc-800 p-1"><div class="size-full rounded-full bg-slate-50 dark:bg-zinc-900 flex items-center justify-center text-slate-400"><span class="material-symbols-outlined">mail</span></div></div>
+                <span class="text-[11px] font-semibold">Contact</span>
+            </a>
+        </section>
+
+        <!-- ONGLETS -->
+        <nav class="flex justify-center border-t border-slate-200 dark:border-zinc-800">
+            <div class="flex gap-12">
+                <button onclick="switchTab('private')" id="btn-private" class="tab-btn active flex items-center gap-1.5 py-4 text-xs font-semibold uppercase tracking-widest">
+                    <span class="material-symbols-outlined text-base">account_circle</span> <span data-fr="PROFIL" data-en="PROFILE">PROFIL</span>
+                </button>
+                <button onclick="switchTab('posts')" id="btn-posts" class="tab-btn flex items-center gap-1.5 py-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                    <span class="material-symbols-outlined text-base">grid_view</span> POSTS
+                </button>
+                <button onclick="switchTab('reels')" id="btn-reels" class="tab-btn flex items-center gap-1.5 py-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                    <span class="material-symbols-outlined text-base">movie</span> REELS
+                </button>
+                <button onclick="switchTab('locked')" id="btn-locked" class="tab-btn flex items-center gap-1.5 py-4 text-xs font-semibold uppercase tracking-widest text-slate-400">
+                    <span class="material-symbols-outlined text-base">lock</span> <span data-fr="PRIVÉ" data-en="PRIVATE">PRIVÉ</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- ===== FEED POSTS ===== -->
+        <section id="feed-posts" class="feed-section pt-4">
+            <div class="grid grid-cols-3 gap-1 md:gap-7">
+
+                <!-- 1. Maison de location -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='maison.html'">
+                    <img src="maison-location.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" onerror="this.onerror=null; this.style.display='none'; this.parentElement.querySelector('.post-fallback').style.display='flex'">
+                    <div class="post-fallback absolute inset-0 bg-gradient-to-br from-amber-100 to-orange-200 dark:from-zinc-700 dark:to-zinc-800 items-center justify-center flex-col gap-2 text-center p-4" style="display:none">
+                        <p class="text-[11px] font-black uppercase tracking-widest text-amber-700" data-fr="Maison de location" data-en="Rental House">Maison de location</p>
+                    </div>
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight" data-fr="Maison de location" data-en="Rental House">Maison de location</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-amber-500/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Identité visuelle" data-en="Visual identity">Identité visuelle</span>
+                            <span class="bg-amber-500/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Lifestyle content" data-en="Lifestyle content">Lifestyle content</span>
+                            <span class="bg-amber-500/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Airbnb</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 187</div>
+                    </div>
+                    <div class="absolute top-2 left-2 bg-primary text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide shadow" data-fr="Nouveau" data-en="New">Nouveau</div>
+                </div>
+
+                <!-- 2. Crime & Science -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='crime-science.html'">
+                    <img src="crime-science.png" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" onerror="this.onerror=null; this.style.display='none'; this.parentElement.querySelector('.post-fallback2').style.display='flex'">
+                    <div class="post-fallback2 absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900 items-center justify-center flex-col gap-2 text-center p-4" style="display:none">
+                        <span class="material-symbols-outlined text-4xl text-slate-300">science</span>
+                        <p class="text-[11px] font-black uppercase tracking-widest text-slate-300">Crime & Science</p>
+                    </div>
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight">Crime & Science</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-slate-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Identité graphique" data-en="Graphic identity">Identité graphique</span>
+                            <span class="bg-slate-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Événementiel" data-en="Event">Événementiel</span>
+                            <span class="bg-slate-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Teasing</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 412</div>
+                    </div>
+                    <div class="absolute top-2 left-2 bg-primary text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wide shadow" data-fr="Nouveau" data-en="New">Nouveau</div>
+                </div>
+
+                <!-- 3. Centella -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='centella.html'">
+                    <img src="centella.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight">Centella</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-green-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Branding</span>
+                            <span class="bg-green-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Design</span>
+                            <span class="bg-green-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Réseaux sociaux" data-en="Social media">Réseaux sociaux</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 300</div>
+                    </div>
+                </div>
+
+                <!-- 4. Color Grading -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='etalonnage.html'">
+                    <img src="etalonnage.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight" data-fr="Étalonnage" data-en="Color grading">Étalonnage</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-purple-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Étalonnage" data-en="Color grading">Étalonnage</span>
+                            <span class="bg-purple-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Post-prod" data-en="Post-prod">Post-prod</span>
+                            <span class="bg-purple-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Capcut" data-en="Capcut">Capcut</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 745</div>
+                    </div>
+                </div>
+
+                <!-- 5. Court Métrage -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='interview.html'">
+                    <img src="Interview.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight" data-fr="Court Métrage" data-en="Short Film">Court Métrage</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-rose-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Vidéo" data-en="Video">Vidéo</span>
+                            <span class="bg-rose-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Réalisation" data-en="Direction">Réalisation</span>
+                            <span class="bg-rose-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Montage" data-en="Editing">Montage</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 243</div>
+                    </div>
+                </div>
+
+                <!-- 6. Soirée Seatrackbox -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='design-invitation-seatrackbox.html'">
+                    <img src="Postrappel.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight" data-fr="Soirée Seatrackbox" data-en="Seatrackbox Event">Soirée Seatrackbox</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-blue-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Design invitation" data-en="Invitation design">Design invitation</span>
+                            <span class="bg-blue-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Événementiel" data-en="Event">Événementiel</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 108</div>
+                    </div>
+                </div>
+
+                <!-- 7. LinkedIn Optimization -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='linkedin-branding-seatrackbox.html'">
+                    <img src="vignette.linkedin.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight" data-fr="Optimisation LinkedIn" data-en="LinkedIn Optimization">Optimisation LinkedIn</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-sky-700/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="LinkedIn" data-en="LinkedIn">LinkedIn</span>
+                            <span class="bg-sky-700/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full" data-fr="Personal branding" data-en="Personal branding">Personal branding</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 92</div>
+                    </div>
+                </div>
+
+                <!-- 8. Landing Page -->
+                <div class="group relative aspect-square overflow-hidden bg-slate-200 dark:bg-zinc-800 cursor-pointer" onclick="window.location.href='page-web-rdv.html'">
+                    <img src="vignette.pagecontact.webp" class="h-full w-full object-cover transition duration-500 group-hover:scale-110">
+                    <div class="post-tooltip text-white">
+                        <p class="font-black text-sm leading-tight">Landing Page</p>
+                        <div class="flex flex-wrap gap-1 justify-center mt-1">
+                            <span class="bg-teal-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Web design</span>
+                            <span class="bg-teal-600/80 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">UX/UI</span>
+                        </div>
+                        <div class="flex items-center gap-1 text-xs mt-1"><span class="material-symbols-outlined text-sm">favorite</span> 84</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== FEED REELS ===== -->
+        <section id="feed-reels" class="feed-section pt-4 max-w-6xl mx-auto px-4">
+    
+            <div class="mb-16 bg-[#F8F7F2] dark:bg-zinc-900 rounded-[40px] border-2 border-[#E5E2D9] dark:border-zinc-800 overflow-hidden shadow-sm">
+                <div class="p-8 md:p-12">
+                    <div class="flex flex-col md:flex-row justify-between items-start gap-8 mb-12">
+                        <div class="space-y-3">
+                            <span class="bg-[#1E293B] text-white text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-[0.2em]" data-fr="Stratégie de communication" data-en="Communication Strategy">Stratégie de communication</span>
+                            <h3 class="text-3xl md:text-4xl font-black tracking-tighter text-slate-900 dark:text-white" data-fr="Campagne Vidéo – Seatrackbox" data-en="Video Campaign – Seatrackbox">Campagne Vidéo – Seatrackbox</h3>
+                        </div>
+                        <div class="bg-primary/10 border border-primary/20 p-4 rounded-3xl flex items-center gap-4">
+                            <span class="text-3xl">📈</span>
+                            <div>
+                                <p class="text-[10px] font-black text-primary uppercase tracking-widest">Performance</p>
+                                <p class="text-sm font-bold text-primary italic" data-fr="Objectifs atteints en 2 mois" data-en="Goals achieved in 2 months">Objectifs atteints en 2 mois</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-12">
+                        <div class="space-y-6 text-[15px] leading-relaxed text-slate-700 dark:text-zinc-300">
+                            <p data-fr="<strong>Situation :</strong> Le compte Instagram de l'entreprise connaissait une phase de stagnation : la croissance du nombre d'abonnés était faible et l'engagement restait limité." data-en="<strong>Situation:</strong> The company's Instagram account was stagnating: follower growth was slow and engagement remained limited."><strong>Situation :</strong> Le compte Instagram de l'entreprise connaissait une phase de stagnation : la croissance du nombre d'abonnés était faible et l'engagement restait limité.</p>
+                            <p data-fr="<strong>Action :</strong> J'ai réorienté la stratégie vers des contenus inspirés des <strong>trends Instagram</strong>, guidée par une audience jeune friande de formats dynamiques et fun." data-en="<strong>Action:</strong> I shifted the strategy toward <strong>Instagram trend-based</strong> content, guided by a young audience hungry for dynamic, fun formats."><strong>Action :</strong> J'ai réorienté la stratégie vers des contenus inspirés des <strong>trends Instagram</strong>, guidée par une audience jeune friande de formats dynamiques et fun.</p>
+                            <p data-fr="<strong>Objectif :</strong> Mettre en avant les événements, valoriser le produit et accroître la visibilité de la marque." data-en="<strong>Goal:</strong> Showcase events, highlight the product and grow brand visibility."><strong>Objectif :</strong> Mettre en avant les événements, valoriser le produit et accroître la visibilité de la marque.</p>
+                            <p data-fr="<strong>Résultats :</strong> En deux mois, le nombre d'abonnés a doublé, le temps de visionnage a quadruplé et l'engagement a atteint des sommets." data-en="<strong>Results:</strong> In two months, follower count doubled, watch time quadrupled, and engagement hit record highs."><strong>Résultats :</strong> En deux mois, le nombre d'abonnés a doublé, le temps de visionnage a quadruplé et l'engagement a atteint des sommets.</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="bg-white dark:bg-zinc-800 p-6 rounded-[30px] border border-[#E5E2D9] dark:border-zinc-700 shadow-sm text-center flex flex-col justify-center">
+                                <p class="text-[10px] uppercase font-black text-slate-400 mb-3 tracking-widest" data-fr="Abonnés Instagram" data-en="Instagram Followers">Abonnés Instagram</p>
+                                <div class="flex items-center justify-center gap-3">
+                                    <div class="text-center"><p class="text-[10px] font-bold text-slate-400" data-fr="AVANT" data-en="BEFORE">AVANT</p><p class="text-2xl font-black text-slate-400">40</p></div>
+                                    <span class="text-primary text-2xl font-black">→</span>
+                                    <div class="text-center"><p class="text-[10px] font-bold text-primary" data-fr="APRÈS" data-en="AFTER">APRÈS</p><p class="text-3xl font-black text-[#1E293B] dark:text-white">90</p></div>
+                                </div>
+                                <div class="mt-3 inline-block mx-auto px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[11px] font-black uppercase tracking-tighter">+125%</div>
+                            </div>
+                            <div class="bg-white dark:bg-zinc-800 p-6 rounded-[30px] border border-[#E5E2D9] dark:border-zinc-700 shadow-sm text-center flex flex-col justify-center">
+                                <p class="text-[10px] uppercase font-black text-slate-400 mb-3 tracking-widest" data-fr="Temps Visionnage" data-en="Watch Time">Temps Visionnage</p>
+                                <div class="flex items-center justify-center gap-3">
+                                    <div class="text-center"><p class="text-[10px] font-bold text-slate-400" data-fr="AVANT" data-en="BEFORE">AVANT</p><p class="text-2xl font-black text-slate-400">6s</p></div>
+                                    <span class="text-primary text-2xl font-black">→</span>
+                                    <div class="text-center"><p class="text-[10px] font-bold text-primary" data-fr="APRÈS" data-en="AFTER">APRÈS</p><p class="text-3xl font-black text-[#1E293B] dark:text-white">20s</p></div>
+                                </div>
+                                <div class="mt-3 inline-block mx-auto px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-[11px] font-black uppercase tracking-tighter">+233%</div>
+                            </div>
+                            <div class="sm:col-span-2 bg-white dark:bg-zinc-800 p-6 rounded-[30px] border-2 border-primary/20 shadow-sm text-center flex flex-col justify-center">
+                                <p class="text-[10px] uppercase font-black text-slate-400 mb-2 tracking-widest" data-fr="Taux d'engagement" data-en="Engagement Rate">Taux d'engagement</p>
+                                <div class="flex items-center justify-center gap-4">
+                                    <p class="text-5xl font-black text-primary tracking-tighter">+31%</p>
+                                    <div class="text-left"><p class="text-[10px] font-black text-primary uppercase leading-none">Record</p><p class="text-[10px] font-bold text-slate-400 italic" data-fr="Vs 5% (moyenne)" data-en="Vs 5% (average)">Vs 5% (moyenne)</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-8 border-t border-[#E5E2D9] dark:border-zinc-800">
+                        <span class="bg-[#1E293B] text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest" data-fr="Vidéo marketing" data-en="Video marketing">Vidéo marketing</span>
+                        <span class="bg-[#1E293B] text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest" data-fr="Montage" data-en="Editing">Montage</span>
+                        <span class="bg-[#1E293B] text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest" data-fr="Gestion de communauté" data-en="Community management">Gestion de communauté</span>
+                        <span class="bg-[#1E293B] text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest" data-fr="Veille stratégique" data-en="Strategic watch">Veille stratégique</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-3 mb-12">
+                <div class="h-[1px] w-16 bg-[#E5E2D9]"></div>
+                <div class="flex items-center gap-2.5 text-primary">
+                    <span class="material-symbols-outlined text-lg">chat_bubble</span>
+                    <p class="text-[11px] font-bold uppercase tracking-[0.2em]" data-fr="Cliquez sur l'icône commentaire pour l'explication" data-en="Click the comment icon for details">Cliquez sur l'icône commentaire pour l'explication</p>
+                </div>
+                <div class="h-[1px] w-16 bg-[#E5E2D9]"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 pb-24">
+
+                <!-- REEL 1 — Confiance en Seatrackbox -->
+                <div class="group space-y-4">
+                    <div class="reel-container rounded-[35px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-800 group-hover:rotate-1 transition-all duration-300">
+                        <iframe
+                            src="https://www.youtube.com/embed/Yn4aLEATp1c?rel=0&modestbranding=1&controls=1"
+                            title="Confiance en Seatrackbox"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                        <div class="reel-comment-btn" onclick="openComments('Une vidéo courte et humoristique qui joue sur l\'idée qu\'on ne peut pas faire confiance à tout le monde, sauf à Seatrackbox. L\'objectif est d\'interpeller rapidement et de faire réagir tout en mettant en avant la marque avec légèreté.')">
+                            <span class="material-symbols-outlined" style="font-size:20px;">chat_bubble</span>
+                        </div>
+                        <div class="reel-likes">
+                            <span class="material-symbols-outlined" style="font-size:18px;">favorite</span>
+                            <span>45</span>
+                        </div>
+                    </div>
+                    <p class="text-[13px] px-2 leading-relaxed"><span class="font-black">nohane_trouve</span> On ne peut pas faire confiance à tout le monde... 😉✨ <br><span class="text-blue-600 dark:text-blue-400">#Seatrackbox #Humour #Confiance #Trend #Startup</span></p>
+                </div>
+
+                <!-- REEL 2 — Demo Day -->
+                <div class="group space-y-4">
+                    <div class="reel-container rounded-[35px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-800 group-hover:-rotate-1 transition-all duration-300">
+                        <iframe
+                            src="https://www.youtube.com/embed/jYIH23Ylo9I?rel=0&modestbranding=1&controls=1"
+                            title="Demo Day Seatrackbox"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                        <div class="reel-comment-btn" onclick="openComments('Un reel informatif qui explique simplement ce qu\'est le Demo Day. Un format dynamique pour rendre l\'événement accessible à tous.')">
+                            <span class="material-symbols-outlined" style="font-size:20px;">chat_bubble</span>
+                        </div>
+                        <div class="reel-likes">
+                            <span class="material-symbols-outlined" style="font-size:18px;">favorite</span>
+                            <span>89</span>
+                        </div>
+                    </div>
+                    <p class="text-[13px] px-2 leading-relaxed"><span class="font-black">nohane_trouve</span> C'est quoi le Demo Day ? 🚀 <br><span class="text-blue-600 dark:text-blue-400">#DemoDay #Innovation #Logistique #Tech #Bordeaux</span></p>
+                </div>
+
+                <!-- REEL 3 — Recrutement agents commerciaux -->
+                <div class="group space-y-4">
+                    <div class="reel-container rounded-[35px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-800 group-hover:rotate-1 transition-all duration-300">
+                        <iframe
+                            src="https://youtube.com/shorts/I1VU7Mz1uxE?rel=0&modestbranding=1&controls=1"
+                            title="Recrutement agents commerciaux"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                        <div class="reel-comment-btn" onclick="openComments('Une vidéo très courte, sans parole, basée sur une trend pour capter l\'attention des profils commerciaux de façon fun.')">
+                            <span class="material-symbols-outlined" style="font-size:20px;">chat_bubble</span>
+                        </div>
+                        <div class="reel-likes">
+                            <span class="material-symbols-outlined" style="font-size:18px;">favorite</span>
+                            <span>112</span>
+                        </div>
+                    </div>
+                    <p class="text-[13px] px-2 leading-relaxed"><span class="font-black">nohane_trouve</span> On recrute ! 🤝 DM pour postuler ! <br><span class="text-blue-600 dark:text-blue-400">#Recrutement #JobOffer #Sales #TeamWork #Hiring</span></p>
+                </div>
+
+                <!-- REEL 4 — Recherche investisseurs 1 -->
+                <div class="group space-y-4">
+                    <div class="reel-container rounded-[35px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-800 group-hover:-rotate-1 transition-all duration-300">
+                        <iframe
+                            src="https://www.youtube.com/embed/8iqO1XLwKnw?rel=0&modestbranding=1&controls=1"
+                            title="Recherche investisseurs 1"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                        <div class="reel-comment-btn" onclick="openComments('Une vidéo inspirée des trends Instagram qui utilise l\'humour pour parler d\'un sujet sérieux : la recherche d\'investisseurs.')">
+                            <span class="material-symbols-outlined" style="font-size:20px;">chat_bubble</span>
+                        </div>
+                        <div class="reel-likes">
+                            <span class="material-symbols-outlined" style="font-size:18px;">favorite</span>
+                            <span>210</span>
+                        </div>
+                    </div>
+                    <p class="text-[13px] px-2 leading-relaxed"><span class="font-black">nohane_trouve</span> On cherche nos futurs partenaires ! 📈 <br><span class="text-blue-600 dark:text-blue-400">#Investissement #Business #Growth #Startup #Fundraising</span></p>
+                </div>
+
+                <!-- REEL 5 — Recherche investisseurs 2 -->
+                <div class="group space-y-4">
+                    <div class="reel-container rounded-[35px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-800 group-hover:rotate-1 transition-all duration-300">
+                        <iframe
+                            src="https://www.youtube.com/embed/Lv5FJg7u2Hw?rel=0&modestbranding=1&controls=1"
+                            title="Recherche investisseurs 2"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                        <div class="reel-comment-btn" onclick="openComments('Une seconde vidéo dans un format tendance pour maintenir l\'intérêt sur notre campagne de levée de fonds.')">
+                            <span class="material-symbols-outlined" style="font-size:20px;">chat_bubble</span>
+                        </div>
+                        <div class="reel-likes">
+                            <span class="material-symbols-outlined" style="font-size:18px;">favorite</span>
+                            <span>156</span>
+                        </div>
+                    </div>
+                    <p class="text-[13px] px-2 leading-relaxed"><span class="font-black">nohane_trouve</span> Part 2 : On ne s'arrête plus ! 😂 <br><span class="text-blue-600 dark:text-blue-400">#Entrepreneur #Success #Partnership #Innovation</span></p>
+                </div>
+
+
+                <!-- REEL 7 — Pitch for Investors -->
+                <div class="group space-y-4">
+                    <div class="reel-container rounded-[35px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-800 group-hover:rotate-1 transition-all duration-300">
+                        <iframe
+                            src="https://www.youtube.com/embed/ROGzxJDeuWM?rel=0&modestbranding=1&controls=1"
+                            title="Pitch for Investors Seatrackbox"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                        <div class="reel-comment-btn" onclick="openComments('Une vidéo informative qui présente le \"Pitch for Investors\". On montre l\'expertise et la vision long terme de Seatrackbox.')">
+                            <span class="material-symbols-outlined" style="font-size:20px;">chat_bubble</span>
+                        </div>
+                        <div class="reel-likes">
+                            <span class="material-symbols-outlined" style="font-size:18px;">favorite</span>
+                            <span>234</span>
+                        </div>
+                    </div>
+                    <p class="text-[13px] px-2 leading-relaxed"><span class="font-black">nohane_trouve</span> Le Pitch4Invest résumé ici. 🎤 <br><span class="text-blue-600 dark:text-blue-400">#Pitch #Investors #Strategy #Future #Seatrackbox</span></p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== FEED PROFIL (PRIVATE) ===== -->
+        <section id="feed-private" class="feed-section active pt-10 max-w-5xl mx-auto px-6">
+            <div class="relative">
+                
+                <!-- INTRO -->
+                <div class="relative z-10 mb-16 md:mb-20">
+                    <h2 class="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
+                        <span data-fr="Salut, moi c'est" data-en="Hey, I'm">Salut, moi c'est</span> <br>
+                        <span class="text-primary italic inline-block transform -rotate-2">Nohane !</span>
+                    </h2>
+     
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="inline-flex items-center gap-1.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-700/40 px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wide" data-fr="☀️ Solaire" data-en="☀️ Sunny">☀️ Solaire</span>
+                        <span class="inline-flex items-center gap-1.5 bg-primary/10 border border-primary/20 text-primary px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wide" data-fr="⚡ Audacieuse" data-en="⚡ Bold">⚡ Audacieuse</span>
+                        <span class="inline-flex items-center gap-1.5 bg-slate-100 dark:bg-zinc-800 text-slate-700 dark:text-zinc-200 border border-slate-200 dark:border-zinc-700 px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wide" data-fr="🎨 Créative" data-en="🎨 Creative">🎨 Créative</span>
+                        <span class="inline-flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-100 dark:border-blue-800/40 px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wide" data-fr="🌏 Voyageuse" data-en="🌏 Traveler">🌏 Voyageuse</span>
+                    </div>
+     
+                    <p class="text-lg md:text-xl font-bold text-slate-800 dark:text-zinc-100 leading-snug mb-8 max-w-xl border-l-4 border-primary pl-4 italic" data-fr='"Créatrice passionnée qui ose sortir de sa zone de confort j\'aime raconter des histoires authentiques et créer du lien, partout dans le monde."' data-en='"A passionate creator who dares to step outside her comfort zone i like telling authentic stories and build connections, anywhere in the world."'>
+                        "Créatrice passionnée qui ose sortir de sa zone de confort j'aime raconter des histoires authentiques et créer du lien, partout dans le monde."
+                    </p>
+     
+                    <div class="max-w-2xl space-y-4 text-[15px] leading-relaxed text-slate-700 dark:text-zinc-300">
+                        <p data-fr="🎓 Étudiante en 3ᵉ année de <span class='underline decoration-yellow-400 decoration-4 font-bold'>BUT MMI</span>, je suis passionnée par le digital, les réseaux sociaux et la création de contenu." data-en="🎓 Third-year <span class='underline decoration-yellow-400 decoration-4 font-bold'>BUT MMI</span> student, passionate about digital, social media and content creation.">🎓 Étudiante en 3ᵉ année de <span class="underline decoration-yellow-400 decoration-4 font-bold">BUT MMI</span>, je suis passionnée par le digital, les réseaux sociaux et la création de contenu.</p>
+     
+                        <p data-fr="Cette passion prend vie à travers mes voyages : j'adore découvrir de nouvelles cultures, explorer de nouveaux horizons et relever des défis — je pars d'ailleurs bientôt pour <strong>5 mois en Asie en solo !</strong> 🌏" data-en="This passion comes to life through my travels: I love discovering new cultures, exploring new horizons and taking on challenges — I'm actually heading off soon for <strong>5 months solo in Asia!</strong> 🌏">Cette passion prend vie à travers mes voyages : j'adore découvrir de nouvelles cultures, explorer de nouveaux horizons et relever des défis — je pars d'ailleurs bientôt pour <strong>5 mois en Asie en solo !</strong> 🌏</p>
+     
+                        <p data-fr="Et même à l'autre bout du monde, impossible pour moi de lâcher ma caméra 📸 : j'aime capturer des moments, raconter des histoires et partager des expériences — mes bonnes adresses, mes coups de cœur, mes aventures quotidiennes." data-en="And even on the other side of the world, I can't put my camera down 📸: I love capturing moments, telling stories and sharing experiences — my favourite spots, hidden gems, and everyday adventures.">Et même à l'autre bout du monde, impossible pour moi de lâcher ma caméra 📸 : j'aime capturer des moments, raconter des histoires et partager des expériences — mes bonnes adresses, mes coups de cœur, mes aventures quotidiennes.</p>
+                    </div>
+                </div>
+
+                <!-- UNDERWATER PHOTOS -->
+                <div class="mb-16">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="h-[2px] w-10 bg-primary"></div>
+                        <span class="font-black text-[10px] uppercase tracking-[0.3em] text-slate-400" data-fr="Même sous l'eau" data-en="Even underwater">Même sous l'eau</span>
+                    </div>
+
+                    <div class="relative bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-100 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 rounded-[40px] border-2 border-cyan-100 dark:border-zinc-700 p-8 md:p-12 overflow-hidden">
+                        <div class="absolute top-6 left-8 w-3 h-3 rounded-full bg-cyan-200/60 dark:bg-cyan-800/40"></div>
+                        <div class="absolute top-14 left-20 w-2 h-2 rounded-full bg-blue-200/60 dark:bg-blue-800/40"></div>
+                        <div class="absolute bottom-10 right-12 w-4 h-4 rounded-full bg-teal-200/60 dark:bg-teal-800/40"></div>
+                        <div class="absolute top-8 right-24 w-2 h-2 rounded-full bg-cyan-300/60 dark:bg-cyan-700/40"></div>
+                        <div class="absolute bottom-16 left-16 w-3 h-3 rounded-full bg-blue-300/50 dark:bg-blue-700/30"></div>
+
+                        <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
+                            <div class="flex-1 space-y-4">
+                                <p class="text-3xl md:text-4xl font-black tracking-tighter leading-tight text-slate-800 dark:text-white" data-fr="Je ne lâche <span class='text-cyan-600 dark:text-cyan-400 italic'>jamais</span><br>ma caméra." data-en="I <span class='text-cyan-600 dark:text-cyan-400 italic'>never</span><br>put my camera down.">
+                                    Je ne lâche <span class="text-cyan-600 dark:text-cyan-400 italic">jamais</span><br>ma caméra.
+                                </p>
+                                <p class="text-[15px] text-slate-600 dark:text-zinc-300 leading-relaxed max-w-sm" data-fr="Même à 10 mètres sous la surface. Si l'instant le mérite, j'appuie sur le déclencheur sur terre comme dans l'eau." data-en="Even 10 meters below the surface. If the moment is worth it, I press the shutter on land and underwater.">
+                                    Même à 10 mètres sous la surface. Si l'instant le mérite, j'appuie sur le déclencheur sur terre comme dans l'eau.
+                                </p>
+                                <a href="photossousmarine.html" class="inline-flex items-center gap-2 bg-cyan-600 hover:bg-cyan-700 transition-colors text-white px-5 py-2 rounded-full text-sm font-black" data-fr="🤿 Photographe sous-marine amateur" data-en="🤿 Amateur underwater photographer">
+                                    🤿 Photographe sous-marine amateur
+                                </a>
+                            </div>
+
+                            <div class="relative flex items-end gap-3 h-64 md:h-72 flex-shrink-0">
+                                <div class="sea-photo-1 relative w-28 md:w-36 h-48 md:h-56 rounded-[20px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-700 self-end">
+                                    <img src="photomer1.webp" alt="Photo sous-marine 1" class="w-full h-full object-cover" onerror="this.onerror=null;this.parentElement.style.background='linear-gradient(135deg,#0891b2,#0e7490)';this.style.display='none'">
+                                </div>
+                                <div class="sea-photo-2 relative w-24 md:w-32 h-56 md:h-64 rounded-[20px] overflow-hidden shadow-2xl border-4 border-white dark:border-zinc-700">
+                                    <img src="photomer2.webp" alt="Photo sous-marine 2" class="w-full h-full object-cover" onerror="this.onerror=null;this.parentElement.style.background='linear-gradient(135deg,#0369a1,#075985)';this.style.display='none'">
+                                </div>
+                                <div class="sea-photo-3 relative w-28 md:w-36 h-44 md:h-52 rounded-[20px] overflow-hidden shadow-xl border-4 border-white dark:border-zinc-700 self-end">
+                                    <img src="photomer3.webp" alt="Photo sous-marine 3" class="w-full h-full object-cover" onerror="this.onerror=null;this.parentElement.style.background='linear-gradient(135deg,#0284c7,#0369a1)';this.style.display='none'">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VLOG -->
+                <div id="vlog-section" class="mb-16">
+                    <div class="flex items-center gap-3 mb-8">
+                        <div class="h-[2px] w-10 bg-primary"></div>
+                        <span class="font-black text-[10px] uppercase tracking-[0.3em] text-slate-400" data-fr="En mode vlog" data-en="Vlog mode">En mode vlog</span>
+                    </div>
+
+                    <div class="mb-8 bg-gradient-to-r from-primary/10 via-purple-50 to-yellow-50 dark:from-primary/20 dark:via-zinc-900 dark:to-zinc-900 rounded-[30px] border border-primary/20 p-6 md:p-8 flex flex-col md:flex-row items-center gap-6">
+                        <div class="text-5xl flex-shrink-0">🎬</div>
+                        <div>
+                            <p class="font-black text-base text-slate-900 dark:text-white mb-1" data-fr="Mon futur projet : vloguer mon tour d'Asie" data-en="My next project: vlogging my Asia trip">Mon futur projet : vloguer mon tour d'Asie</p>
+                            <p class="text-sm text-slate-600 dark:text-zinc-300 leading-relaxed" data-fr="Partager mes adresses cachées, les restos locaux, les hostels coup de cœur, les galères et les moments magiques. De la création de contenu authentique, en temps réel, avec zéro filet. Exactement ce que je veux faire pour des marques." data-en="Sharing hidden gems, local restaurants, favourite hostels, mishaps and magical moments. Authentic content creation, in real time, with no safety net. Exactly what I want to do for brands.">Partager mes adresses cachées, les restos locaux, les hostels coup de cœur, les galères et les moments magiques. De la création de contenu authentique, en temps réel, avec zéro filet. Exactement ce que je veux faire pour des marques.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="group rounded-[30px] overflow-hidden border-2 border-slate-100 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900 aspect-video flex flex-col items-center justify-center gap-3 text-slate-400 dark:text-zinc-500 cursor-pointer hover:border-primary/40 transition-all relative">
+                            <div class="vlog-pulse"><span class="material-symbols-outlined text-5xl text-primary/50">play_circle</span></div>
+                            <div class="text-center px-6">
+                                <p class="text-[12px] font-black uppercase tracking-widest text-slate-500 dark:text-zinc-400 mb-1" data-fr="Vlog #1 — À venir" data-en="Vlog #1 — Coming soon">Vlog #1 — À venir</p>
+                                <p class="text-[11px] text-slate-400" data-fr="Mon départ pour l'Asie 🌏" data-en="My departure to Asia 🌏">Mon départ pour l'Asie 🌏</p>
+                            </div>
+                            <div class="absolute top-3 right-3 bg-primary/10 text-primary text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-wide border border-primary/20" data-fr="Bientôt" data-en="Soon">Bientôt</div>
+                        </div>
+
+                        <div class="group rounded-[30px] overflow-hidden border-2 border-slate-100 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900 aspect-video flex flex-col items-center justify-center gap-3 text-slate-400 dark:text-zinc-500 cursor-pointer hover:border-primary/40 transition-all relative">
+                            <div class="vlog-pulse" style="animation-delay: 0.5s"><span class="material-symbols-outlined text-5xl text-primary/50">play_circle</span></div>
+                            <div class="text-center px-6">
+                                <p class="text-[12px] font-black uppercase tracking-widest text-slate-500 dark:text-zinc-400 mb-1" data-fr="Vlog #2 — À venir" data-en="Vlog #2 — Coming soon">Vlog #2 — À venir</p>
+                                <p class="text-[11px] text-slate-400" data-fr="Mes adresses incontournables 📍" data-en="My must-see spots 📍">Mes adresses incontournables 📍</p>
+                            </div>
+                            <div class="absolute top-3 right-3 bg-primary/10 text-primary text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-wide border border-primary/20" data-fr="Bientôt" data-en="Soon">Bientôt</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-primary/10 via-purple-50/80 to-pink-50 dark:from-primary/20 dark:via-zinc-900 dark:to-zinc-900 rounded-[30px] border-2 border-primary/20 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div class="flex items-center gap-4">
+                            <span class="text-4xl">📍</span>
+                            <div>
+                                <p class="font-black text-base text-slate-900 dark:text-white mb-1" data-fr="Votre marque dans mes vlogs ?" data-en="Your brand in my vlogs?">Votre marque dans mes vlogs ?</p>
+                                <p class="text-sm text-slate-600 dark:text-zinc-300" data-fr="Pensez-vous faire partie de ces adresses ? Contactez-moi pour qu'on mette votre entreprise en avant !" data-en="Think you could be featured? Get in touch and let's showcase your business!">Pensez-vous faire partie de ces adresses ? Contactez-moi pour qu'on mette votre entreprise en avant !</p>
+                            </div>
+                        </div>
+                        <a href="mailto:nohane.t22@gmail.com?subject=Collaboration vlog Asie - Mise en avant" class="cta-btn flex-shrink-0 inline-flex items-center gap-2 bg-primary text-white px-7 py-3 rounded-full font-black text-sm hover:opacity-90 transition-all shadow-lg shadow-primary/30 whitespace-nowrap" data-fr="Contactez-moi" data-en="Contact me">
+                            <span class="material-symbols-outlined text-base">mail</span>
+                            Contactez-moi
+                        </a>
+                    </div>
+                </div>
+
+                <!-- GRID -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start mb-12">
+                    
+                    <div class="md:col-span-1 bg-[#fffbeb] dark:bg-zinc-800 p-8 rounded-[40px] shadow-sm transform md:-rotate-3 border-2 border-yellow-200 dark:border-zinc-700">
+                        <span class="text-4xl block mb-4">💡</span>
+                        <p class="font-black text-xs uppercase tracking-widest text-yellow-600 mb-2" data-fr="My Power" data-en="My Power">My Power</p>
+                        <p class="text-xl font-bold leading-tight text-slate-800 dark:text-zinc-100" data-fr="Oser sortir du moule et tester des idées fun & créatives." data-en="Daring to break the mould and test fun & creative ideas.">
+                            Oser sortir du moule et tester des idées fun & créatives.
+                        </p>
+                    </div>
+     
+                    <div class="md:col-span-2 space-y-6">
+                        <div class="flex items-center gap-4 mb-2">
+                            <div class="h-[2px] w-12 bg-primary"></div>
+                            <span class="font-black text-[10px] uppercase tracking-[0.3em] text-slate-400" data-fr="Mes terrains de jeu" data-en="My playgrounds">Mes terrains de jeu</span>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-4">
+                            <div class="flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-zinc-900 shadow-sm border border-slate-100 dark:border-zinc-800 hover:shadow-md transition-all">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg" class="w-5 h-5" alt="">
+                                <span class="text-sm font-bold">Instagram</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-zinc-900 shadow-sm border border-slate-100 dark:border-zinc-800 hover:shadow-md transition-all">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" class="w-5 h-5" alt="">
+                                <span class="text-sm font-bold">LinkedIn</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-5 py-3 rounded-full bg-white dark:bg-zinc-900 shadow-sm border border-slate-100 dark:border-zinc-800 hover:shadow-md transition-all transform rotate-2">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" class="w-5 h-5" alt="">
+                                <span class="text-sm font-bold">Facebook</span>
+                            </div>
+                            <div class="flex items-center gap-2 px-5 py-3 rounded-full bg-black text-white shadow-lg transform -rotate-2">
+                                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.13-1.47-.13-.08-.26-.17-.38-.26v7.02c.01 2.85-1.56 5.73-4.41 6.81-2.04.77-4.53.53-6.42-.67-1.89-1.2-3.01-3.41-2.91-5.67.11-2.16 1.34-4.22 3.32-5.11 1.05-.47 2.22-.65 3.37-.53v4.11c-.55-.13-1.15-.11-1.68.12-.95.42-1.46 1.53 2.49.04 1.12.87 2.14 1.98 2.36.93.18 2.01-.1 2.66-.82.42-.48.6-1.13.58-1.76V.02z"/></svg>
+                                <span class="text-sm font-bold">TikTok</span>
+                            </div>
+                        </div>
+                    </div>
+     
+                    <!-- Quiz -->
+                    <div class="md:col-start-2 md:col-span-2 bg-white dark:bg-zinc-900 p-8 rounded-[30px] shadow-xl border border-slate-50 dark:border-zinc-800 relative">
+                        <div class="absolute -top-3 -right-3 bg-primary text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-widest rotate-12 shadow-lg">Play</div>
+                        <p class="text-xl font-black mb-6 italic" data-fr="Où me trouverez-vous quand je ne crée pas ?" data-en="Where will you find me when I'm not creating?">Où me trouverez-vous quand je ne crée pas ?</p>
+                        
+                        <div class="space-y-3">
+                            <button onclick="checkQuiz(this, true)" class="group w-full flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-zinc-800 hover:bg-primary/5 transition-all text-left border border-transparent hover:border-primary/20">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-2xl transition-transform group-hover:rotate-12">🐾</span>
+                                    <span class="text-[15px] font-bold text-slate-800 dark:text-zinc-100" data-fr="Avec des animaux" data-en="With animals">Avec des animaux</span>
+                                </div>
+                                <span class="material-symbols-outlined opacity-0 transition-opacity text-primary">check_circle</span>
+                            </button>
+     
+                            <button onclick="checkQuiz(this, true)" class="group w-full flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-zinc-800 hover:bg-primary/5 transition-all text-left border border-transparent hover:border-primary/20">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-2xl transition-transform group-hover:scale-110">🏃‍♀️</span>
+                                    <span class="text-[15px] font-bold text-slate-800 dark:text-zinc-100" data-fr="En train de faire du sport" data-en="Doing sports">En train de faire du sport</span>
+                                </div>
+                                <span class="material-symbols-outlined opacity-0 transition-opacity text-primary">check_circle</span>
+                            </button>
+     
+                            <button onclick="checkQuiz(this, false)" class="group w-full flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-zinc-800 hover:bg-red-50 transition-all text-left border border-transparent hover:border-red-200">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-2xl transition-transform group-hover:-rotate-12">🎻</span>
+                                    <span class="text-[15px] font-bold text-slate-800 dark:text-zinc-100" data-fr="En plein cours de violon" data-en="At violin class">En plein cours de violon</span>
+                                </div>
+                                <span class="material-symbols-outlined opacity-0 transition-opacity text-red-400">cancel</span>
+                            </button>
+                        </div>
+                    </div>
+     
+                    <!-- Flip cards -->
+                    <div class="md:col-span-3 pt-10 pb-16 flex flex-col md:flex-row justify-center gap-8 items-center">
+            
+                        <div class="group h-64 w-full max-w-[320px] [perspective:1000px]">
+                            <div class="relative h-full w-full rounded-[40px] transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-sm">
+                                <div class="memo-card-1-front absolute inset-0 h-full w-full rounded-[40px] border-2 flex flex-col items-center justify-center p-6 [backface-visibility:hidden]">
+                                    <span class="text-4xl mb-4">✨</span>
+                                    <p class="font-black text-xs uppercase tracking-[0.3em] text-pink-600">Focus</p>
+                                    <h3 class="text-2xl font-black text-pink-900" data-fr="MA SPÉCIALITÉ ?" data-en="MY SPECIALTY?">MA SPÉCIALITÉ ?</h3>
+                                    <p class="mt-4 text-[10px] font-bold text-pink-400 uppercase tracking-widest" data-fr="Survolez pour découvrir" data-en="Hover to discover">Survolez pour découvrir</p>
+                                </div>
+                                <div class="memo-card-1-back absolute inset-0 h-full w-full rounded-[40px] p-8 text-white [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center text-center">
+                                    <p class="text-xl font-bold leading-tight" data-fr="Transformer chaque idée en contenu qui <span class='italic underline decoration-pink-300'>engage, amuse et inspire.</span>" data-en="Turning every idea into content that <span class='italic underline decoration-pink-300'>engages, entertains and inspires.</span>">
+                                        Transformer chaque idée en contenu qui <span class="italic underline decoration-pink-300">engage, amuse et inspire.</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+     
+                        <div class="group h-64 w-full max-w-[320px] [perspective:1000px]">
+                            <div class="relative h-full w-full rounded-[40px] transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-sm">
+                                <div class="memo-card-2-front absolute inset-0 h-full w-full rounded-[40px] border-2 flex flex-col items-center justify-center p-6 [backface-visibility:hidden]">
+                                    <span class="text-4xl mb-4">🤫</span>
+                                    <p class="font-black text-xs uppercase tracking-[0.3em] text-sky-500">Secret</p>
+                                    <h3 class="text-2xl font-black text-sky-900 uppercase">SPOILER</h3>
+                                </div>
+                                <div class="memo-card-2-back absolute inset-0 h-full w-full rounded-[40px] p-8 text-white [transform:rotateY(180deg)] [backface-visibility:hidden] flex flex-col items-center justify-center text-center">
+                                    <p class="text-xl font-bold leading-tight" data-fr='"Je suis aussi motivée en vrai que dans ce portfolio."' data-en='"I\'m just as motivated in real life as I am in this portfolio."'>
+                                        "Je suis aussi motivée en vrai que dans ce portfolio."
+                                    </p>
+                                    <div class="mt-4 size-8 rounded-full bg-sky-400 flex items-center justify-center">
+                                        <span class="material-symbols-outlined text-sm">bolt</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CTA final -->
+                <div class="max-w-2xl mx-auto text-center pb-12 space-y-5">
+                    <p class="text-[15px] leading-relaxed text-slate-700 dark:text-zinc-300" data-fr="Vous cherchez quelqu'un qui sait <strong>capter l'attention, construire une communauté</strong> et transformer votre présence digitale en quelque chose qui <em>résonne vraiment</em> ? Vous êtes au bon endroit." data-en="Looking for someone who knows how to <strong>capture attention, build a community</strong> and transform your digital presence into something that <em>truly resonates</em>? You're in the right place.">
+                        Vous cherchez quelqu'un qui sait <strong>capter l'attention, construire une communauté</strong> et transformer votre présence digitale en quelque chose qui <em>résonne vraiment</em> ? Vous êtes au bon endroit.
+                    </p>
+                    <p class="font-black text-xl text-slate-900 dark:text-zinc-100 tracking-tight" data-fr="Faites de votre marque la prochaine histoire que tout le monde voudra suivre. 🚀" data-en="Make your brand the next story everyone wants to follow. 🚀">
+                        Faites de votre marque la prochaine histoire que tout le monde voudra suivre. 🚀
+                    </p>
+                    <p class="text-base text-slate-600 dark:text-zinc-400" data-fr="Votre future community manager est à un message de vous." data-en="Your future community manager is just one message away.">
+                        Votre future community manager est à un message de vous.
+                    </p>
+
+                    <div class="pt-4">
+                        <a href="mailto:nohane.t22@gmail.com?subject=Opportunité collaboration — Portfolio" class="cta-btn inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-black text-base hover:opacity-90 transition-all shadow-2xl shadow-primary/30" data-fr="Travaillons ensemble →" data-en="Let's work together →">
+                            <span class="material-symbols-outlined">mail</span>
+                            <span data-fr="Travaillons ensemble →" data-en="Let's work together →">Travaillons ensemble →</span>
+                        </a>
+                        <p class="mt-3 text-[11px] text-slate-400 uppercase tracking-widest font-bold" data-fr="Réponse garantie sous 24h" data-en="Reply guaranteed within 24h">Réponse garantie sous 24h</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ===== FEED LOCKED ===== -->
+        <section id="feed-locked" class="feed-section pt-24 text-center max-w-sm mx-auto">
+            <span class="material-symbols-outlined text-6xl mb-4 text-slate-300">lock</span>
+            <h3 class="text-xl font-bold mb-2" data-fr="Compte privé" data-en="Private account">Compte privé</h3>
+            <p class="text-slate-500 text-sm mb-8" data-fr="La suite se découvre en entretien." data-en="The rest is revealed in an interview.">La suite se découvre en entretien.</p>
+            
+            <a href="mailto:nohane.t22@gmail.com?subject=Demande d'entretien - Nohane Trouvé" class="inline-flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full font-bold hover:opacity-90 transition-all shadow-lg shadow-primary/25">
+                <span class="material-symbols-outlined text-base">mail</span>
+                <span data-fr="Organiser un entretien" data-en="Schedule an interview">Organiser un entretien</span>
+            </a>
+        </section>
+
+    </main>
+
+    <script>
+        // ===== TAB SWITCHING =====
+        function switchTab(tabName) {
+            document.querySelectorAll('.feed-section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.classList.add('text-slate-400');
+            });
+            const targetSection = document.getElementById('feed-' + tabName);
+            const targetBtn = document.getElementById('btn-' + tabName);
+            if(targetSection) targetSection.classList.add('active');
+            if(targetBtn) {
+                targetBtn.classList.add('active');
+                targetBtn.classList.remove('text-slate-400');
+            }
+        }
+
+        // ===== COMMENTS =====
+        function openComments(text) {
+            document.getElementById('comment-text').innerText = text;
+            document.getElementById('comment-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeComments() {
+            document.getElementById('comment-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // ===== QUIZ =====
+        function checkQuiz(element, isCorrect) {
+            const icon = element.querySelector('.material-symbols-outlined');
+            if (isCorrect) {
+                element.style.borderColor = "#22c55e";
+                element.style.backgroundColor = "rgba(34, 197, 94, 0.1)";
+                icon.innerText = "check_circle";
+                icon.style.color = "#22c55e";
+                icon.style.opacity = "1";
+            } else {
+                element.style.borderColor = "#ef4444";
+                element.style.backgroundColor = "rgba(239, 68, 68, 0.1)";
+                icon.innerText = "cancel";
+                icon.style.color = "#ef4444";
+                icon.style.opacity = "1";
+            }
+        }
+
+        // ===== LANGUAGE SWITCHER =====
+        let currentLang = 'fr';
+
+        function setLang(lang) {
+            currentLang = lang;
+            ['fr','en'].forEach(l => {
+                const btn = document.getElementById('lang-' + l);
+                const btnM = document.getElementById('lang-' + l + '-m');
+                if(btn) btn.classList.toggle('active', l === lang);
+                if(btnM) btnM.classList.toggle('active', l === lang);
+            });
+            document.querySelectorAll('[data-fr]').forEach(el => {
+                const val = el.getAttribute('data-' + lang);
+                if(val !== null) { el.innerHTML = val; }
+            });
+            document.documentElement.lang = lang;
+        }
+    </script>
+</body>
+</html>

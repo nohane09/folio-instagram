@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Nohane Trouvé | Story Parcours</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <style>
+        body { font-family: 'Manrope', sans-serif; margin: 0; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #ffffff; }
+        
+        .insta-bg-wrapper {
+            position: fixed; inset: 0; z-index: 1;
+            display: flex; justify-content: center;
+            padding-top: 80px; pointer-events: none;
+            filter: blur(12px) brightness(0.95);
+        }
+        .profile-container { width: 100%; max-width: 935px; padding: 0 20px; color: #262626; }
+        .mock-avatar { width: 150px; height: 150px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #bc1888); padding: 3px; }
+        .mock-avatar-inner { width: 100%; height: 100%; background: #efefef; border-radius: 50%; border: 4px solid white; }
+        
+        .story-viewport { 
+            width: 100%; max-width: 410px; height: 92vh; 
+            background: #11131f;
+            position: relative; z-index: 10;
+            border-radius: 44px; overflow: hidden; 
+            box-shadow: 0 50px 100px -20px rgba(0,0,0,0.5); 
+            border: 12px solid #1a1c2c;
+        }
+
+        /* 🟠 Story 1 — Orange → Magenta */
+        .story-bg-gradient {
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at top right, #f09433 0%, transparent 55%),
+                        radial-gradient(circle at bottom left, #e619dd 0%, transparent 55%);
+            opacity: 0.65;
+        }
+
+        .scroll-area { height: 100%; overflow-y: scroll; scrollbar-width: none; padding-bottom: 120px; scroll-behavior: smooth; position: relative; z-index: 2; }
+        .scroll-area::-webkit-scrollbar { display: none; }
+
+        .progress-segment { height: 2px; width: 0%; background-color: white; border-radius: 2px; }
+        .progress-bg { height: 2px; flex: 1; background-color: rgba(255,255,255,0.3); border-radius: 2px; }
+
+        .close-btn { 
+            color: white; z-index: 100; 
+            transition: color 0.3s ease, transform 0.2s;
+            text-decoration: none;
+        }
+        .close-btn.on-light { color: #e619dd; }
+        .close-btn:active { transform: scale(0.9); }
+
+        .timeline-line { position: absolute; left: 24px; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.1); }
+        .timeline-progress { position: absolute; left: 24px; top: 0; width: 2px; background: #e619dd; height: 0; box-shadow: 0 0 15px #e619dd; }
+
+        .story-card { 
+            background: white; border-radius: 24px;
+            opacity: 0; transform: translateX(30px); 
+            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .story-card.visible { opacity: 1; transform: translateX(0); }
+
+        .btn-cta {
+            background: linear-gradient(45deg, #f09433, #e619dd); color: white; padding: 10px 16px;
+            border-radius: 12px; font-weight: 800; font-size: 10px;
+            text-transform: uppercase; align-self: flex-start; border: none; cursor: pointer;
+        }
+
+        .quit-btn {
+            display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.5);
+            font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+            text-decoration: none; margin-top: 10px;
+        }
+
+        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .animate-modalIn { animation: modalIn 0.3s ease-out; }
+    </style>
+</head>
+<body>
+
+    <div class="insta-bg-wrapper">
+        <div class="profile-container">
+            <header class="flex items-center gap-20 mb-12 px-10">
+                <div class="mock-avatar"><div class="mock-avatar-inner"></div></div>
+                <div class="flex-1 space-y-4">
+                    <div class="flex items-center gap-4"><span class="text-xl font-medium">nohane_trouve</span></div>
+                    <div class="text-[14px]">
+                        <p class="font-bold">Nohane Trouvé</p>
+                        <p>🎓 Étudiant en BUT MMI - Lannion</p>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+
+    <div class="story-viewport">
+        <div class="story-bg-gradient"></div>
+        
+        <div class="absolute top-4 left-0 right-0 z-50 px-4 flex gap-1.5">
+            <div class="progress-bg"><div id="bar1" class="progress-segment"></div></div>
+            <div class="progress-bg"><div id="bar2" class="progress-segment"></div></div>
+            <div class="progress-bg"><div id="bar3" class="progress-segment"></div></div>
+            <div class="progress-bg"><div id="bar4" class="progress-segment"></div></div>
+        </div>
+
+        <header class="absolute top-8 left-0 right-0 flex items-center justify-between px-4 z-40">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full p-[2px] bg-gradient-to-tr from-[#f09433] to-[#e619dd]">
+                    <div class="w-full h-full rounded-full bg-slate-800 border-2 border-[#1a1c2c] overflow-hidden">
+                        <img class="w-full h-full object-cover" src="pp.webp" alt="Avatar"/>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-[11px]">nohane_trouve</span>
+                    <span class="text-white/50 text-[10px]">Parcours • 3ans BUT MMI </span>
+                </div>
+            </div>
+            <a id="closeBtn" href="index.html" class="close-btn"><span class="material-symbols-outlined text-[26px]">close</span></a>
+        </header>
+
+        <main id="scrollTarget" class="scroll-area">
+            <div class="h-[100%] flex flex-col justify-end p-8 pb-32">
+                <h1 class="text-white text-5xl font-extrabold tracking-tighter leading-[0.9] mb-4">STORY #01:<br><span class="text-[#f09433] italic">MON PARCOURS</span></h1>
+                <p class="text-white/70 text-sm font-medium mb-10 max-w-[280px]">Depuis toujours, la créativité occupe une place centrale dans ma vie.</p>
+                <div class="flex flex-col items-center self-center text-white/30 animate-bounce">
+                    <span class="text-[9px] font-bold uppercase tracking-widest mb-1">Scroll</span>
+                    <span class="material-symbols-outlined">expand_more</span>
+                </div>
+            </div>
+
+            <div id="lightSection" class="px-5 py-24 relative bg-white/[0.02]">
+                <div class="timeline-line"></div>
+                <div id="vFill" class="timeline-progress"></div>
+                
+                <div class="space-y-12 relative z-10">
+                    <div class="story-card p-6 ml-10 reveal-card">
+                        <h3 class="text-[#e619dd] font-extrabold text-[10px] uppercase tracking-widest mb-1">2023 • Baccalauréat</h3>
+                        <p class="text-slate-900 font-bold text-lg leading-tight">Bac S (Scientifique)</p>
+                        <p class="text-slate-500 text-xs mb-4">Mention Bien</p>
+                        <button onclick="openModal('bac')" class="btn-cta">Détails</button>
+                    </div>
+
+                    <div class="story-card p-6 ml-10 reveal-card">
+                        <h3 class="text-[#e619dd] font-extrabold text-[10px] uppercase tracking-widest mb-1">2023-2024 • MMI 1</h3>
+                        <p class="text-slate-900 font-bold text-lg leading-tight">1ère année BUT MMI</p>
+                        <p class="text-slate-500 text-xs mb-4">Cergy-Pontoise</p>
+                        <button onclick="openModal('mmi1')" class="btn-cta">Détails</button>
+                    </div>
+
+                    <div class="story-card p-6 ml-10 reveal-card">
+                        <h3 class="text-[#e619dd] font-extrabold text-[10px] uppercase tracking-widest mb-1">2024-2025 • MMI 2</h3>
+                        <p class="text-slate-900 font-bold text-lg leading-tight">2ème année BUT MMI</p>
+                        <p class="text-slate-500 text-xs mb-4">Lannion</p>
+                        <button onclick="openModal('mmi2')" class="btn-cta">Détails</button>
+                    </div>
+
+                    <div class="story-card p-6 ml-10 reveal-card">
+                        <h3 class="text-[#e619dd] font-extrabold text-[10px] uppercase tracking-widest mb-1">2025-2026 • MMI 3</h3>
+                        <p class="text-slate-900 font-bold text-lg leading-tight">3ème année BUT MMI</p>
+                        <p class="text-slate-500 text-xs mb-4">En cours...</p>
+                        <button onclick="openModal('mmi3')" class="btn-cta">Détails</button>
+                    </div>
+                </div>
+
+                <div class="mt-20 pt-10 flex flex-col items-center gap-6 pb-20">
+                    <p class="text-white text-[10px] font-bold uppercase tracking-widest text-center px-6">Découvre mes expériences professionnelles dans la prochaine story ! 👀</p>
+                    <a href="Expériences.html" class="bg-white text-black px-10 py-4 rounded-full font-black text-[11px] uppercase tracking-widest shadow-xl">Prochaine story</a>
+                    <a href="index.html" class="quit-btn"><span class="material-symbols-outlined">arrow_back</span>Quitter</a>
+                </div>
+            </div>
+        </main>
+
+        <div id="modalOverlay" class="hidden absolute inset-0 z-[100] bg-black/90 backdrop-blur-md flex items-center justify-center p-8">
+            <div class="bg-white w-full rounded-[32px] p-8 shadow-2xl animate-modalIn">
+                <h3 id="modalTitle" class="text-[#e619dd] font-black text-2xl mb-4 italic uppercase">Titre</h3>
+                <p id="modalText" class="text-slate-600 text-sm leading-relaxed mb-8"></p>
+                <button onclick="closeModal()" class="w-full btn-cta py-4 rounded-2xl">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(key) {
+            const content = {
+                'bac': { 
+                    t: "Baccalauréat", 
+                    d: "Obtention du baccalauréat avec mention Bien. Cette formation m'a apporté la rigueur, la logique et la persévérance nécessaires aux projets complexes." 
+                },
+                'mmi1': { 
+                    t: "MMI 1 - Cergy", 
+                    d: "Immersion totale à Cergy, développement, graphisme et audiovisuel. C'est ici que ma vision du design digital a pris forme." 
+                },
+                'mmi2': { 
+                    t: "MMI 2 - Lannion", 
+                    d: "Focus sur l'expérience utilisateur (UX) et l'interface (UI). J'ai appris à concevoir des solutions centrées sur l'humain." 
+                },
+                'mmi3': { 
+                    t: "MMI 3 - Spécialisation", 
+                    d: "Dernière étape du BUT. Gestion de projets d'envergure, direction artistique et finalisation de mon identité de créatrice digitale." 
+                }
+            };
+            document.getElementById('modalTitle').innerText = content[key].t;
+            document.getElementById('modalText').innerText = content[key].d;
+            document.getElementById('modalOverlay').classList.remove('hidden');
+        }
+        function closeModal() { document.getElementById('modalOverlay').classList.add('hidden'); }
+
+        const scrollArea = document.getElementById('scrollTarget');
+        const hBars = [document.getElementById('bar1'), document.getElementById('bar2'), document.getElementById('bar3'), document.getElementById('bar4')];
+        const vFill = document.getElementById('vFill');
+        const closeBtn = document.getElementById('closeBtn');
+        const lightSection = document.getElementById('lightSection');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal-card').forEach(card => observer.observe(card));
+
+        scrollArea.addEventListener('scroll', () => {
+            const scrollTop = scrollArea.scrollTop;
+            const scrollPercent = scrollTop / (scrollArea.scrollHeight - scrollArea.clientHeight);
+            vFill.style.height = (scrollPercent * 100) + '%';
+            hBars.forEach((bar, index) => {
+                const start = index * 0.25, end = (index + 1) * 0.25;
+                if (scrollPercent <= start) bar.style.width = '0%';
+                else if (scrollPercent >= end) bar.style.width = '100%';
+                else bar.style.width = ((scrollPercent - start) / 0.25) * 100 + '%';
+            });
+            const triggerPoint = lightSection.offsetTop - 60;
+            if (scrollTop >= triggerPoint) {
+                closeBtn.classList.add('on-light');
+            } else {
+                closeBtn.classList.remove('on-light');
+            }
+        });
+    </script>
+</body>
+</html>

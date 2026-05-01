@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Documentaire Galloway-Mowat | Nohane Trouvé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { "primary": "#e619dd" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F7F2; overflow-x: hidden; }
+        .reveal { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        #lightbox {
+            display: none; position: fixed; inset: 0; background: #ffffff;
+            z-index: 2000; cursor: zoom-out; align-items: center; justify-content: center;
+        }
+
+        .glass-nav {
+            background: rgba(248, 247, 242, 0.8);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .before-after-label { writing-mode: vertical-rl; text-orientation: mixed; }
+        .word { opacity: 0; display: inline-block; transform: translateY(15px); transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .word.visible { opacity: 1; transform: translateY(0); }
+        
+        .tool-icon { transition: all 0.4s ease; opacity: 0.8; }
+        .tool-icon:hover { opacity: 1; transform: scale(1.1); }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <div id="lightbox" onclick="this.style.display='none'; document.body.style.overflow='auto'">
+        <img id="lightbox-img" src="" class="max-w-[90%] max-h-[85vh] object-contain" alt="Zoom">
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 glass-nav">
+        <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
+            <a href="index.html?tab=posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary">
+                <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">west</span> 
+                Retour au feed
+            </a>
+            <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase">audiovisuel-documentaire-2025</p>
+        </div>
+    </nav>
+
+    <main class="max-w-[1600px] mx-auto px-6 md:px-16 pb-24 pt-40">
+        
+        <section class="mb-24">
+            <div class="reveal">
+                <h1 class="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none">
+                    Court <span class="text-primary italic inline-block transform -rotate-1">Métrage.</span>
+                </h1>
+                <div class="flex flex-wrap gap-3 mt-8">
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">MONTAGE VIDÉO</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">ÉTALONNAGE</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">INTERVIEW</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            <div class="lg:col-span-5 space-y-20 lg:sticky lg:top-40">
+                
+                <div class="reveal">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">target</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">L'Objectif</h2>
+                    </div>
+                    <p class="text-base md:text-lg font-medium text-slate-600 leading-relaxed">
+                        Réaliser un court-métrage de type documentaire capable de <span class="text-primary font-bold">transmettre des émotions</span> profondes tout en informant sur une réalité médicale complexe.
+                    </p>
+                </div>
+
+                <div class="reveal p-8 bg-white border border-slate-100 rounded-3xl shadow-sm">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="material-symbols-outlined text-primary text-2xl">movie</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">Le Projet</h2>
+                    </div>
+                    <div class="text-sm md:text-base text-slate-600 leading-relaxed space-y-4">
+                        <p>J'ai réalisé un court métrage de type reportage portant sur le <strong>Syndrome de Galloway-Mowat</strong>, une maladie génétique très rare qui provoque des problèmes neurologiques et une grave atteinte des reins dès l'enfance.</p>
+                        <div class="bg-slate-50 p-4 rounded-xl border-l-4 border-primary">
+                            <p class="font-black text-[10px] uppercase tracking-widest text-primary mb-1">👉 Fréquence :</p>
+                            <p class="italic text-sm">Moins d'1 personne sur 1 million. Un peu plus de 100 cas décrits dans le monde.</p>
+                        </div>
+                        <p>J'ai piloté toutes les étapes : de la rédaction des questions pour l'interview jusqu'à l'étalonnage et le montage final.</p>
+                    </div>
+                </div>
+
+                <div class="reveal space-y-12">
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="material-symbols-outlined text-primary text-2xl">military_tech</span>
+                            <h2 class="text-xl font-black uppercase tracking-widest">Résultats</h2>
+                        </div>
+                        <div class="bg-primary text-white p-6 rounded-3xl shadow-xl rotate-2 inline-block">
+                            <p class="text-[9px] font-black uppercase tracking-widest opacity-80 mb-1">Promotion MMI2 2025</p>
+                            <p class="text-xl font-black uppercase">Meilleur documentaire</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="material-symbols-outlined text-primary text-2xl">handyman</span>
+                            <h2 class="text-xl font-black uppercase tracking-widest">Outils utilisés</h2>
+                        </div>
+                        <img src="LogoPremierePro.webp" alt="Premiere Pro" class="h-12 w-auto tool-icon">
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 space-y-16">
+                
+                <div class="reveal relative flex items-center justify-end">
+                    <div class="absolute -right-10 z-10 before-after-label font-black text-[10px] uppercase tracking-widest text-primary font-bold">Le Film</div>
+                    <div class="w-full bg-white p-2 pb-8 rounded-sm shadow-2xl border border-slate-100 group">
+                        <div class="aspect-video overflow-hidden border border-slate-200">
+                            <iframe
+                                src="https://www.youtube.com/embed/EbyVQflJcOg?rel=0&modestbranding=1"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                class="w-full h-full"
+                                style="border:none;">
+                            </iframe>
+                        </div>
+                        <p class="mt-4 px-4 font-serif italic text-slate-400 text-sm">Galloway-Mowat : Le Documentaire par Nohane Trouvé</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-40 text-center reveal">
+            <div class="mb-16 min-h-[120px] flex items-center justify-center">
+                <p id="animated-quote" class="text-2xl md:text-3xl font-serif italic text-slate-400 max-w-4xl mx-auto leading-relaxed px-4">
+                    De l'écriture du scénario à la préparation des interviews, jusqu'au montage et à l'étalonnage, chaque étape a été pensée pour donner du sens aux images et transmettre une histoire forte.
+                </p>
+            </div>
+            <a href="index.html?tab=posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl">
+                <span class="material-symbols-outlined">grid_view</span> Revenir au Feed
+            </a>
+        </footer>
+    </main>
+
+    <script>
+        const quoteEl = document.getElementById('animated-quote');
+        const text = quoteEl.innerText;
+        quoteEl.innerHTML = text.split(' ').map(word => `<span class="word">${word}</span>`).join(' ');
+
+        const quoteObserver = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting) {
+                const words = quoteEl.querySelectorAll('.word');
+                words.forEach((word, i) => {
+                    setTimeout(() => word.classList.add('visible'), i * 150); 
+                });
+            }
+        }, { threshold: 0.3 });
+        quoteObserver.observe(quoteEl);
+    </script>
+</body>
+</html>

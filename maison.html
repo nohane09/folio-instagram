@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maison de location | Nohane Trouvé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { "primary": "#e619dd" } } },
+        }
+    </script>
+    <style>
+        body { font-family: 'Manrope', sans-serif; background-color: #F8F7F2; overflow-x: hidden; }
+
+        .reveal { opacity: 0; transform: translateY(30px); }
+        .active { animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        .word { display: inline-block; opacity: 0; transform: translateY(10px); transition: all 0.4s ease; }
+        .word.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== INSTAGRAM CAROUSEL MOCKUP ===== */
+        .ig-post-card {
+            background: white;
+            border: 1px solid #dbdbdb;
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 520px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.10);
+        }
+        .ig-header-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .ig-avatar-ring {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #e619dd, #9333ea);
+            padding: 2px;
+            flex-shrink: 0;
+        }
+        .ig-avatar-inner {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px solid white;
+            background: #ede8df;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; font-weight: 700; color: #666;
+        }
+        .ig-avatar-inner img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Carousel inside IG */
+        .ig-carousel-wrap {
+            position: relative; overflow: hidden; background: #ede8df;
+            width: 100%; aspect-ratio: 1 / 1;
+        }
+        .ig-carousel-track {
+            display: flex; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+            height: 100%;
+        }
+        .ig-carousel-slide {
+            min-width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; background: #ede8df; flex-shrink: 0;
+        }
+        .ig-carousel-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .ig-carousel-slide .slide-fallback {
+            font-size: 56px; display: flex; align-items: center;
+            justify-content: center; width: 100%; height: 100%; background: #ede8df;
+        }
+
+        .ig-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(255,255,255,0.92); border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 700; color: #0a0a0a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 10;
+        }
+        .ig-arrow.prev { left: 10px; }
+        .ig-arrow.next { right: 10px; }
+
+        .ig-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; z-index: 5; }
+        .ig-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: background 0.2s; border: none; }
+        .ig-dot.active { background: #3b82f6; }
+
+        .ig-counter {
+            position: absolute; top: 12px; right: 14px;
+            background: rgba(0,0,0,0.52); color: white;
+            font-size: 11px; font-weight: 700;
+            padding: 3px 10px; border-radius: 20px; z-index: 5;
+        }
+
+        .ig-actions { display: flex; align-items: center; gap: 14px; padding: 10px 14px 4px; }
+        .ig-actions span { font-size: 22px; cursor: pointer; transition: transform 0.15s; }
+        .ig-actions span:hover { transform: scale(1.15); }
+        .ig-likes { padding: 2px 14px 4px; font-size: 12px; font-weight: 800; }
+        .ig-caption { padding: 2px 14px 6px; font-size: 12px; color: #262626; line-height: 1.5; }
+        .ig-caption strong { font-weight: 800; }
+        .ig-caption .hashtag { color: #385898; }
+        .ig-timestamp { padding: 2px 14px 12px; font-size: 10px; color: #8e8e8e; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* ===== PHONE DEVICE (agrandi) ===== */
+        .phone-device {
+            position: relative;
+            width: 320px;
+            background: #1c1c1e;
+            border-radius: 52px;
+            padding: 16px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,255,255,0.08);
+            margin: 0 auto;
+        }
+        .phone-device::before {
+            content: '';
+            position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+            width: 90px; height: 5px; background: #2c2c2e; border-radius: 3px;
+        }
+        .phone-screen {
+            border-radius: 38px;
+            overflow: hidden;
+            background: #000;
+            position: relative;
+            aspect-ratio: 9 / 16;
+        }
+
+        .reel-scroll {
+            width: 100%; height: 100%;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .reel-scroll::-webkit-scrollbar { display: none; }
+
+        .reel-slide {
+            width: 100%; aspect-ratio: 9/16;
+            scroll-snap-align: start;
+            position: relative; background: #000;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .reel-slide iframe {
+            width: 100%; height: 100%;
+            border: none;
+            pointer-events: none;
+        }
+        .reel-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+        }
+        .reel-right {
+            position: absolute; right: 10px; bottom: 90px;
+            display: flex; flex-direction: column; align-items: center; gap: 18px;
+        }
+        .reel-icon { display: flex; flex-direction: column; align-items: center; gap: 3px; color: white; }
+        .reel-icon svg { width: 22px; height: 22px; fill: white; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6)); }
+        .reel-icon span.count { font-size: 9px; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .reel-bottom {
+            position: absolute; bottom: 14px; left: 10px; right: 48px; color: white;
+        }
+        .reel-bottom .username { font-size: 11px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+        .reel-bottom .caption { font-size: 9px; line-height: 1.4; text-shadow: 0 1px 3px rgba(0,0,0,0.6); margin-top: 3px; opacity: 0.9; }
+
+        .phone-topbar {
+            position: absolute; top: 0; left: 0; right: 0;
+            display: flex; align-items: center; justify-content: center;
+            padding: 28px 0 8px; gap: 20px; z-index: 15;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.45), transparent);
+        }
+        .phone-topbar span { color: rgba(255,255,255,0.5); font-size: 10px; font-weight: 700; }
+        .phone-topbar span.active-tab { color: white; border-bottom: 1.5px solid white; padding-bottom: 2px; }
+
+        .phone-status {
+            position: absolute; top: 14px; left: 0; right: 0;
+            display: flex; justify-content: space-between;
+            align-items: center; padding: 0 24px; z-index: 20;
+        }
+        .phone-status span { color: white; font-size: 9px; font-weight: 700; }
+
+        .scroll-hint-phone {
+            position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 2px;
+            animation: swipeUp 1.5s ease-in-out infinite; z-index: 15; pointer-events: none;
+        }
+        .scroll-hint-phone span { color: rgba(255,255,255,0.7); font-size: 8px; }
+        @keyframes swipeUp {
+            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.7; }
+            50% { transform: translateX(-50%) translateY(-6px); opacity: 1; }
+        }
+
+        /* ===== CARDS ===== */
+        .context-card { background: white; border: 1px solid rgba(0,0,0,0.06); border-radius: 16px; padding: 28px; }
+        .context-badge { display: inline-flex; align-items: center; gap: 6px; background: #fff7ed; color: #c2410c; font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.15em; padding: 6px 14px; border-radius: 999px; border: 1px solid #fed7aa; margin-bottom: 14px; }
+        .objective-row { display: grid; grid-template-columns: 1fr 2fr; gap: 0; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 12px 0; }
+        .objective-row:last-child { border-bottom: none; }
+        .objective-label { font-size: 12px; font-weight: 800; color: #0a0a0a; text-transform: uppercase; letter-spacing: 0.05em; padding-right: 16px; }
+        .objective-detail { font-size: 13px; color: #475569; line-height: 1.5; }
+
+        .tool-pill { display: flex; align-items: center; gap: 10px; background: white; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; padding: 12px 20px; transition: all 0.2s; cursor: default; }
+        .tool-pill:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+        .tool-pill img { width: 32px; height: 32px; object-fit: contain; }
+        .tool-pill .tool-name { font-size: 13px; font-weight: 800; color: #0a0a0a; }
+        .tool-pill .tool-desc { font-size: 10px; color: #94a3b8; font-weight: 500; margin-top: 1px; }
+
+        /* ===== PHOTO GRID 2×4 ===== */
+        .room-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .room-photo {
+            aspect-ratio: 1 / 1; overflow: hidden; border-radius: 12px;
+            cursor: pointer; background: #ede8df; position: relative;
+        }
+        .room-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; display: block; }
+        .room-photo:hover img { transform: scale(1.08); }
+        .room-photo .fallback {
+            width: 100%; height: 100%; display: flex; align-items: center;
+            justify-content: center; font-size: 36px; background: #ede8df;
+        }
+
+        /* ===== LIGHTBOX ===== */
+        #lb { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; align-items: center; justify-content: center; }
+        #lb.open { display: flex; }
+        #lb img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 10px; }
+        .lb-close { position: absolute; top: 20px; right: 24px; color: white; font-size: 34px; cursor: pointer; background: none; border: none; }
+        .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: white; font-size: 28px; cursor: pointer; padding: 12px 16px; border-radius: 10px; transition: background 0.2s; }
+        .lb-nav:hover { background: rgba(255,255,255,0.2); }
+        .lb-prev { left: 12px; }
+        .lb-next { right: 12px; }
+
+        @keyframes cta-pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(230,25,221,0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(230,25,221,0); }
+        }
+        .cta-btn { animation: cta-pulse 2.5s ease-in-out infinite; }
+    </style>
+</head>
+<body class="text-slate-900">
+
+    <!-- LIGHTBOX -->
+    <div id="lb" onclick="lbClose()">
+        <button class="lb-close" onclick="lbClose()">×</button>
+        <button class="lb-nav lb-prev" onclick="event.stopPropagation(); lbNav(-1)">‹</button>
+        <img id="lb-img" src="" alt="">
+        <button class="lb-nav lb-next" onclick="event.stopPropagation(); lbNav(1)">›</button>
+    </div>
+
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full z-50 bg-[#F8F7F2]/80 backdrop-blur-md border-b border-black/5">
+        <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
+            <a href="index.html" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 hover:text-primary transition-colors text-slate-600">
+                <span class="material-symbols-outlined text-sm">west</span> Retour au feed
+            </a>
+            <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase">Maison-Victoire-Alix</p>
+        </div>
+    </nav>
+
+    <main class="max-w-[1600px] mx-auto px-6 md:px-16 pb-24 pt-40">
+
+        <!-- HEADER -->
+        <header class="mb-20 reveal active">
+            <h1 class="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none">
+                La Maison de <span class="text-primary italic inline-block transform -rotate-1">Victoire & Alix.</span>
+            </h1>
+            <div class="flex flex-wrap gap-3 mt-8">
+                <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Stratégie contenu</span>
+                <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Community management</span>
+                <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Photographie lifestyle</span>
+                <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Identité visuelle</span>
+                <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Montage vidéo</span>
+                <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Storytelling</span>
+            </div>
+        </header>
+
+        <!-- CONTEXTE + OBJECTIFS -->
+        <section class="mb-24 reveal active" style="animation-delay:0.2s">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="context-card">
+                    <div class="context-badge">
+                        <span class="material-symbols-outlined" style="font-size:13px">search</span>
+                        Contexte
+                    </div>
+                    <h2 class="text-xl font-black tracking-tight mb-4">Diagnostic de départ</h2>
+                    <p class="text-slate-600 leading-relaxed text-sm">
+                        L'identité visuelle de La Maison de Victoire est handicapée par un <strong>logo illisible</strong> et une incohérence graphique globale du feed. La production de contenu, trop irrégulière, manque cruellement de mise en scène pour incarner la vie dans le logement.
+                    </p>
+                    <p class="text-slate-600 leading-relaxed text-sm mt-3">
+                        Si le fond rédactionnel est qualitatif, la structure des légendes et l'harmonisation visuelle restent perfectibles. L'engagement est freiné par l'absence d'appels à l'action systématiques et une gestion erratique des hashtags.
+                    </p>
+                    <div class="mt-5 pt-5 border-t border-black/5">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-primary mb-3">Ce que j'ai réalisé</p>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-start gap-2">
+                                <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+                                <span class="text-sm text-slate-600">Audit de la communication actuelle & recommandations stratégiques</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+                                <span class="text-sm text-slate-600">Stratégie de contenu par étape du tunnel de conversion</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+                                <span class="text-sm text-slate-600">Idées de contenus complets (hook, légendes, hashtags…)</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+                                <span class="text-sm text-slate-600">Calendrier éditorial</span>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <span class="material-symbols-outlined text-primary text-sm mt-0.5">check_circle</span>
+                                <span class="text-sm text-slate-600">Création de contenu (photos, reels, carrousels)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="context-card">
+                    <div class="context-badge" style="background:#f0fdf4;color:#15803d;border-color:#bbf7d0;">
+                        <span class="material-symbols-outlined" style="font-size:13px">target</span>
+                        Ce qu'Alix attendait
+                    </div>
+                    <h2 class="text-xl font-black tracking-tight mb-4">Objectifs</h2>
+                    <div class="objective-row">
+                        <div class="objective-label">Notoriété</div>
+                        <div class="objective-detail">Être visible sur Instagram auprès d'une audience qualifiée — voyageurs, familles, amoureux de la nature.</div>
+                    </div>
+                    <div class="objective-row">
+                        <div class="objective-label">Réservations</div>
+                        <div class="objective-detail">Transformer les visiteurs du compte en prospects réels, puis en réservations directes.</div>
+                    </div>
+                    <div class="objective-row">
+                        <div class="objective-label">Arrière-saison</div>
+                        <div class="objective-detail">Créer du contenu donnant envie de venir en avril, mai, juin : douceur du printemps breton, calme, nature, activités locales.</div>
+                    </div>
+                    <div class="objective-row">
+                        <div class="objective-label">Communauté</div>
+                        <div class="objective-detail">Fidéliser les anciens clients, créer des ambassadeurs, générer du contenu utilisateur.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OUTILS -->
+        <section class="mb-24 reveal active" style="animation-delay:0.25s">
+            <h2 class="text-xl font-black uppercase tracking-widest mb-6 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary font-bold">build</span> Outils utilisés
+            </h2>
+            <div class="flex flex-wrap gap-4">
+                <div class="tool-pill">
+                    <img src="LogoCapCut.png" alt="CapCut" onerror="this.style.display='none'">
+                    <div>
+                        <div class="tool-name">CapCut</div>
+                        <div class="tool-desc">Montage vidéo & Reels</div>
+                    </div>
+                </div>
+                <div class="tool-pill">
+                    <img src="LogoCanva.webp" alt="Canva" onerror="this.style.display='none'">
+                    <div>
+                        <div class="tool-name">Canva</div>
+                        <div class="tool-desc">Carrousels & Identité visuelle</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IMPACT -->
+        <section class="mb-24 reveal active" style="animation-delay:0.3s">
+            <div class="bg-gradient-to-r from-primary/5 to-transparent border border-primary/20 rounded-2xl p-8">
+                <h2 class="text-xl font-black uppercase tracking-widest mb-3 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary font-bold">auto_awesome</span> Impact de la stratégie
+                </h2>
+                <p class="text-slate-600 leading-relaxed text-lg font-medium max-w-3xl">
+                    La stratégie mise en place est plus percutante car elle <strong>montre la maison et ses alentours</strong> — Pontrieux, ses paysages bretons, ses activités — donnant ainsi envie aux futurs clients de venir séjourner avant même de chercher un hébergement.
+                    <br><br>
+                    <strong>Vendre une expérience bretonne</strong>, pas juste des nuits. Le contenu fait voyager le client dans sa tête avant qu'il réserve.
+                </p>
+            </div>
+        </section>
+
+        <!-- LIGNE ÉDITORIALE -->
+        <section class="mb-24 reveal active" style="animation-delay:0.32s">
+            <div class="bg-white border border-slate-100 rounded-2xl p-8 shadow-sm">
+                <h2 class="text-xl font-black uppercase tracking-widest mb-3 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary font-bold">layers</span> Ligne éditoriale
+                </h2>
+                <p class="text-slate-600 leading-relaxed text-base max-w-3xl">
+                    Palette chaude, storytelling local authentique et contenu hors saison pour remplir les créneaux creux.
+                    Donner au client une raison de venir à Pontrieux, et donc de chercher un logement.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==================== 01. CARROUSEL INSTAGRAM ==================== -->
+        <section class="mb-32 reveal active" style="animation-delay:0.35s">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-primary italic mb-10">01. CARROUSEL INSTAGRAM — TOP 5 DES SPOTS</h3>
+
+            <div class="ig-post-card">
+                <!-- Header -->
+                <div class="ig-header-bar">
+                    <div class="ig-avatar-ring">
+                        <div class="ig-avatar-inner">
+                            <img src="logova.webp" alt="maison" onerror="this.style.display='none';this.parentElement.textContent='VA'">
+                        </div>
+                    </div>
+                    <div style="flex:1;">
+                        <div style="font-size:13px;font-weight:800;line-height:1.2;">maison_victoire_alix</div>
+                        <div style="font-size:11px;color:#8e8e8e;">Pontrieux, Bretagne 🇫🇷</div>
+                    </div>
+                    <span style="color:#262626;font-size:20px;cursor:pointer;font-weight:900;">···</span>
+                </div>
+
+                <!-- Carousel -->
+                <div class="ig-carousel-wrap" id="ig-wrap">
+                    <div class="ig-carousel-track" id="ig-track">
+                        <div class="ig-carousel-slide"><img src="carrouseltop5/vignette.png" alt="Vignette" onerror="this.parentElement.innerHTML='<div class=slide-fallback>🗺️</div>'"></div>
+                        <div class="ig-carousel-slide"><img src="carrouseltop5/trieux et ses lavoirs.png" alt="Le Trieux" onerror="this.parentElement.innerHTML='<div class=slide-fallback>🌊</div>'"></div>
+                        <div class="ig-carousel-slide"><img src="carrouseltop5/Les ponts de pierre.png" alt="Ponts" onerror="this.parentElement.innerHTML='<div class=slide-fallback>🌉</div>'"></div>
+                        <div class="ig-carousel-slide"><img src="carrouseltop5/La Maison eiffel.png" alt="Maison Eiffel" onerror="this.parentElement.innerHTML='<div class=slide-fallback>🏛️</div>'"></div>
+                        <div class="ig-carousel-slide"><img src="carrouseltop5/le moulin.png" alt="Le moulin" onerror="this.parentElement.innerHTML='<div class=slide-fallback>⚙️</div>'"></div>
+                        <div class="ig-carousel-slide"><img src="carrouseltop5/nature.png" alt="Nature" onerror="this.parentElement.innerHTML='<div class=slide-fallback>🌿</div>'"></div>
+                    </div>
+                    <button class="ig-arrow prev" onclick="igNav(-1)">‹</button>
+                    <button class="ig-arrow next" onclick="igNav(1)">›</button>
+                    <div class="ig-counter" id="ig-counter">1 / 6</div>
+                    <div class="ig-dots" id="ig-dots"></div>
+                </div>
+
+                <!-- Actions -->
+                <div class="ig-actions">
+                    <span title="J'aime">♡</span>
+                    <span title="Commenter">💬</span>
+                    <span title="Envoyer">✈</span>
+                    <span style="margin-left:auto;" title="Enregistrer">🔖</span>
+                </div>
+                <div class="ig-likes">1 234 J'aime</div>
+                <div class="ig-caption">
+                    <strong>maison_victoire_alix</strong> 🗺️ Top 5 des spots incontournables de Pontrieux — à faire absolument ! Swipe pour découvrir ➡️<br>
+                    <span class="hashtag">#Bretagne #Pontrieux #LocationVacances #VillageDeFrance #EscapeWeekend</span>
+                </div>
+                <div class="ig-timestamp">Il y a 2 heures</div>
+            </div>
+
+            <p class="text-xs text-slate-400 italic mt-6 text-center">Cliquez sur les flèches pour naviguer dans le carrousel</p>
+        </section>
+
+        <!-- ==================== 02. REELS ==================== -->
+        <section class="mb-32 reveal active" style="animation-delay:0.4s">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-primary italic mb-10">02. REELS INSTAGRAM — SCROLLEZ À L'INTÉRIEUR DU TÉLÉPHONE</h3>
+
+            <div class="flex flex-col md:flex-row items-center gap-16 justify-center">
+
+                <!-- Phone -->
+                <div class="phone-device">
+                    <div class="phone-screen">
+                        <!-- Status bar -->
+                        <div class="phone-status">
+                            <span>9:41</span>
+                            <span>●●●</span>
+                        </div>
+
+                        <!-- Reels top bar -->
+                        <div class="phone-topbar">
+                            <span>Abonnements</span>
+                            <span class="active-tab">Pour toi</span>
+                            <span>Live</span>
+                        </div>
+
+                        <!-- Scrollable reels -->
+                        <div class="reel-scroll" id="reel-container">
+
+                            <!-- REEL 1 -->
+                            <div class="reel-slide">
+                                <iframe
+                                    src="https://youtube.com/shorts/68Uzt7HYiTA"
+                                    allow="autoplay; encrypted-media"
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                                <div class="reel-overlay">
+                                    <div class="reel-right">
+                                        <div class="reel-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            <span class="count">12.4K</span>
+                                        </div>
+                                        <div class="reel-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                            <span class="count">342</span>
+                                        </div>
+                                        <div class="reel-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                                            <span class="count">891</span>
+                                        </div>
+                                    </div>
+                                    <div class="reel-bottom">
+                                        <div class="username">@maison_victoire_alix</div>
+                                        <div class="caption">🗺️ Top 5 des spots à ne pas manquer à Pontrieux #Bretagne #LocationVacances</div>
+                                    </div>
+                                </div>
+                                <div class="scroll-hint-phone">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="rgba(255,255,255,0.8)"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+                                    <span>Swipe pour le suivant</span>
+                                </div>
+                            </div>
+
+                            <!-- REEL 2 -->
+                            <div class="reel-slide">
+                                <iframe
+                                    src="https://youtube.com/shorts/2ok8ngBUN0g"
+                                    allow="autoplay; encrypted-media"
+                                    allowfullscreen
+                                    loading="lazy">
+                                </iframe>
+                                <div class="reel-overlay">
+                                    <div class="reel-right">
+                                        <div class="reel-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                            <span class="count">8.7K</span>
+                                        </div>
+                                        <div class="reel-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                            <span class="count">256</span>
+                                        </div>
+                                        <div class="reel-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                                            <span class="count">1.2K</span>
+                                        </div>
+                                    </div>
+                                    <div class="reel-bottom">
+                                        <div class="username">@maison_victoire_alix</div>
+                                        <div class="caption">🏡 Visite complète de la maison en lumière naturelle ✨ #RoomTour #Bretagne #Gite</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Descriptions -->
+                <div class="max-w-xs space-y-8">
+                    <div class="border-l-4 border-primary pl-5">
+                        <p class="text-[9px] font-black uppercase tracking-widest text-primary mb-2">Reel 1 · Top 5 des spots</p>
+                        <p class="text-sm text-slate-600 leading-relaxed font-medium">Montage rythmé des lieux incontournables autour de Pontrieux — pour donner envie de venir dans la région avant même de chercher un hébergement.</p>
+                    </div>
+                    <div class="border-l-4 border-slate-300 pl-5">
+                        <p class="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">Reel 2 · Room Tour</p>
+                        <p class="text-sm text-slate-600 leading-relaxed font-medium">Visite immersive en lumière naturelle — pour que le futur locataire se projette et réserve en confiance.</p>
+                    </div>
+                    <p class="text-xs text-slate-400 italic">↑ Scrollez à l'intérieur du téléphone pour passer d'un reel à l'autre.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 03. PHOTOS 2×4 ==================== -->
+        <section class="mb-32 reveal active" style="animation-delay:0.45s">
+            <h3 class="text-[10px] font-black uppercase tracking-widest text-primary italic mb-8">03. PHOTOS DE LA MAISON</h3>
+            <div class="room-grid" id="room-grid">
+                <div class="room-photo" onclick="lbOpen(0)"><img src="maison/p1.png" alt="Photo 1" onerror="this.parentElement.innerHTML='<div class=fallback>🛋️</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(1)"><img src="maison/p2.png" alt="Photo 2" onerror="this.parentElement.innerHTML='<div class=fallback>🛏️</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(2)"><img src="maison/p3.png" alt="Photo 3" onerror="this.parentElement.innerHTML='<div class=fallback>🍳</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(3)"><img src="maison/p4.png" alt="Photo 4" onerror="this.parentElement.innerHTML='<div class=fallback>🛁</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(4)"><img src="maison/p5.png" alt="Photo 5" onerror="this.parentElement.innerHTML='<div class=fallback>🌿</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(5)"><img src="maison/p6.png" alt="Photo 6" onerror="this.parentElement.innerHTML='<div class=fallback>🪟</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(6)"><img src="maison/p7.png" alt="Photo 7" onerror="this.parentElement.innerHTML='<div class=fallback>🍽️</div>'"></div>
+                <div class="room-photo" onclick="lbOpen(7)"><img src="maison/p8.png" alt="Photo 8" onerror="this.parentElement.innerHTML='<div class=fallback>🌸</div>'"></div>
+            </div>
+            <p class="text-sm font-bold text-slate-400 italic mt-6">Cliquez sur une photo pour l'agrandir.</p>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="mt-40 text-center" id="footer-trigger">
+            <div class="mb-16 min-h-[120px] flex items-center justify-center">
+                <p id="animated-quote" class="text-2xl md:text-3xl font-serif italic text-slate-400 max-w-4xl mx-auto leading-relaxed">
+                    En capturant l'authenticité bretonne et la chaleur de cette maison, j'ai construit une ligne éditoriale qui transforme les visiteurs Instagram en locataires conquis.
+                </p>
+            </div>
+
+            <p class="text-sm text-slate-400 mb-6">Envie d'un travail similaire pour votre projet ?</p>
+            <a href="mailto:nohane.t22@gmail.com?subject=Projet location, Portfolio" class="cta-btn inline-flex items-center gap-3 bg-primary text-white px-10 py-4 rounded-full font-black text-sm hover:opacity-90 transition-all shadow-2xl shadow-primary/30">
+                <span class="material-symbols-outlined text-base">mail</span>
+                Travaillons ensemble →
+            </a>
+
+            <div class="mt-10">
+                <a href="index.html" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl">
+                    <span class="material-symbols-outlined">grid_view</span> Revenir au Feed
+                </a>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // ===== INSTAGRAM CAROUSEL =====
+        let igIdx = 0;
+        const igTotal = 6;
+        const igTrack = document.getElementById('ig-track');
+        const igCounter = document.getElementById('ig-counter');
+        const igDotsEl = document.getElementById('ig-dots');
+
+        for (let i = 0; i < igTotal; i++) {
+            const d = document.createElement('button');
+            d.className = 'ig-dot' + (i === 0 ? ' active' : '');
+            d.onclick = () => igGo(i);
+            igDotsEl.appendChild(d);
+        }
+
+        function igGo(n) {
+            igIdx = (n + igTotal) % igTotal;
+            igTrack.style.transform = `translateX(-${igIdx * 100}%)`;
+            igCounter.textContent = `${igIdx + 1} / ${igTotal}`;
+            document.querySelectorAll('.ig-dot').forEach((d, i) => d.classList.toggle('active', i === igIdx));
+        }
+        function igNav(dir) { igGo(igIdx + dir); }
+
+        // Swipe support for carousel
+        let igStartX = 0;
+        const igWrap = document.getElementById('ig-wrap');
+        igWrap.addEventListener('touchstart', e => { igStartX = e.touches[0].clientX; });
+        igWrap.addEventListener('touchend', e => {
+            const diff = igStartX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) igNav(diff > 0 ? 1 : -1);
+        });
+
+        // ===== LIGHTBOX =====
+        let lbIdx = 0;
+        const roomSrcs = Array.from({length: 8}, (_, i) => `maison/p${i+1}.png`);
+        function lbOpen(i) {
+            lbIdx = i;
+            document.getElementById('lb-img').src = roomSrcs[i];
+            document.getElementById('lb').classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function lbClose() {
+            document.getElementById('lb').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+        function lbNav(dir) {
+            lbIdx = (lbIdx + dir + roomSrcs.length) % roomSrcs.length;
+            document.getElementById('lb-img').src = roomSrcs[lbIdx];
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') lbClose();
+            if (e.key === 'ArrowLeft') lbNav(-1);
+            if (e.key === 'ArrowRight') lbNav(1);
+        });
+
+        // ===== ANIMATED QUOTE =====
+        const quoteEl = document.getElementById('animated-quote');
+        const text = quoteEl.innerText;
+        quoteEl.innerHTML = '';
+        text.split(' ').forEach(word => {
+            const span = document.createElement('span');
+            span.innerHTML = word + '&nbsp;';
+            span.className = 'word';
+            quoteEl.appendChild(span);
+        });
+        const quoteObs = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting) {
+                quoteEl.querySelectorAll('.word').forEach((w, i) => setTimeout(() => w.classList.add('visible'), i * 60));
+            }
+        }, { threshold: 0.3 });
+        quoteObs.observe(document.getElementById('footer-trigger'));
+    </script>
+</body>
+</html>

@@ -982,10 +982,11 @@
         }
 
         // ===== LANGUAGE SWITCHER =====
-        let currentLang = 'fr';
+        let currentLang = localStorage.getItem('selectedLang') || 'fr';
 
         function setLang(lang) {
             currentLang = lang;
+            localStorage.setItem('selectedLang', lang);
             ['fr','en'].forEach(l => {
                 const btn = document.getElementById('lang-' + l);
                 const btnM = document.getElementById('lang-' + l + '-m');
@@ -998,6 +999,7 @@
             });
             document.documentElement.lang = lang;
         }
+        setLang(currentLang);
     </script>
     <div style="font-family:'Manrope',sans-serif;background:#fde8f9;color:#111;font-size:12px;line-height:1.5;padding:12px 16px;text-align:center;border-top:1px solid rgba(230,25,221,0.25);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;box-sizing:border-box;margin-bottom:80px;">
         <span style="opacity:.7;white-space:nowrap;">Nohane Trouvé © 2026 Tous droits réservés</span>

@@ -70,7 +70,7 @@
                 <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">west</span> 
                 Retour au feed
             </a>
-            <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase">invitation-design-seatrackbox</p>
+            <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase" data-en="invitation-design-seatrackbox">invitation-design-seatrackbox</p>
         </div>
     </nav>
 
@@ -79,12 +79,12 @@
         <section class="mb-24">
             <div class="reveal">
                 <h1 class="text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none">
-                    Event <span class="text-primary italic inline-block transform -rotate-1">Design.</span>
+                    Event <span class="text-primary italic inline-block transform -rotate-1">Design.</span> data-en="Event Design"
                 </h1>
                 <div class="flex flex-wrap gap-3 mt-8">
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Graphic Design</span>
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Branding</span>
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Digital Content</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors" data-en="Graphic Design">Graphic Design</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors" data-en="Branding">Branding</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors" data-en="Digital Content">Digital Content</span>
                 </div>
             </div>
         </section>
@@ -96,7 +96,7 @@
                 <div class="reveal">
                     <div class="flex items-center gap-4 mb-4">
                         <span class="material-symbols-outlined text-primary text-2xl">target</span>
-                        <h2 class="text-xl font-black uppercase tracking-widest">L'Objectif</h2>
+                        <h2 class="text-xl font-black uppercase tracking-widest" data-en="The Objective">L'Objectif</h2>
                     </div>
                     <p class="text-base md:text-lg font-medium text-slate-600 leading-relaxed">
                         L’objectif était de transformer une invitation classique en un support <span class="text-primary font-bold">plus impactant</span> et <span class="text-primary font-bold">immédiatement identifiable</span> à l’univers SeaTrackBox</span>.
@@ -319,5 +319,15 @@
             07 86 50 51 45
         </a>
     </div>
+    <script>
+        const selectedLang = localStorage.getItem('selectedLang') || 'fr';
+        if (selectedLang === 'en') {
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const val = el.getAttribute('data-en');
+                if(val !== null) { el.innerHTML = val; }
+            });
+            document.documentElement.lang = 'en';
+        }
+    </script>
 </body>
 </html>

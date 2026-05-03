@@ -222,5 +222,15 @@
             07 86 50 51 45
         </a>
     </div>
+    <script>
+        const selectedLang = localStorage.getItem('selectedLang') || 'fr';
+        if (selectedLang === 'en') {
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const val = el.getAttribute('data-en');
+                if(val !== null) { el.innerHTML = val; }
+            });
+            document.documentElement.lang = 'en';
+        }
+    </script>
 </body>
 </html>

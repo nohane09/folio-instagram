@@ -29,6 +29,8 @@
         .feed-section { display: none; }
         .feed-section.active { display: block; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
+        a:focus, a:focus-visible, button:focus, button:focus-visible { outline: none !important; box-shadow: none !important; border: none !important; }
+
 
         /* ===== REEL CONTAINER — YouTube Shorts iframe ===== */
         .reel-container {
@@ -934,6 +936,20 @@
                 targetBtn.classList.remove('text-slate-400');
             }
         }
+
+        // ===== AUTO SWITCH TAB FROM ANCHOR =====
+        function switchTabFromHash() {
+            const hash = window.location.hash.substring(1);
+            if(hash.startsWith('btn-')) {
+                const tabName = hash.replace('btn-', '');
+                switchTab(tabName);
+                const element = document.getElementById(hash);
+                if(element) element.scrollIntoView({ behavior: 'instant' });
+            }
+        }
+        
+        switchTabFromHash();
+        window.addEventListener('hashchange', switchTabFromHash);
 
         // ===== COMMENTS =====
         function openComments(text) {

@@ -5,201 +5,278 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maison de Victoire & Alix | Nohane Trouvé</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <script>
-        tailwind.config = { theme: { extend: { colors: { "primary": "#e619dd" } } } }
+        tailwind.config = { theme: { extend: { colors: { primary: "#e619dd" } } } }
     </script>
     <style>
-        body { font-family: 'Manrope', sans-serif; background-color: #F8F7F2; overflow-x: hidden; }
+        :root {
+            --pink: #e619dd;
+            --cream: #F8F7F2;
+            --ink: #0a0a0a;
+        }
 
-        .reveal { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.2,0.8,0.2,1) forwards; }
-        .reveal-delay { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s cubic-bezier(0.2,0.8,0.2,1) 0.3s forwards; }
-        .reveal-slide-left { opacity: 0; transform: translateX(80px); animation: fadeInLeft 1s cubic-bezier(0.2,0.8,0.2,1) 0.2s forwards; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInLeft { to { opacity: 1; transform: translateX(0); } }
+        * { box-sizing: border-box; }
+        body { font-family: 'Manrope', sans-serif; background-color: var(--cream); overflow-x: hidden; color: var(--ink); }
 
-        .glass-nav { background: rgba(248,247,242,0.85); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0,0,0,0.04); }
+        /* ── ANIMATIONS ── */
+        .reveal { opacity: 0; transform: translateY(24px); animation: fadeUp 0.9s cubic-bezier(0.2,0.8,0.2,1) forwards; }
+        .reveal-delay { opacity: 0; transform: translateY(24px); animation: fadeUp 0.9s cubic-bezier(0.2,0.8,0.2,1) 0.25s forwards; }
+        .reveal-slide-left { opacity: 0; transform: translateX(60px); animation: slideLeft 1s cubic-bezier(0.2,0.8,0.2,1) 0.15s forwards; }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideLeft { to { opacity: 1; transform: translateX(0); } }
 
-        .word { opacity: 0; display: inline-block; transform: translateY(15px); transition: all 0.9s cubic-bezier(0.2,0.8,0.2,1); }
-        .word.visible { opacity: 1; transform: translateY(0); }
+        /* ── NAV ── */
+        .glass-nav {
+            background: rgba(248,247,242,0.88);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
 
-        /* Séparateur section */
-        .sep { width: 28px; height: 2px; background: #e619dd; margin: 16px 0 20px; border-radius: 1px; }
+        /* ── SEPARATEUR ── */
+        .sep { width: 28px; height: 2px; background: var(--pink); margin: 14px 0 18px; border-radius: 2px; }
 
-        /* ─── IG CAROUSEL ─── */
-        .ig-post-card {
-            background: white;
+        /* ── TOOLS ── */
+        .tool-icon { transition: all 0.35s; opacity: 0.7; filter: grayscale(0.2); }
+        .tool-icon:hover { opacity: 1; transform: scale(1.08); filter: grayscale(0); }
+
+        /* ── STATS ── */
+        @keyframes cta-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(230,25,221,0.35); } 50% { box-shadow: 0 0 0 14px rgba(230,25,221,0); } }
+        .cta-btn { animation: cta-pulse 2.8s ease-in-out infinite; }
+
+        /* ════════════════════════════════
+           CARROUSEL INSTAGRAM — CORRIGÉ
+        ════════════════════════════════ */
+        .ig-card {
+            background: #fff;
             border: 1px solid #dbdbdb;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
             width: 100%;
-            max-width: 460px;
-            box-shadow: 0 24px 70px rgba(0,0,0,0.18);
+            max-width: 480px;
+            box-shadow: 0 28px 80px rgba(0,0,0,0.16);
         }
-        .ig-header-bar { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid #f0f0f0; }
-        .ig-avatar-ring { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg,#f59e0b,#e619dd,#9333ea); padding: 2.5px; flex-shrink: 0; }
-        .ig-avatar-inner { width: 100%; height: 100%; border-radius: 50%; border: 2.5px solid white; background: #ede8df; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #666; }
+        .ig-header {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 14px; border-bottom: 1px solid #f0f0f0;
+        }
+        .ig-avatar-ring {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg,#f59e0b,#e619dd,#9333ea);
+            padding: 2.5px; flex-shrink: 0;
+        }
+        .ig-avatar-inner {
+            width: 100%; height: 100%; border-radius: 50%;
+            border: 2.5px solid white; background: #ede8df;
+            overflow: hidden; display: flex; align-items: center;
+            justify-content: center; font-size: 13px; font-weight: 700; color: #666;
+        }
         .ig-avatar-inner img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* ── CARROUSEL : zone carrée avec image en contain ── */
+        /* ── Zone image : rapport 4:5 (portrait Instagram) ── */
         .ig-carousel-wrap {
             position: relative;
             overflow: hidden;
             background: #f0ebe3;
             width: 100%;
-            aspect-ratio: 1/1; /* zone carrée comme Instagram */
+            aspect-ratio: 4 / 5;   /* ← portrait = pas de crop sur images paysage */
         }
-        .ig-carousel-track {
+        .ig-track {
             display: flex;
-            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
             height: 100%;
+            transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+            will-change: transform;
         }
-        .ig-carousel-slide {
+        /* Chaque slide occupe exactement 100% de la largeur du wrap */
+        .ig-slide {
             min-width: 100%;
+            width: 100%;
             height: 100%;
+            flex-shrink: 0;
+            background: #f0ebe3;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f0ebe3;
-            flex-shrink: 0;
             overflow: hidden;
-            padding: 0; /* pas de padding qui réduit la zone */
         }
-        /* IMAGE : object-fit contain pour ne rien couper ni déformer */
-        .ig-carousel-slide img {
+        /* object-fit:contain → jamais de crop, jamais de déformation */
+        .ig-slide img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* ← CLEF : jamais de crop */
+            object-fit: contain;       /* ← clef : tout visible */
+            object-position: center center;
             display: block;
             background: #f0ebe3;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
-        .ig-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.92); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; color: #0a0a0a; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 10; }
+        /* Flèches */
+        .ig-arrow {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            width: 32px; height: 32px; border-radius: 50%;
+            background: rgba(255,255,255,0.92);
+            border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; font-weight: 900; color: #0a0a0a;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.22); z-index: 10;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .ig-arrow:hover { transform: translateY(-50%) scale(1.1); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
         .ig-arrow.prev { left: 10px; }
         .ig-arrow.next { right: 10px; }
-        .ig-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; z-index: 5; }
-        .ig-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; transition: background 0.2s; border: none; }
-        .ig-dot.active { background: #3b82f6; }
-        .ig-counter { position: absolute; top: 12px; right: 14px; background: rgba(0,0,0,0.52); color: white; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; z-index: 5; }
-        .ig-actions { display: flex; align-items: center; gap: 14px; padding: 10px 14px 4px; }
-        .ig-actions span { font-size: 22px; cursor: pointer; }
-        .ig-likes { padding: 2px 14px 4px; font-size: 12px; font-weight: 800; }
-        .ig-caption { padding: 2px 14px 6px; font-size: 12px; color: #262626; line-height: 1.5; }
-        .ig-caption strong { font-weight: 800; }
-        .ig-caption .hashtag { color: #385898; }
-        .ig-timestamp { padding: 2px 14px 12px; font-size: 10px; color: #8e8e8e; text-transform: uppercase; letter-spacing: 0.05em; }
 
-        /* ─── PHONE ─── */
+        /* Dots */
+        .ig-dots {
+            position: absolute; bottom: 10px; left: 0; right: 0;
+            display: flex; justify-content: center; gap: 5px; z-index: 5;
+        }
+        .ig-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: rgba(255,255,255,0.5); cursor: pointer;
+            transition: background 0.25s, transform 0.25s;
+            border: none; padding: 0;
+        }
+        .ig-dot.active { background: #3b82f6; transform: scale(1.3); }
+
+        /* Compteur */
+        .ig-counter {
+            position: absolute; top: 12px; right: 12px;
+            background: rgba(0,0,0,0.52); color: white;
+            font-size: 11px; font-weight: 800;
+            padding: 3px 10px; border-radius: 20px; z-index: 5;
+        }
+
+        .ig-actions { display: flex; align-items: center; gap: 14px; padding: 10px 14px 4px; }
+        .ig-actions span { font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+        .ig-actions span:hover { transform: scale(1.2); }
+        .ig-likes { padding: 2px 14px 4px; font-size: 12px; font-weight: 800; }
+        .ig-caption { padding: 2px 14px 6px; font-size: 12px; color: #262626; line-height: 1.55; }
+        .ig-caption strong { font-weight: 800; }
+        .ig-caption .ht { color: #385898; }
+        .ig-ts { padding: 2px 14px 12px; font-size: 10px; color: #8e8e8e; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        /* ════════════════
+           PHONE / REELS
+        ════════════════ */
         .phone-device {
-            position: relative;
-            width: 390px;
-            background: #1a1a1c;
-            border-radius: 54px;
-            padding: 18px;
-            box-shadow: 0 60px 120px rgba(0,0,0,0.5), 0 0 0 1.5px rgba(255,255,255,0.07), inset 0 0 0 1px rgba(255,255,255,0.04);
+            position: relative; width: 340px;
+            background: #1a1a1c; border-radius: 50px; padding: 16px;
+            box-shadow: 0 60px 120px rgba(0,0,0,0.5),
+                        0 0 0 1.5px rgba(255,255,255,0.07),
+                        inset 0 0 0 1px rgba(255,255,255,0.04);
             flex-shrink: 0;
         }
-        .phone-device::before { content: ''; position: absolute; top: 14px; left: 50%; transform: translateX(-50%); width: 88px; height: 5px; background: #2c2c2e; border-radius: 3px; }
-        .phone-screen { border-radius: 38px; overflow: hidden; background: #000; position: relative; aspect-ratio: 9/16; }
-        .reel-scroll { width: 100%; height: 100%; overflow-y: scroll; scroll-snap-type: y mandatory; scrollbar-width: none; -ms-overflow-style: none; }
+        .phone-device::before {
+            content: ''; position: absolute;
+            top: 14px; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 5px; background: #2c2c2e; border-radius: 3px;
+        }
+        .phone-screen { border-radius: 36px; overflow: hidden; background: #000; position: relative; aspect-ratio: 9/16; }
+
+        .reel-scroll {
+            width: 100%; height: 100%;
+            overflow-y: scroll; scroll-snap-type: y mandatory;
+            scrollbar-width: none; -ms-overflow-style: none;
+        }
         .reel-scroll::-webkit-scrollbar { display: none; }
-        .reel-slide { width: 100%; aspect-ratio: 9/16; scroll-snap-align: start; position: relative; background: #000; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        .reel-slide {
+            width: 100%; aspect-ratio: 9/16;
+            scroll-snap-align: start; position: relative;
+            background: #000; display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0;
+        }
         .reel-slide iframe { width: 100%; height: 100%; border: none; display: block; }
-        .reel-overlay { position: absolute; inset: 0; pointer-events: none; }
-        .reel-grad { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%); }
-        .reel-grad-top { position: absolute; top: 0; left: 0; right: 0; height: 25%; background: linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%); }
-        .reel-right { position: absolute; right: 12px; bottom: 90px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .reel-grad { position: absolute; bottom: 0; left: 0; right: 0; height: 50%; background: linear-gradient(to top, rgba(0,0,0,0.88), transparent); pointer-events: none; }
+        .reel-grad-top { position: absolute; top: 0; left: 0; right: 0; height: 22%; background: linear-gradient(to bottom, rgba(0,0,0,0.55), transparent); pointer-events: none; }
+
+        .reel-right { position: absolute; right: 10px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
         .reel-icon { display: flex; flex-direction: column; align-items: center; gap: 3px; color: white; }
-        .reel-icon svg { width: 23px; height: 23px; fill: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
-        .reel-icon .count { font-size: 10px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
-        .reel-bottom { position: absolute; bottom: 16px; left: 14px; right: 56px; color: white; }
-        .reel-user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-        .reel-pp { width: 34px; height: 34px; border-radius: 50%; border: 2px solid white; overflow: hidden; background: #ede8df; flex-shrink: 0; }
+        .reel-icon svg { width: 21px; height: 21px; fill: white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
+        .reel-icon .cnt { font-size: 10px; font-weight: 800; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+
+        .reel-bottom { position: absolute; bottom: 14px; left: 12px; right: 48px; color: white; pointer-events: none; }
+        .reel-user-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .reel-pp { width: 32px; height: 32px; border-radius: 50%; border: 2px solid white; overflow: hidden; background: #ede8df; flex-shrink: 0; }
         .reel-pp img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .reel-username { font-size: 13px; font-weight: 900; text-shadow: 0 1px 5px rgba(0,0,0,1); letter-spacing: 0.01em; }
-        .reel-caption { font-size: 11px; font-weight: 600; line-height: 1.45; text-shadow: 0 1px 4px rgba(0,0,0,0.95); opacity: 1; }
-        .phone-status { position: absolute; top: 14px; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 26px; z-index: 20; }
+        .reel-username { font-size: 12px; font-weight: 900; text-shadow: 0 1px 5px rgba(0,0,0,1); }
+        .reel-caption { font-size: 10px; font-weight: 600; line-height: 1.5; text-shadow: 0 1px 4px rgba(0,0,0,0.95); }
+
+        .phone-status { position: absolute; top: 14px; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; z-index: 20; }
         .phone-status span { color: white; font-size: 9px; font-weight: 700; }
-        .phone-topbar { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; padding: 30px 0 10px; gap: 22px; z-index: 15; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); }
-        .phone-topbar span { color: rgba(255,255,255,0.45); font-size: 11px; font-weight: 700; }
+        .phone-topbar { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: center; padding: 28px 0 10px; gap: 20px; z-index: 15; background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent); }
+        .phone-topbar span { color: rgba(255,255,255,0.4); font-size: 10px; font-weight: 700; }
         .phone-topbar span.on { color: white; border-bottom: 1.5px solid white; padding-bottom: 2px; }
 
+        @keyframes bounce-hint { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-6px); } }
         .scroll-hint {
-            position: absolute; bottom: 58px; left: 50%; transform: translateX(-50%);
+            position: absolute; bottom: 54px; left: 50%; transform: translateX(-50%);
             display: flex; flex-direction: column; align-items: center; gap: 4px;
-            background: rgba(0,0,0,0.65); padding: 8px 16px; border-radius: 24px;
-            z-index: 20; pointer-events: none;
-            transition: opacity 0.6s;
+            background: rgba(0,0,0,0.7); padding: 7px 14px; border-radius: 20px;
+            z-index: 20; pointer-events: none; transition: opacity 0.5s;
             animation: bounce-hint 2s ease-in-out infinite;
         }
-        .scroll-hint span { color: white; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; }
-        @keyframes bounce-hint {
-            0%,100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-5px); }
-        }
+        .scroll-hint span { color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; }
 
-        /* ─── LÉGENDE REELS ─── */
-        .legend-item { transition: all 0.4s; }
-        .legend-item .l-tag { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.25em; color: #94a3b8; transition: color 0.4s; }
-        .legend-item .l-title { font-size: 15px; font-weight: 800; color: #0a0a0a; transition: color 0.4s; margin: 4px 0; }
-        .legend-item .l-desc { font-size: 13px; color: #64748b; line-height: 1.6; }
+        /* ── Légendes Reels ── */
         .legend-item .l-bar { display: block; width: 14px; height: 2.5px; background: #cbd5e1; border-radius: 2px; transition: all 0.4s; margin-bottom: 8px; }
-        .legend-item.active .l-tag { color: #e619dd; }
-        .legend-item.active .l-title { color: #e619dd; }
-        .legend-item.active .l-bar { background: #e619dd; width: 30px; }
+        .legend-item .l-tag { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.25em; color: #94a3b8; transition: color 0.4s; }
+        .legend-item .l-title { font-size: 15px; font-weight: 800; color: #0a0a0a; margin: 4px 0; transition: color 0.4s; }
+        .legend-item .l-desc { font-size: 13px; color: #64748b; line-height: 1.6; }
+        .legend-item.active .l-bar { background: var(--pink); width: 30px; }
+        .legend-item.active .l-tag { color: var(--pink); }
+        .legend-item.active .l-title { color: var(--pink); }
 
-        /* ─── PHOTO GRID ─── */
-        .room-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        /* ── PHOTO GRID ── */
+        .room-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
         .room-photo { aspect-ratio: 1/1; overflow: hidden; border-radius: 10px; cursor: pointer; background: #ede8df; }
         .room-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; display: block; }
         .room-photo:hover img { transform: scale(1.07); }
 
-        /* ─── LIGHTBOX BLANC (carrousel slide) ─── */
-        #lb-white {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
-            z-index: 2000; align-items: center; justify-content: center; cursor: zoom-out;
+        /* ── LIGHTBOXES ── */
+        .lb-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.96); z-index: 2000;
+            align-items: center; justify-content: center;
         }
-        #lb-white.open { display: flex; }
-        #lb-white img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 8px; }
+        .lb-overlay.open { display: flex; }
+        .lb-overlay img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 10px; }
+        .lb-close { position: absolute; top: 18px; right: 22px; color: white; font-size: 36px; cursor: pointer; background: none; border: none; opacity: 0.8; transition: opacity 0.2s; }
+        .lb-close:hover { opacity: 1; }
+        .lb-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: white; font-size: 28px; cursor: pointer; padding: 10px 14px; border-radius: 10px; transition: background 0.2s; }
+        .lb-nav:hover { background: rgba(255,255,255,0.2); }
+        .lb-nav.prev { left: 12px; }
+        .lb-nav.next { right: 12px; }
 
-        /* ─── LIGHTBOX SOMBRE (photos) ─── */
-        #lb-dark { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 2001; align-items: center; justify-content: center; }
-        #lb-dark.open { display: flex; }
-        #lb-dark img { max-width: 90vw; max-height: 90vh; object-fit: contain; border-radius: 8px; }
-        .lb-close-btn { position: absolute; top: 20px; right: 24px; color: white; font-size: 34px; cursor: pointer; background: none; border: none; }
-        .lb-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: none; color: white; font-size: 28px; cursor: pointer; padding: 12px 16px; border-radius: 10px; transition: background 0.2s; }
-        .lb-nav-btn:hover { background: rgba(255,255,255,0.2); }
-        .lb-prev { left: 12px; }
-        .lb-next { right: 12px; }
-
-        .tool-icon { transition: all 0.4s; opacity: 0.75; }
-        .tool-icon:hover { opacity: 1; transform: scale(1.1); }
-
-        @keyframes cta-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(230,25,221,0.4); } 50% { box-shadow: 0 0 0 12px rgba(230,25,221,0); } }
-        .cta-btn { animation: cta-pulse 2.5s ease-in-out infinite; }
+        /* ── QUOTE ── */
+        .word { opacity: 0; display: inline-block; transform: translateY(14px); transition: all 0.85s cubic-bezier(0.2,0.8,0.2,1); }
+        .word.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-<body class="text-slate-900">
+<body>
 
-    <!-- LIGHTBOX BLANC (slide carrousel agrandi) -->
-    <div id="lb-white" onclick="lbWhiteClose()">
-        <button style="position:absolute;top:20px;right:24px;color:white;font-size:38px;cursor:pointer;background:none;border:none;opacity:0.8;" onclick="lbWhiteClose()">×</button>
-        <img id="lb-white-img" src="" alt="" onclick="event.stopPropagation()">
+    <!-- LIGHTBOX CARROUSEL -->
+    <div id="lb-carousel" class="lb-overlay" onclick="lbCarouselClose()">
+        <button class="lb-close" onclick="lbCarouselClose()">×</button>
+        <button class="lb-nav prev" onclick="event.stopPropagation(); lbCarouselNav(-1)">‹</button>
+        <img id="lb-carousel-img" src="" alt="" onclick="event.stopPropagation()">
+        <button class="lb-nav next" onclick="event.stopPropagation(); lbCarouselNav(1)">›</button>
     </div>
 
-    <!-- LIGHTBOX SOMBRE (photos maison) -->
-    <div id="lb-dark">
-        <button class="lb-close-btn" onclick="lbDarkClose()">×</button>
-        <button class="lb-nav-btn lb-prev" onclick="lbDarkNav(-1)">‹</button>
-        <img id="lb-dark-img" src="" alt="">
-        <button class="lb-nav-btn lb-next" onclick="lbDarkNav(1)">›</button>
+    <!-- LIGHTBOX PHOTOS MAISON -->
+    <div id="lb-maison" class="lb-overlay" onclick="lbMaisonClose()">
+        <button class="lb-close" onclick="lbMaisonClose()">×</button>
+        <button class="lb-nav prev" onclick="event.stopPropagation(); lbMaisonNav(-1)">‹</button>
+        <img id="lb-maison-img" src="" alt="" onclick="event.stopPropagation()">
+        <button class="lb-nav next" onclick="event.stopPropagation(); lbMaisonNav(1)">›</button>
     </div>
 
     <!-- NAV -->
     <nav class="fixed top-0 w-full z-50 glass-nav">
         <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
-            <a href="index.html#posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary">
+            <a href="index.html#btn-posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary outline-none">
                 <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">west</span>
                 Retour au feed
             </a>
@@ -216,11 +293,11 @@
                     La Maison de <span class="text-primary italic inline-block transform -rotate-1">Victoire & Alix.</span>
                 </h1>
                 <div class="flex flex-wrap gap-3 mt-8">
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Stratégie contenu</span>
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Community management</span>
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Photographie lifestyle</span>
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Montage vidéo</span>
-                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors">Storytelling</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors cursor-default">Stratégie contenu</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors cursor-default">Community management</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors cursor-default">Photographie lifestyle</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors cursor-default">Montage vidéo</span>
+                    <span class="px-5 py-2 bg-white border border-black/10 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm hover:bg-black hover:text-white transition-colors cursor-default">Storytelling</span>
                 </div>
             </div>
         </section>
@@ -228,9 +305,10 @@
         <!-- MAIN GRID -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
-            <!-- ───── LEFT STICKY ───── -->
+            <!-- ── LEFT STICKY ── -->
             <div class="lg:col-span-5 space-y-16 lg:sticky lg:top-40">
 
+                <!-- Contexte -->
                 <div class="reveal">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="material-symbols-outlined text-primary text-xl">search</span>
@@ -245,6 +323,7 @@
                     </p>
                 </div>
 
+                <!-- Objectif -->
                 <div class="reveal">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="material-symbols-outlined text-primary text-xl">target</span>
@@ -274,6 +353,83 @@
                     </div>
                 </div>
 
+                <!-- Ma démarche -->
+                <div class="reveal">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="material-symbols-outlined text-primary text-xl">route</span>
+                        <h2 class="text-xl font-black uppercase tracking-widest">Ma démarche</h2>
+                    </div>
+                    <div class="sep"></div>
+                    <p class="text-[15px] font-medium text-slate-600 leading-relaxed mb-6">
+                        Afin de positionner La Maison de Victoire comme une destination d'expérience plutôt qu'un simple hébergement, la stratégie s'est d'abord concentrée sur l'attractivité de son environnement. L'objectif : donner envie de découvrir Pontrieux et ses alentours, puis prolonger cette projection par des contenus immersifs valorisant la maison. Le ton chaleureux de la marque a été conservé, avec une approche plus dynamique grâce à des hooks pensés pour capter l'attention dès les premières secondes.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">01</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Audit de l'existant</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Analyse de l'identité visuelle, de la cohérence du feed, du rythme de publication et de la performance éditoriale afin d'identifier les freins à l'engagement.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">02</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Benchmark concurrentiel</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Étude des comptes du secteur pour identifier les formats performants, les codes visuels engageants et les opportunités de différenciation.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">03</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Recommandations stratégiques</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Définition des axes d'amélioration : harmonisation visuelle, optimisation des légendes, intégration de CTA systématiques et meilleure structuration des hashtags.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">04</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Ciblage & stratégie éditoriale</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Construction d'une ligne éditoriale adaptée aux différentes cibles (familles, couples, groupes d'amis), avec une stratégie de contenu pensée selon la règle du 80/20 : 80 % de contenus à valeur ajoutée (inspiration, découverte locale, immersion) pour créer une projection émotionnelle, et 20 % de contenus promotionnels orientés conversion pour inciter à la réservation.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">05</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Idéation & choix des formats</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Conception de concepts adaptés aux usages Instagram, avec une priorité donnée aux Reels et carrousels, sélectionnés à partir des tendances observées et de leur performance dans le secteur.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">06</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Production de contenu</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Tournage, montage et création de publications mettant en scène à la fois l'expérience locale et l'atmosphère chaleureuse du logement.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">07</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Programmation & diffusion</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Planification stratégique des publications pour assurer régularité, cohérence et visibilité.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">08</span>
+                            <div>
+                                <p class="font-black text-sm mb-1">Analyse des performances</p>
+                                <p class="text-[13px] text-slate-500 leading-relaxed">Évaluation des résultats à travers des KPI clés : portée, engagement, interactions, clics et potentiel de conversion.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6">
+                        <a href="https://drive.google.com/file/d/1igFFDN9TzviXXHQ8Rj1UoTGb8VVCBNMM/view?usp=share_link" target="_blank" class="inline-flex items-center gap-3 bg-primary text-white px-6 py-3 rounded-full font-black text-sm hover:opacity-90 transition-all shadow-lg">
+                            <span class="material-symbols-outlined text-base">description</span>
+                            Voir le dossier complet →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Outils -->
                 <div class="reveal">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="material-symbols-outlined text-primary text-xl">handyman</span>
@@ -286,6 +442,7 @@
                     </div>
                 </div>
 
+                <!-- Performance -->
                 <div class="reveal" id="results-card">
                     <div class="flex items-center gap-3 mb-2">
                         <span class="material-symbols-outlined text-primary text-xl">trending_up</span>
@@ -305,10 +462,12 @@
                 </div>
             </div>
 
-            <!-- ───── RIGHT COLUMN ───── -->
+            <!-- ── RIGHT COLUMN ── -->
             <div class="lg:col-span-7 space-y-24">
 
-                <!-- 01. CARROUSEL INSTAGRAM -->
+                <!-- ═══════════════════════════════
+                     01. CARROUSEL INSTAGRAM CORRIGÉ
+                ═══════════════════════════════ -->
                 <div class="reveal">
                     <p class="text-[9px] font-black uppercase tracking-widest text-primary italic mb-10">01. Carrousel Instagram — Top 5 des spots</p>
                     <p class="text-xs text-slate-400 italic mb-6 flex items-center gap-1">
@@ -316,10 +475,11 @@
                         Cliquez sur une image pour l'agrandir
                     </p>
 
-                    <div style="padding: 24px 0; overflow: visible;">
-                        <div style="transform: rotate(-2.5deg); transform-origin: center center; display: inline-block; width: 100%; max-width: 460px;">
-                            <div class="ig-post-card">
-                                <div class="ig-header-bar">
+                    <div style="padding: 20px 0; overflow: visible;">
+                        <div style="transform: rotate(-2.5deg); transform-origin: center; display: inline-block; width: 100%; max-width: 480px;">
+                            <div class="ig-card">
+                                <!-- Header -->
+                                <div class="ig-header">
                                     <div class="ig-avatar-ring">
                                         <div class="ig-avatar-inner">
                                             <img src="logova.webp" alt="VA" onerror="this.style.display='none';this.parentElement.textContent='VA'">
@@ -331,54 +491,84 @@
                                     </div>
                                     <span style="color:#262626;font-size:20px;cursor:pointer;font-weight:900;">···</span>
                                 </div>
+
+                                <!-- Zone carrousel -->
                                 <div class="ig-carousel-wrap" id="ig-wrap">
-                                    <div class="ig-carousel-track" id="ig-track">
-                                        <div class="ig-carousel-slide">
-                                            <img src="carrouseltop5/vignette.webp" alt="Vignette" onclick="igOpenLightbox(0)">
+                                    <div class="ig-track" id="ig-track">
+
+                                        <!-- Slide 1 -->
+                                        <div class="ig-slide">
+                                            <img src="carrouseltop5/vignette.webp" alt="Vignette Top 5"
+                                                 onclick="lbCarouselOpen(0)"
+                                                 onerror="this.parentElement.style.background='#ddd'">
                                         </div>
-                                        <div class="ig-carousel-slide">
-                                            <img src="carrouseltop5/trieux et ses lavoirs.webp" alt="Le Trieux et ses lavoirs" onclick="igOpenLightbox(1)">
+                                        <!-- Slide 2 -->
+                                        <div class="ig-slide">
+                                            <img src="carrouseltop5/lavoirs.webp" alt="Le Trieux et ses lavoirs"
+                                                 onclick="lbCarouselOpen(1)"
+                                                 onerror="this.parentElement.style.background='#ddd'">
                                         </div>
-                                        <div class="ig-carousel-slide">
-                                            <img src="carrouseltop5/Les ponts de pierre.webp" alt="Les ponts de pierre" onclick="igOpenLightbox(2)">
+                                        <!-- Slide 3 -->
+                                        <div class="ig-slide">
+                                            <img src="carrouseltop5/Lespontsdepierre.webp" alt="Les ponts de pierre"
+                                                 onclick="lbCarouselOpen(2)"
+                                                 onerror="this.parentElement.style.background='#ddd'">
                                         </div>
-                                        <div class="ig-carousel-slide">
-                                            <img src="carrouseltop5/La Maison eiffel.webp" alt="La Maison Eiffel" onclick="igOpenLightbox(3)">
+                                        <!-- Slide 4 -->
+                                        <div class="ig-slide">
+                                            <img src="carrouseltop5/Lamaisoneiffel.webp" alt="La Maison Eiffel"
+                                                 onclick="lbCarouselOpen(3)"
+                                                 onerror="this.parentElement.style.background='#ddd'">
                                         </div>
-                                        <div class="ig-carousel-slide">
-                                            <img src="carrouseltop5/le moulin.webp" alt="Le moulin" onclick="igOpenLightbox(4)">
+                                        <!-- Slide 5 -->
+                                        <div class="ig-slide">
+                                            <img src="carrouseltop5/lemoulin.webp" alt="Le moulin"
+                                                 onclick="lbCarouselOpen(4)"
+                                                 onerror="this.parentElement.style.background='#ddd'">
                                         </div>
-                                        <div class="ig-carousel-slide">
-                                            <img src="carrouseltop5/nature.webp" alt="Nature" onclick="igOpenLightbox(5)">
+                                        <!-- Slide 6 -->
+                                        <div class="ig-slide">
+                                            <img src="carrouseltop5/nature.webp" alt="Nature bretonne"
+                                                 onclick="lbCarouselOpen(5)"
+                                                 onerror="this.parentElement.style.background='#ddd'">
                                         </div>
-                                    </div>
-                                    <button class="ig-arrow prev" onclick="igNav(-1)">‹</button>
-                                    <button class="ig-arrow next" onclick="igNav(1)">›</button>
+
+                                    </div><!-- /ig-track -->
+
+                                    <button class="ig-arrow prev" onclick="igNav(-1)" aria-label="Précédent">‹</button>
+                                    <button class="ig-arrow next" onclick="igNav(1)"  aria-label="Suivant">›</button>
                                     <div class="ig-counter" id="ig-counter">1 / 6</div>
-                                    <div class="ig-dots" id="ig-dots"></div>
-                                </div>
+                                    <div class="ig-dots"    id="ig-dots"></div>
+                                </div><!-- /ig-carousel-wrap -->
+
+                                <!-- Footer carte -->
                                 <div class="ig-actions">
-                                    <span>♡</span><span>💬</span><span>✈</span>
-                                    <span style="margin-left:auto;">🔖</span>
+                                    <span title="J'aime">♡</span>
+                                    <span title="Commenter">💬</span>
+                                    <span title="Partager">✈</span>
+                                    <span style="margin-left:auto;" title="Enregistrer">🔖</span>
                                 </div>
                                 <div class="ig-likes">1 234 J'aime</div>
                                 <div class="ig-caption">
                                     <strong>maison_victoire_alix</strong> 🗺️ Top 5 des spots incontournables de Pontrieux — à faire absolument ! Swipe pour découvrir ➡️<br>
-                                    <span class="hashtag">#Bretagne #Pontrieux #LocationVacances #VillageDeFrance #EscapeWeekend</span>
+                                    <span class="ht">#Bretagne #Pontrieux #LocationVacances #VillageDeFrance #EscapeWeekend</span>
                                 </div>
-                                <div class="ig-timestamp">Il y a 2 heures</div>
+                                <div class="ig-ts">Il y a 2 heures</div>
                             </div>
                         </div>
                     </div>
-                    <p class="text-xs text-slate-400 italic mt-6">← Naviguez avec les flèches · cliquez pour agrandir</p>
+                    <p class="text-xs text-slate-400 italic mt-4">← Naviguez avec les flèches · cliquez pour agrandir</p>
                 </div>
 
-                <!-- 02. REELS -->
+                <!-- ═══════════════
+                     02. REELS
+                ═══════════════ -->
                 <div class="reveal-slide-left">
                     <p class="text-[9px] font-black uppercase tracking-widest text-primary italic mb-10">02. Reels Instagram — Scrollez dans le téléphone</p>
 
                     <div class="flex flex-col md:flex-row items-center gap-12 justify-start">
 
+                        <!-- Téléphone -->
                         <div class="phone-device">
                             <div class="phone-screen">
                                 <div class="phone-status">
@@ -390,68 +580,79 @@
                                     <span class="on">Pour toi</span>
                                     <span>Live</span>
                                 </div>
+
                                 <div class="reel-scroll" id="reel-container">
-
-                                    <!-- REEL 1 -->
+                                    <!-- Reel 1 -->
                                     <div class="reel-slide" data-reel="0">
-                                        <iframe
-                                            src="https://www.youtube.com/embed/68Uzt7HYiTA?rel=0&modestbranding=1&controls=1"
+                                        <iframe src="https://www.youtube.com/embed/68Uzt7HYiTA?rel=0&modestbranding=1&controls=1"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen loading="lazy">
-                                        </iframe>
-                                        <div class="reel-overlay">
-                                            <div class="reel-grad-top"></div>
-                                            <div class="reel-grad"></div>
-                                            <div class="reel-right">
-                                                <div class="reel-icon"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="count">12.4K</span></div>
-                                                <div class="reel-icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span class="count">342</span></div>
-                                                <div class="reel-icon"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg><span class="count">891</span></div>
+                                            allowfullscreen loading="lazy"></iframe>
+                                        <div class="reel-grad-top"></div>
+                                        <div class="reel-grad"></div>
+                                        <div class="reel-right">
+                                            <div class="reel-icon">
+                                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                                <span class="cnt">12.4K</span>
                                             </div>
-                                            <div class="reel-bottom">
-                                                <div class="reel-user-row">
-                                                    <div class="reel-pp"><img src="logova.webp" alt="VA" onerror="this.style.display='none'"></div>
-                                                    <span class="reel-username">@maison_victoire_alix</span>
-                                                </div>
-                                                <p class="reel-caption">🗺️ Top 5 des spots à ne pas manquer à Pontrieux #Bretagne #LocationVacances</p>
+                                            <div class="reel-icon">
+                                                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                                <span class="cnt">342</span>
                                             </div>
+                                            <div class="reel-icon">
+                                                <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                                                <span class="cnt">891</span>
+                                            </div>
+                                        </div>
+                                        <div class="reel-bottom">
+                                            <div class="reel-user-row">
+                                                <div class="reel-pp"><img src="logova.webp" alt="VA" onerror="this.style.display='none'"></div>
+                                                <span class="reel-username">@maison_victoire_alix</span>
+                                            </div>
+                                            <p class="reel-caption">🗺️ Top 5 des spots à ne pas manquer à Pontrieux #Bretagne #LocationVacances</p>
                                         </div>
                                     </div>
 
-                                    <!-- REEL 2 -->
+                                    <!-- Reel 2 -->
                                     <div class="reel-slide" data-reel="1">
-                                        <iframe
-                                            src="https://www.youtube.com/embed/2ok8ngBUN0g?rel=0&modestbranding=1&controls=1"
+                                        <iframe src="https://www.youtube.com/embed/2ok8ngBUN0g?rel=0&modestbranding=1&controls=1"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                            allowfullscreen loading="lazy">
-                                        </iframe>
-                                        <div class="reel-overlay">
-                                            <div class="reel-grad-top"></div>
-                                            <div class="reel-grad"></div>
-                                            <div class="reel-right">
-                                                <div class="reel-icon"><svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg><span class="count">8.7K</span></div>
-                                                <div class="reel-icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg><span class="count">256</span></div>
-                                                <div class="reel-icon"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg><span class="count">1.2K</span></div>
+                                            allowfullscreen loading="lazy"></iframe>
+                                        <div class="reel-grad-top"></div>
+                                        <div class="reel-grad"></div>
+                                        <div class="reel-right">
+                                            <div class="reel-icon">
+                                                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                                <span class="cnt">8.7K</span>
                                             </div>
-                                            <div class="reel-bottom">
-                                                <div class="reel-user-row">
-                                                    <div class="reel-pp"><img src="logova.webp" alt="VA" onerror="this.style.display='none'"></div>
-                                                    <span class="reel-username">@maison_victoire_alix</span>
-                                                </div>
-                                                <p class="reel-caption">🏡 Visite complète de la maison en lumière naturelle ✨ #RoomTour #Bretagne #Gite</p>
+                                            <div class="reel-icon">
+                                                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+                                                <span class="cnt">256</span>
+                                            </div>
+                                            <div class="reel-icon">
+                                                <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
+                                                <span class="cnt">1.2K</span>
                                             </div>
                                         </div>
+                                        <div class="reel-bottom">
+                                            <div class="reel-user-row">
+                                                <div class="reel-pp"><img src="logova.webp" alt="VA" onerror="this.style.display='none'"></div>
+                                                <span class="reel-username">@maison_victoire_alix</span>
+                                            </div>
+                                            <p class="reel-caption">🏡 Visite complète de la maison en lumière naturelle ✨ #RoomTour #Bretagne #Gite</p>
+                                        </div>
                                     </div>
-
                                 </div><!-- /reel-scroll -->
 
                                 <div class="scroll-hint" id="scroll-hint">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="white" style="transform:rotate(180deg)"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
-                                    <span>SCROLLEZ ↑ pour le reel suivant</span>
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="white" style="transform:rotate(180deg)">
+                                        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+                                    </svg>
+                                    <span>SCROLLEZ pour le reel suivant</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- LÉGENDES -->
+                        <!-- Légendes -->
                         <div class="space-y-10 flex-1 max-w-xs">
                             <div class="legend-item active" data-legend="0">
                                 <span class="l-bar"></span>
@@ -469,30 +670,32 @@
                     </div>
                 </div>
 
-                <!-- 03. PHOTOS DE LA MAISON -->
+                <!-- ═══════════════════
+                     03. PHOTOS MAISON
+                ═══════════════════ -->
                 <div class="reveal">
                     <p class="text-[9px] font-black uppercase tracking-widest text-primary italic mb-6">03. Photos de la maison</p>
                     <div class="room-grid">
-                        <div class="room-photo" onclick="lbDarkOpen(0)"><img src="maison/p1.png" alt="Photo 1"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(1)"><img src="maison/p2.png" alt="Photo 2"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(2)"><img src="maison/p3.png" alt="Photo 3"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(3)"><img src="maison/p4.png" alt="Photo 4"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(4)"><img src="maison/p5.png" alt="Photo 5"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(5)"><img src="maison/p6.png" alt="Photo 6"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(6)"><img src="maison/p7.png" alt="Photo 7"></div>
-                        <div class="room-photo" onclick="lbDarkOpen(7)"><img src="maison/p8.png" alt="Photo 8"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(0)"><img src="maison/p1.png" alt="Photo 1" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(1)"><img src="maison/p2.png" alt="Photo 2" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(2)"><img src="maison/p3.png" alt="Photo 3" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(3)"><img src="maison/p4.png" alt="Photo 4" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(4)"><img src="maison/p5.png" alt="Photo 5" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(5)"><img src="maison/p6.png" alt="Photo 6" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(6)"><img src="maison/p7.png" alt="Photo 7" loading="lazy"></div>
+                        <div class="room-photo" onclick="lbMaisonOpen(7)"><img src="maison/p8.png" alt="Photo 8" loading="lazy"></div>
                     </div>
                     <p class="text-sm font-bold text-slate-400 italic mt-4">Cliquez sur une photo pour l'agrandir.</p>
                 </div>
 
-            </div>
-        </div>
+            </div><!-- /right column -->
+        </div><!-- /main grid -->
 
         <!-- FOOTER -->
         <footer class="mt-40 text-center reveal">
             <div class="mb-16 min-h-[120px] flex items-center justify-center">
                 <p id="animated-quote" class="text-2xl md:text-3xl font-serif italic text-slate-400 max-w-4xl mx-auto leading-relaxed">
-                    En capturant l'authenticité bretonne et la chaleur de cette maison, j'ai construit une ligne éditoriale qui transforme les visiteurs Instagram en locataires conquis.
+                    Mettre en scène un hébergement, ce n’est pas simplement présenter des espaces...c’est raconter une expérience! De la refonte de l’identité visuelle à la structuration éditoriale, chaque étape a été pensée pour renforcer la cohérence de marque, engager une audience qualifiée et transformer l’inspiration en réservation.
                 </p>
             </div>
             <p class="text-sm text-slate-400 mb-6">Envie d'un travail similaire pour votre projet ?</p>
@@ -502,124 +705,174 @@
                 Travaillons ensemble →
             </a>
             <br>
-            <a href="index.html#posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl mt-4">
+            <a href="index.html#btn-posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl mt-4 outline-none">
                 <span class="material-symbols-outlined">grid_view</span> Revenir au Feed
             </a>
         </footer>
     </main>
 
     <script>
-        // ─── CARROUSEL IG ───
-        let igIdx = 0;
-        const igTotal = 6;
-        const igTrack = document.getElementById('ig-track');
-        const igCounter = document.getElementById('ig-counter');
-        const igDotsEl = document.getElementById('ig-dots');
+    /* ══════════════════════════════════════════
+       CARROUSEL INSTAGRAM — logique corrigée
+       • igSrcs = même chemin que les <img src>
+       • igGo() translate le track correctement
+    ══════════════════════════════════════════ */
+    const IG_TOTAL = 6;
+    let igIdx = 0;
 
-        // Sources des slides pour la lightbox
-        const igSrcs = [
-            'carrouseltop5/vignette.webp',
-            'carrouseltop5/trieux et ses lavoirs.webp',
-            'carrouseltop5/Les ponts de pierre.webp',
-            'carrouseltop5/La Maison eiffel.webp',
-            'carrouseltop5/le moulin.webp',
-            'carrouseltop5/nature.webp'
-        ];
+    // ⚠ Ces chemins DOIVENT correspondre exactement aux src des <img> ci-dessus
+    const igSrcs = [
+        'carrouseltop5/vignette.webp',
+        'carrouseltop5/lavoirs.webp',
+        'carrouseltop5/Lespontsdepierre.webp',
+        'carrouseltop5/Lamaisoneiffel.webp',
+        'carrouseltop5/lemoulin.webp',
+        'carrouseltop5/nature.webp'
+    ];
 
-        for (let i = 0; i < igTotal; i++) {
-            const d = document.createElement('button');
-            d.className = 'ig-dot' + (i === 0 ? ' active' : '');
-            d.onclick = () => igGo(i);
-            igDotsEl.appendChild(d);
+    const igTrack   = document.getElementById('ig-track');
+    const igCounter = document.getElementById('ig-counter');
+    const igDotsEl  = document.getElementById('ig-dots');
+
+    // Créer les dots
+    for (let i = 0; i < IG_TOTAL; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'ig-dot' + (i === 0 ? ' active' : '');
+        btn.setAttribute('aria-label', 'Slide ' + (i + 1));
+        btn.onclick = () => igGo(i);
+        igDotsEl.appendChild(btn);
+    }
+
+    function igGo(n) {
+        igIdx = ((n % IG_TOTAL) + IG_TOTAL) % IG_TOTAL;
+        igTrack.style.transform = `translateX(-${igIdx * 100}%)`;
+        igCounter.textContent   = `${igIdx + 1} / ${IG_TOTAL}`;
+        document.querySelectorAll('.ig-dot').forEach((d, i) => d.classList.toggle('active', i === igIdx));
+    }
+
+    function igNav(dir) { igGo(igIdx + dir); }
+
+    // Swipe tactile
+    let igTouchX = 0;
+    const igWrap = document.getElementById('ig-wrap');
+    igWrap.addEventListener('touchstart', e => { igTouchX = e.touches[0].clientX; }, { passive: true });
+    igWrap.addEventListener('touchend',   e => {
+        const delta = igTouchX - e.changedTouches[0].clientX;
+        if (Math.abs(delta) > 40) igNav(delta > 0 ? 1 : -1);
+    });
+
+    /* ══════════════════════════════
+       LIGHTBOX CARROUSEL
+    ══════════════════════════════ */
+    let lbCarouselIdx = 0;
+
+    function lbCarouselOpen(idx) {
+        lbCarouselIdx = idx;
+        document.getElementById('lb-carousel-img').src = igSrcs[idx];
+        document.getElementById('lb-carousel').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function lbCarouselClose() {
+        document.getElementById('lb-carousel').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function lbCarouselNav(dir) {
+        lbCarouselIdx = ((lbCarouselIdx + dir) + IG_TOTAL) % IG_TOTAL;
+        document.getElementById('lb-carousel-img').src = igSrcs[lbCarouselIdx];
+    }
+
+    /* ══════════════════════════════
+       LIGHTBOX PHOTOS MAISON
+    ══════════════════════════════ */
+    const maisonSrcs = Array.from({ length: 8 }, (_, i) => `maison/p${i + 1}.png`);
+    let lbMaisonIdx = 0;
+
+    function lbMaisonOpen(i) {
+        lbMaisonIdx = i;
+        document.getElementById('lb-maison-img').src = maisonSrcs[i];
+        document.getElementById('lb-maison').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function lbMaisonClose() {
+        document.getElementById('lb-maison').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function lbMaisonNav(dir) {
+        lbMaisonIdx = ((lbMaisonIdx + dir) + maisonSrcs.length) % maisonSrcs.length;
+        document.getElementById('lb-maison-img').src = maisonSrcs[lbMaisonIdx];
+    }
+
+    // Clavier global
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { lbCarouselClose(); lbMaisonClose(); }
+        if (document.getElementById('lb-carousel').classList.contains('open')) {
+            if (e.key === 'ArrowLeft')  lbCarouselNav(-1);
+            if (e.key === 'ArrowRight') lbCarouselNav(1);
         }
-        function igGo(n) {
-            igIdx = (n + igTotal) % igTotal;
-            igTrack.style.transform = `translateX(-${igIdx * 100}%)`;
-            igCounter.textContent = `${igIdx + 1} / ${igTotal}`;
-            document.querySelectorAll('.ig-dot').forEach((d, i) => d.classList.toggle('active', i === igIdx));
+        if (document.getElementById('lb-maison').classList.contains('open')) {
+            if (e.key === 'ArrowLeft')  lbMaisonNav(-1);
+            if (e.key === 'ArrowRight') lbMaisonNav(1);
         }
-        function igNav(dir) { igGo(igIdx + dir); }
+    });
 
-        // Lightbox pour les slides du carrousel IG
-        function igOpenLightbox(idx) {
-            lbWhiteOpen(igSrcs[idx]);
-        }
+    /* ══════════════════════════════
+       LÉGENDES REELS (IntersectionObserver)
+    ══════════════════════════════ */
+    const reelContainer = document.getElementById('reel-container');
+    const reelSlides    = document.querySelectorAll('.reel-slide');
+    const legendItems   = document.querySelectorAll('.legend-item');
+    const scrollHint    = document.getElementById('scroll-hint');
 
-        // Swipe touch
-        let igSX = 0;
-        document.getElementById('ig-wrap').addEventListener('touchstart', e => igSX = e.touches[0].clientX);
-        document.getElementById('ig-wrap').addEventListener('touchend', e => { const d = igSX - e.changedTouches[0].clientX; if(Math.abs(d) > 40) igNav(d > 0 ? 1 : -1); });
-
-        // ─── LIGHTBOX BLANC (slide IG) ───
-        function lbWhiteOpen(src) {
-            document.getElementById('lb-white-img').src = src;
-            document.getElementById('lb-white').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function lbWhiteClose() {
-            document.getElementById('lb-white').classList.remove('open');
-            document.body.style.overflow = '';
-        }
-
-        // ─── LIGHTBOX SOMBRE (photos maison) ───
-        let lbDarkIdx = 0;
-        const roomSrcs = Array.from({length: 8}, (_, i) => `maison/p${i + 1}.png`);
-        function lbDarkOpen(i) { lbDarkIdx = i; document.getElementById('lb-dark-img').src = roomSrcs[i]; document.getElementById('lb-dark').classList.add('open'); document.body.style.overflow = 'hidden'; }
-        function lbDarkClose() { document.getElementById('lb-dark').classList.remove('open'); document.body.style.overflow = ''; }
-        function lbDarkNav(dir) { lbDarkIdx = (lbDarkIdx + dir + roomSrcs.length) % roomSrcs.length; document.getElementById('lb-dark-img').src = roomSrcs[lbDarkIdx]; }
-        document.addEventListener('keydown', e => {
-            if(e.key === 'Escape') { lbDarkClose(); lbWhiteClose(); }
-            if(document.getElementById('lb-dark').classList.contains('open')) {
-                if(e.key === 'ArrowLeft') lbDarkNav(-1);
-                if(e.key === 'ArrowRight') lbDarkNav(1);
+    const reelObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const idx = parseInt(entry.target.dataset.reel);
+                legendItems.forEach((item, i) => item.classList.toggle('active', i === idx));
+                scrollHint.style.opacity = idx === 0 ? '1' : '0';
             }
         });
-        document.getElementById('lb-dark').addEventListener('click', function(e) { if(e.target === this) lbDarkClose(); });
+    }, { root: reelContainer, threshold: 0.6 });
 
-        // ─── LÉGENDE REELS ───
-        const reelContainer = document.getElementById('reel-container');
-        const reelSlides = document.querySelectorAll('.reel-slide');
-        const legendItems = document.querySelectorAll('.legend-item');
-        const scrollHint = document.getElementById('scroll-hint');
+    reelSlides.forEach(s => reelObs.observe(s));
 
-        const reelObs = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const idx = parseInt(entry.target.dataset.reel);
-                    legendItems.forEach((item, i) => item.classList.toggle('active', i === idx));
-                    scrollHint.style.opacity = idx === 0 ? '1' : '0';
-                }
-            });
-        }, { root: reelContainer, threshold: 0.6 });
+    /* ══════════════════════════════
+       QUOTE ANIMÉE
+    ══════════════════════════════ */
+    const quoteEl = document.getElementById('animated-quote');
+    const rawText = quoteEl.innerText;
+    quoteEl.innerHTML = rawText.split(' ').map(w => `<span class="word">${w}</span>`).join(' ');
 
-        reelSlides.forEach(s => reelObs.observe(s));
+    const qObs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+            quoteEl.querySelectorAll('.word').forEach((w, i) => setTimeout(() => w.classList.add('visible'), i * 65));
+        }
+    }, { threshold: 0.3 });
+    qObs.observe(quoteEl);
 
-        // ─── QUOTE ANIMÉE ───
-        const quoteEl = document.getElementById('animated-quote');
-        const text = quoteEl.innerText;
-        quoteEl.innerHTML = text.split(' ').map(w => `<span class="word">${w}</span>`).join(' ');
-        const qObs = new IntersectionObserver(entries => {
-            if(entries[0].isIntersecting) quoteEl.querySelectorAll('.word').forEach((w, i) => setTimeout(() => w.classList.add('visible'), i * 65));
-        }, { threshold: 0.3 });
-        qObs.observe(quoteEl);
+    /* ══════════════════════════════
+       COMPTEURS ANIMÉS
+    ══════════════════════════════ */
+    const cObs = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.querySelectorAll('.counter').forEach(c => {
+                    if (c.dataset.done) return;
+                    c.dataset.done = 'true';
+                    const target = +c.dataset.target;
+                    let count = 0;
+                    const step = () => {
+                        count += target / 60;
+                        if (count < target) { c.innerText = Math.ceil(count); setTimeout(step, 18); }
+                        else c.innerText = target;
+                    };
+                    step();
+                });
+            }
+        });
+    }, { threshold: 0.5 });
 
-        // ─── COMPTEURS ───
-        const cObs = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.querySelectorAll('.counter').forEach(c => {
-                        if(c.dataset.done) return;
-                        c.dataset.done = 'true';
-                        const target = +c.dataset.target;
-                        let count = 0;
-                        const update = () => { count += target / 60; if(count < target) { c.innerText = Math.ceil(count); setTimeout(update, 20); } else c.innerText = target; };
-                        update();
-                    });
-                }
-            });
-        }, { threshold: 0.5 });
-        const rc = document.getElementById('results-card');
-        if(rc) cObs.observe(rc);
+    const rc = document.getElementById('results-card');
+    if (rc) cObs.observe(rc);
     </script>
 </body>
 </html>

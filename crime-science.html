@@ -179,7 +179,7 @@
 
     <nav class="fixed top-0 w-full z-50 glass-nav">
         <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
-            <a href="index.html#posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary">
+            <a href="index.html#btn-posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 group transition-colors hover:text-primary outline-none">
                 <span class="material-symbols-outlined text-sm transition-transform group-hover:-translate-x-1">west</span>
                 Retour au feed
             </a>
@@ -403,73 +403,134 @@
                     </div>
                 </div>
 
-                <!-- STRATÉGIE -->
                 <div class="scroll-reveal">
-                    <div id="trigger-strategie" onclick="revealStrategie()" 
-                         class="group w-full h-32 flex flex-col items-center justify-center cursor-pointer rounded-3xl border-2 border-dashed border-slate-300 hover:border-primary hover:bg-white transition-all duration-300">
-                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">Stratégie</p>
-                        <p class="text-lg font-black uppercase">Voir la stratégie Instagram</p>
-                    </div>
+                    <div id="trigger-demarche" onclick="revealDemarche()" class="group w-full h-32 flex flex-col items-center justify-center cursor-pointer rounded-3xl border-2 border-dashed border-slate-300 hover:border-primary hover:bg-white transition-all duration-300">
+                    <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">Ma démarche</p>
+                    <p class="text-lg font-black uppercase text-center">Voir la démarche et les étapes de la stratégie</p>
+                </div>
 
-                    <div id="container-strategie" class="hidden opacity-0 space-y-6 transition-all duration-700 translate-y-4">
-                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                            <div class="flex gap-5 items-start">
-                                <span class="text-5xl font-black text-slate-100 leading-none">01</span>
+                <div id="container-demarche" class="hidden opacity-0 space-y-6 transition-all duration-700 translate-y-4">
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="material-symbols-outlined text-primary text-xl">route</span>
+                            <h2 class="text-xl font-black uppercase tracking-widest">Ma démarche</h2>
+                        </div>
+                        <div class="sep"></div>
+                        <p class="text-[15px] font-medium text-slate-600 leading-relaxed mb-6">
+                            L’objectif était de rendre Crime & Science plus visible et plus attractif sur les réseaux sociaux, en transformant un événement scientifique en contenu accessible, dynamique et engageant. Toute la stratégie a été pensée pour capter l’attention avant l’événement, faire vivre l’expérience en direct et prolonger son impact après.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">01</span>
                                 <div>
-                                    <p class="font-black text-base mb-1">Établir les cibles</p>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Identifier les profils prioritaires : jeunes, jeunes adultes, passionnés de true crime, familles curieuses. Adapter le ton et les formats à chaque segment.</p>
+                                    <p class="font-black text-sm mb-1">Analyse de la communication existante</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Observation de ce qui était déjà mis en place pour repérer les points forts et les axes d’amélioration.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">02</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Analyse de la concurrence</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Étude d’événements similaires pour comprendre ce qui fonctionne en communication digitale.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">03</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Définition des objectifs</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Fixer des objectifs clairs en termes de visibilité, d’engagement et de participation.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">04</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Choix des indicateurs de performance</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Définition des KPI à suivre : portée, interactions, partages et engagement.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">05</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Choix des réseaux et des actions à mettre en place</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Sélection des plateformes les plus adaptées et définition des actions de communication.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">06</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Recherche sur le sujet</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Travail documentaire pour bien comprendre l’univers scientifique de l’événement.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">07</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Idées de contenus</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Création de concepts pour les phases avant, pendant et après l’événement.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">08</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Adaptation des formats selon les réseaux</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Choix des formats et du ton adaptés à chaque plateforme.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">09</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Création de l’identité visuelle</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Mise en place d’une charte graphique cohérente pour l’ensemble des contenus.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">10</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Création des contenus avant l’événement</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Réalisation des posts et stories pour informer et susciter l’intérêt.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">11</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Programmation des publications</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Organisation du calendrier de publication.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">12</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Préparation de modèles prêts à publier</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Création de maquettes pour publier rapidement pendant l’événement.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">13</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Gestion de l’interaction</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Réponse aux commentaires et animation de la communauté.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">14</span>
+                                <div>
+                                    <p class="font-black text-sm mb-1">Tournage et montage le jour J</p>
+                                    <p class="text-[13px] text-slate-500 leading-relaxed">Création de contenus en direct pour retranscrire l’ambiance de l’événement.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                            <div class="flex gap-5 items-start">
-                                <span class="text-5xl font-black text-slate-100 leading-none">02</span>
-                                <div>
-                                    <p class="font-black text-base mb-1">Définir un ton</p>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Tutoiement, proximité, humour décalé. Un ton authentique qui crée de la connivence avec la cible jeune tout en restant accessible à tous.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                            <div class="flex gap-5 items-start">
-                                <span class="text-5xl font-black text-slate-100 leading-none">03</span>
-                                <div>
-                                    <p class="font-black text-base mb-1">Créer une charte graphique</p>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Palette sombre, typographies percutantes, cohérence visuelle sur tout le feed. Une identité immédiatement reconnaissable.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                            <div class="flex gap-5 items-start">
-                                <span class="text-5xl font-black text-slate-100 leading-none">04</span>
-                                <div>
-                                    <p class="font-black text-base mb-1">Penser au contenu</p>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Stories pour rassurer, carrousels pour teaser, posts et reels pour les récaps. Chaque format a un rôle précis dans le tunnel de conversion.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                            <div class="flex gap-5 items-start">
-                                <span class="text-5xl font-black text-slate-100 leading-none">05</span>
-                                <div>
-                                    <p class="font-black text-base mb-1">Publier et programmer</p>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Planning éditorial structuré autour des temps forts : annonce, teasing J-7, récaps journée. Régularité et cohérence pour alimenter l'algorithme.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
-                            <div class="flex gap-5 items-start">
-                                <span class="text-5xl font-black text-slate-100 leading-none">06</span>
-                                <div>
-                                    <p class="font-black text-base mb-1">Analyser avec des indicateurs de performance</p>
-                                    <p class="text-sm text-slate-500 leading-relaxed">Suivi du reach, taux d'engagement, sauvegardes, partages. Les données guident les ajustements en temps réel pour optimiser chaque publication.</p>
-                                </div>
-                            </div>
+                        <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                            <a href="https://canva.link/59vm8ou7w9cjygd" target="_blank" class="inline-flex items-center justify-center gap-2 bg-primary text-white px-5 py-3 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-black transition-all shadow-sm">
+                                Phase 1 · Voir les études
+                            </a>
+                            <a href="https://canva.link/mt8za8cy5u43j4k" target="_blank" class="inline-flex items-center justify-center gap-2 bg-slate-900 text-white px-5 py-3 rounded-full font-black text-xs uppercase tracking-[0.2em] hover:bg-primary transition-all shadow-sm">
+                                Phase 2 · Voir les études
+                            </a>
                         </div>
                     </div>
                 </div>
-
             </div>
+        </div>
         </div>
 
         <footer class="mt-40 text-center scroll-reveal">
@@ -485,7 +546,7 @@
                 Travaillons ensemble →
             </a>
             <br>
-            <a href="index.html#posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl mt-4">
+            <a href="index.html#btn-posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl mt-4 outline-none">
                 <span class="material-symbols-outlined">grid_view</span> Revenir au Feed
             </a>
         </footer>
@@ -665,10 +726,10 @@
             btn.classList.add('active');
         }
 
-        // ─── STRATÉGIE ───
-        function revealStrategie() {
-            const trigger = document.getElementById('trigger-strategie');
-            const container = document.getElementById('container-strategie');
+        // ─── MA DÉMARCHE ───
+        function revealDemarche() {
+            const trigger = document.getElementById('trigger-demarche');
+            const container = document.getElementById('container-demarche');
             trigger.style.display = 'none';
             container.classList.remove('hidden');
             setTimeout(() => {
@@ -676,6 +737,35 @@
                 container.classList.add('opacity-100', 'translate-y-0');
             }, 50);
         }
+
+        // ─── COMPTEUR ANIMÉ ───
+        function animateCounter(counterEl, target, duration = 2000) {
+            let current = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                counterEl.textContent = Math.floor(current);
+            }, 16);
+        }
+
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.animated) {
+                    entry.target.dataset.animated = 'true';
+                    const target = parseInt(entry.target.dataset.target);
+                    animateCounter(entry.target, target, 2000);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.counter').forEach(counter => {
+            counterObserver.observe(counter);
+        });
 
         // ─── QUOTE ANIMÉE ───
         const quoteEl = document.getElementById('animated-quote');

@@ -64,6 +64,8 @@
 
         .polaroid-final { transform: rotate(2deg); transition: all 0.6s ease; }
         .polaroid-final:hover { transform: rotate(0deg) scale(1.01); }
+
+        .sep { width: 28px; height: 2px; background: #e619dd; margin: 14px 0 18px; border-radius: 2px; }
     </style>
 </head>
 <body class="text-slate-900">
@@ -74,7 +76,7 @@
 
     <nav class="fixed top-0 w-full z-50 bg-[#F8F7F2]/80 backdrop-blur-md border-b border-black/5">
         <div class="max-w-[1600px] mx-auto px-6 md:px-12 py-5 flex justify-between items-center">
-            <a href="index.html" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="index.html#btn-posts" class="font-black text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 hover:text-primary transition-colors outline-none">
                 <span class="material-symbols-outlined text-sm">west</span> Retour au feed
             </a>
             <p class="font-black text-[9px] opacity-30 tracking-[0.4em] uppercase">Création-Post-centella</p>
@@ -102,7 +104,7 @@
                         <span class="material-symbols-outlined text-primary font-bold">target</span> L'Objectif
                     </h2>
                     <p class="text-slate-600 leading-relaxed text-lg font-medium">
-                        Créer des publications Instagram pour présenter les nouvelles ampoules Centella, informer sur les bienfaits et susciter l'achat via un design éducatif et attractif.
+                        L’objectif était de créer des publications Instagram capables de présenter les nouvelles ampoules Centella de façon claire et attractive. 
                     </p>
                 </div>
 
@@ -113,6 +115,97 @@
                     <p class="text-slate-600 leading-relaxed text-lg font-medium">
                         Chaque post est construit par couches successives pour simuler de la profondeur (ombres portées, éléments 3D) et guider l'œil vers le produit principal.
                     </p>
+                </div>
+
+                <div class="reveal active" style="animation-delay: 0.35s">
+                    <div id="trigger-demarche" onclick="toggleDemarche()" class="group w-full rounded-3xl border-2 border-dashed border-slate-300 bg-white p-6 cursor-pointer hover:border-primary transition-all duration-300">
+                        <p class="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-2">Ma démarche</p>
+                        <p class="text-sm font-black uppercase text-center">Voir la démarche et les étapes de création</p>
+                    </div>
+                    <div id="container-demarche" class="hidden opacity-0 transition-all duration-700 translate-y-4 mt-4 space-y-4">
+                        <div class="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="material-symbols-outlined text-primary text-xl">route</span>
+                                <h3 class="text-lg font-black uppercase tracking-widest">Ma démarche</h3>
+                            </div>
+                            <div class="sep"></div>
+                            <p class="text-[15px] font-medium text-slate-600 leading-relaxed mb-6">
+                                Le travail s’est concentré sur la création de visuels éducatifs mettant en avant les bienfaits du produit tout en donnant envie d’acheter grâce à une composition soignée et impactante.
+                            </p>
+                            <div class="space-y-4 text-slate-600">
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">01</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Analyse du produit</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Étude des caractéristiques, bienfaits et arguments clés à mettre en avant.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">02</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Définition de l’objectif du contenu</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Trouver le bon équilibre entre information produit et intention d’achat.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">03</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Recherche d’inspirations visuelles</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Analyse des codes graphiques utilisés dans l’univers skincare et cosmétique.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">04</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Réflexion sur la structure du post</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Organisation des informations pour guider le regard et rendre le message facile à comprendre.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">05</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Création du concept visuel</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Mise en place d’un design éducatif et attractif centré sur le produit.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">06</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Travail de profondeur et de composition</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Utilisation de superpositions, ombres portées et effets visuels pour créer du relief et attirer l’attention vers l’ampoule.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">07</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Mise en avant des bénéfices produit</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Hiérarchisation des informations pour valoriser les atouts principaux de manière claire.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">08</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Réalisation sur Canva</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Création et ajustements du visuel final.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">09</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Optimisation pour Instagram</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Adaptation du format et de la lisibilité pour maximiser l’impact sur mobile.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <span class="text-2xl font-black text-slate-200 leading-none flex-shrink-0">10</span>
+                                    <div>
+                                        <p class="font-black text-sm mb-1">Finalisation du post</p>
+                                        <p class="text-[13px] text-slate-500 leading-relaxed">Assemblage des éléments graphiques pour obtenir un rendu cohérent, esthétique et engageant.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="reveal active" style="animation-delay: 0.4s">
@@ -185,14 +278,14 @@
 
             </div>
         </div>
-        
+
         <footer class="mt-40 text-center reveal" id="footer-trigger">
             <div class="mb-16 min-h-[120px] flex items-center justify-center">
                 <p id="animated-quote" class="text-2xl md:text-3xl font-serif italic text-slate-400 max-w-4xl mx-auto leading-relaxed">
                     En jouant sur les textures et la superposition d'éléments naturels, j'ai créé un univers visuel cohérent qui sublime les ampoules Centella tout en captivant l'audience.
                 </p>
             </div>
-            <a href="index.html" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl">
+            <a href="index.html#btn-posts" class="inline-flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-black text-[10px] uppercase tracking-[0.3em] hover:bg-primary transition-all hover:scale-105 shadow-2xl mt-4 outline-none">
                 <span class="material-symbols-outlined">grid_view</span> Revenir au Feed
             </a>
         </footer>
@@ -200,6 +293,24 @@
     </main>
 
     <script>
+        function toggleDemarche() {
+            const container = document.getElementById('container-demarche');
+            const trigger = document.getElementById('trigger-demarche');
+            if (container.classList.contains('hidden')) {
+                container.classList.remove('hidden');
+                trigger.classList.add('hidden');
+                setTimeout(() => {
+                    container.classList.remove('opacity-0', 'translate-y-4');
+                }, 10);
+            } else {
+                container.classList.add('opacity-0', 'translate-y-4');
+                setTimeout(() => {
+                    container.classList.add('hidden');
+                    trigger.classList.remove('hidden');
+                }, 700);
+            }
+        }
+
         function showImg(src) {
             document.getElementById('lightbox-img').src = src;
             document.getElementById('lightbox').style.display = 'flex';
@@ -210,7 +321,7 @@
             "Ajout du fond.", "Insertion du titre du post.", "Ajout de l’habillage graphique du titre.",
             "Intégration des ombres de feuilles pour créer de la profondeur.", "Ajout du socle pour placer le produit.",
             "Placement du produit Centella.", "Ajout du texte présentant les bienfaits.",
-            "Ajout d’un élément eau pour renforcer l’idée d’hydratation.", "Intégration des feuilles décoratives et finalisation."
+            "Ajout d’un élément eau pour renforcer l’idée d’hydratation.", "Intégration des feuilles présenentes dans la composition du produit."
         ];
 
         const descsMarron = [
